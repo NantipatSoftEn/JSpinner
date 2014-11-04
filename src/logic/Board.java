@@ -5,9 +5,11 @@
 
 package logic;
 
-import lib.Utility;
+import java.awt.*;
 
-public class Board {
+import lib.*;
+
+public class Board implements IRenderable {
 	private Tile[][] board;
 	public static final int DEFAULT_SHUFFLE = 1000;
 	
@@ -76,8 +78,7 @@ public class Board {
 				int ya = Utility.random(0, board[x].length);
 				int yb = Utility.random(0, board[x].length);
 				flip(x, ya, x, yb);
-			}
-			if(direction == 0){
+			}else if(direction == 1){
 				//vertical
 				int y = Utility.random(0, board[0].length);
 				int xa = Utility.random(0, board.length);
@@ -98,10 +99,25 @@ public class Board {
 		return out;
 	}
 	
-	public static void main(String[] args) {
-		Board a = new Board(8, 8);
-		System.out.println(a);
-		a.shuffle(Board.DEFAULT_SHUFFLE);
-		System.out.println(a);
+//	public static void main(String[] args) {
+//		Board a = new Board(6, 6);
+//		System.out.println(a);
+//		a.shuffle(Board.DEFAULT_SHUFFLE);
+//		System.out.println(a);
+//	}
+	
+	//IRenderable Implementation
+	
+	public int getZ(){
+		return 10000;
+	}
+	
+	public void draw(Graphics g){
+		for(int i = 0; i < board[0].length; i++){
+			for(int j = 0; j < board.length; j++){
+				System.out.println("!");
+				board[i][j].draw(g);
+			}
+		}
 	}
 }

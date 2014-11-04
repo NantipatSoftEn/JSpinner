@@ -1,18 +1,15 @@
 package logic;
 
-public class SimpleTile implements Tile{
-	private int number;
+import java.awt.Graphics;
+
+public class SimpleTile extends Tile{
+
+	public SimpleTile() {
+		super();
+	}
 	
-	public SimpleTile(int number){
-		this.number = number;
-	}
-
-	public int getNumber() {
-		return number;
-	}
-
-	public void setNumber(int number) {
-		this.number = number;
+	public SimpleTile(int number) {
+		super(number);
 	}
 	
 	@Override
@@ -22,6 +19,17 @@ public class SimpleTile implements Tile{
 	
 	@Override
 	public String toString() {
-		return "[S" + number + "]";
+		return "[S" + getNumber() + "]";
+	}
+
+//	@Override
+//	public void draw(Graphics g) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+
+	@Override
+	public int getZ() {
+		return 12000;
 	}
 }
