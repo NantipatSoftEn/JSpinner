@@ -14,6 +14,7 @@ public class Test{
 		f.getContentPane().add(t);
 		f.pack();
 		f.setVisible(true);
+		f.setResizable(false);
 		t.repaint();
 	}
 	

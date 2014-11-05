@@ -63,6 +63,9 @@ public class Board implements IRenderable {
 	public int getY() {
 		return y;
 	}
+	public Point getLocation(){
+		return new Point(x, y);
+	}
 	public int getWidth() {
 		return width;
 	}
@@ -77,6 +80,11 @@ public class Board implements IRenderable {
 	}
 	public int getTileSize() {
 		return tileSize;
+	}
+	public Point getTileLocation(int i, int j){
+		int tx = i * tileSize + x;
+		int ty = j * tileSize + y;
+		return new Point(tx, ty);
 	}
 	
 	public void flip(int x1, int y1, int x2, int y2){
