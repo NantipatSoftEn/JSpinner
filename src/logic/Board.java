@@ -87,6 +87,7 @@ public class Board implements IRenderable {
 		return new Point(tx, ty);
 	}
 	
+	
 	public void flip(int x1, int y1, int x2, int y2){
 		if(x1 == x2){
 			if(y2 < y1){
