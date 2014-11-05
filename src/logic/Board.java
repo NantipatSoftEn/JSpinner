@@ -132,6 +132,24 @@ public class Board implements IRenderable, IUpdatable {
 				board[x2 - (i - x1)][y1] = tmp;
 				
 			}
+		}else{
+			//bug bug bug
+			if (y2 < y1) {
+				int tmp = y1;
+				y1 = y2;
+				y2 = tmp;
+			}
+			if (x2 < x1) {
+				int tmp = x1;
+				x1 = x2;
+				x2 = tmp;
+			}
+			for (int i = x1 ; i<=x2;i++){
+				flip(i,y1,i,y2);
+			}
+			for (int i = y1;i<=y2;i++){
+				flip(x1,i,x2,i);
+			}
 		}
 		for (int i = 0; i < board.length; i++)
 			for (int j = 0; j < board[0].length; j++) {
@@ -197,16 +215,18 @@ public class Board implements IRenderable, IUpdatable {
 		// shuffle(1); //just for testing screen update
 		for (int i = 0; i < board.length; i++)
 			for (int j = 0; j < board[0].length; j++) {
-				if (Utility.isPointOnTile(InputUtility.getPickedPoint(), this, i, j)) {
-					if(InputUtility.isPicking()){
+				if (Utility.isPointOnTile(InputUtility.getPickedPoint(), this,
+						i, j)) {
+					if (InputUtility.isPicking()) {
 						if (!board[i][j].isSelected()) {
 							board[i][j].setSelected(true);
-							forFlip[selected] = new Point(i,j);
+							forFlip[selected] = new Point(i, j);
 							selected++;
-	
+
 						} else {
 							board[i][j].setSelected(false);
-							if (board[(int) forFlip[0].getX()][(int) forFlip[0].getY()] == board[i][j])
+							if (board[(int) forFlip[0].getX()][(int) forFlip[0]
+									.getY()] == board[i][j])
 								forFlip[0] = forFlip[1];
 							selected--;
 						}
