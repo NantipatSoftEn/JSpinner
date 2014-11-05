@@ -17,10 +17,12 @@ public class Board implements IRenderable, IUpdatable {
 	private Tile[][] board;
 	private int x, y, width, height, selected = 0;
 	private int tileSize;
+	private PlayerStatus player;
 	private Point forFlip[] = new Point[2];
 
 	public Board(int width, int height) {
 		board = new Tile[width][height];
+		player = new PlayerStatus();
 		initiateBoard();
 	}
 
@@ -100,6 +102,10 @@ public class Board implements IRenderable, IUpdatable {
 		int ty = j * (tileSize + Config.tileGutter) + y;
 		return new Point(tx, ty);
 	}
+	
+	public PlayerStatus getPlayer(){
+		return player;
+	}
 
 	public void flip(int x1, int y1, int x2, int y2) {
 		if (x1 == x2) {
@@ -124,7 +130,7 @@ public class Board implements IRenderable, IUpdatable {
 				tmp = board[i][y1];
 				board[i][y1] = board[x2 - (i - x1)][y1];
 				board[x2 - (i - x1)][y1] = tmp;
-
+				
 			}
 		}
 		for (int i = 0; i < board.length; i++)
@@ -207,6 +213,7 @@ public class Board implements IRenderable, IUpdatable {
 						if (selected == 2) {
 							selected = 0;
 							flip((int)forFlip[0].getX(),(int)forFlip[0].getY(),(int)forFlip[1].getX(),(int)forFlip[1].getY());
+							player.move();
 							board[(int)forFlip[0].getX()][(int)forFlip[0].getY()].setSelected(false);
 							board[(int)forFlip[1].getX()][(int)forFlip[1].getY()].setSelected(false);
 						}
