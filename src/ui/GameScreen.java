@@ -32,20 +32,20 @@ public class GameScreen extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				// TODO Auto-generated method stub
-				InputUtility.setPicking(true);
-				InputUtility.setPickedPoint(e.getX(), e.getY());
+				
 			}
 
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+				InputUtility.setPicking(true);
+				InputUtility.setPickedPoint(e.getX(), e.getY());
 			}
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+				InputUtility.setPickedPoint(InputUtility.NULL_POINT, InputUtility.NULL_POINT);
 			}
 
 			@Override
