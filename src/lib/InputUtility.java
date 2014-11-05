@@ -1,5 +1,7 @@
 package lib;
 
+import java.awt.Point;
+
 public class InputUtility {
 	private static boolean picking;
 	private static Point pickedPoint;

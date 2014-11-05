@@ -21,7 +21,7 @@ public class GameScreen extends JPanel{
 		super();
 		setPreferredSize(new Dimension(Config.screenWidth, Config.screenHeight));
 		setBackground(Color.WHITE);
-		this.board = new Board(6, 6);
+		this.board = new Board(8, 7);
 		this.playerStatus = new PlayerStatus();
 		renderList.add(board);
 		renderList.add(playerStatus);

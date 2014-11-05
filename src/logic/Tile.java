@@ -2,6 +2,7 @@ package logic;
 
 import java.awt.*;
 
+import lib.Config;
 import lib.DrawingUtility;
 import lib.IRenderable;
 
@@ -9,6 +10,8 @@ public abstract class Tile implements IRenderable {
 	public static final int NOT_A_BLOCK = -1; // may check if the tile is null.
 
 	private int number;
+	private int correctX, correctY;
+	private int currentX, currentY;
 	private boolean isSelected;
 	private Board board;
 	
@@ -19,6 +22,10 @@ public abstract class Tile implements IRenderable {
 	public Tile(int number, Board belongsTo) {
 		this.number = number;
 		this.board = belongsTo;
+		correctX = (number - 1) % this.board.getBoardWidth();
+		correctY = (number - 1) / this.board.getBoardWidth();
+		currentX = (number - 1) % this.board.getBoardWidth();
+		currentY = (number - 1) / this.board.getBoardWidth();
 	}
 
 	public int getNumber() {
@@ -41,12 +48,11 @@ public abstract class Tile implements IRenderable {
 	public abstract int getZ();
 	
 	public void draw(Graphics g){
-		System.out.println("*");
 		if(number == NOT_A_BLOCK)
 			return;
-		int size = 50; //ScreenManager.getTileSize(); //how to determine tile size?
-//		int x = 50, y = 70;
-		int x = ((number - 1) % 6) * 60 + 120, y = 70 + ((number - 1) / 6 * 60);
+		int size = board.getTileSize(); //ScreenManager.getTileSize(); //how to determine tile size?
+		int x = board.getX() + (currentX) * (board.getTileSize() + Config.tileGutter);
+		int y = board.getY() + (currentY) * (board.getTileSize() + Config.tileGutter);
 		Font font = new Font("Tahoma", Font.BOLD, 20);
 		g.setColor(Color.BLACK);
 		g.fillRect(x, y, size, size);

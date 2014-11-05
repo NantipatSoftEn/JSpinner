@@ -45,13 +45,16 @@ public class Board implements IRenderable {
 		int G = Config.tileGutter;
 		int M = Config.margin;
 		int h = board[0].length;
-		tileSize = (H - G - 2 * M - h * G) / h;
+		int T = Config.topBarHeight;
+		tileSize = (H + G - 2 * T - 2 * M - h * G) / h;
 		
 		width = board.length * tileSize + (board.length - 1) * Config.tileGutter; //board width
 		height = board[0].length * tileSize + (board[0].length - 1) * Config.tileGutter; //board height
 		
 		this.x = Config.screenWidth / 2 - width / 2;
 		this.y = Config.topBarHeight + Config.margin;
+		
+		System.out.println(x + " " + y + " " + width + " " + height + " " + tileSize + " " + Config.tileGutter);
 	}
 	
 	public int getX() {
@@ -65,6 +68,15 @@ public class Board implements IRenderable {
 	}
 	public int getHeight() {
 		return height;
+	}
+	public int getBoardHeight() {
+		return board[0].length;
+	}
+	public int getBoardWidth() {
+		return board.length;
+	}
+	public int getTileSize() {
+		return tileSize;
 	}
 	
 	public void flip(int x1, int y1, int x2, int y2){
@@ -143,8 +155,7 @@ public class Board implements IRenderable {
 	public void draw(Graphics g){
 		for(int i = 0; i < board[0].length; i++){
 			for(int j = 0; j < board.length; j++){
-				System.out.println("!");
-				board[i][j].draw(g);
+				board[j][i].draw(g);
 			}
 		}
 	}
