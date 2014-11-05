@@ -133,7 +133,7 @@ public class Board implements IRenderable, IUpdatable {
 				
 			}
 		}else{
-			//bug bug bug
+			//bug bug bug//
 			if (y2 < y1) {
 				int tmp = y1;
 				y1 = y2;
