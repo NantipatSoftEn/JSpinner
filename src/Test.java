@@ -19,7 +19,8 @@ public class Test{
 		f.setResizable(false);
 		while(true){
 			try {
-				Thread.sleep(200);
+				Thread.sleep(20);
+				//Thread.sleep(200);
 			} catch(InterruptedException e) {
 			}
 			gameScreen.repaint();

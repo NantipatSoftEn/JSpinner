@@ -177,7 +177,7 @@ public class Board implements IRenderable, IUpdatable {
 	
 	public void update(){
 		//for each game loop...
-		shuffle(1);
+		shuffle(1);	//just for testing screen update
 		for(int i = 0; i < board.length; i++)
 			for(int j = 0; j < board[0].length; j++){
 				if(Utility.isPointOnTile(InputUtility.getPickedPoint(), this, i, j)){
