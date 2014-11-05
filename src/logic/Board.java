@@ -108,7 +108,7 @@ public class Board implements IRenderable, IUpdatable {
 				y1 = y2;
 				y2 = tmp;
 			}
-			for (int i = y1; i < (y1 + y2) / 2; i++) {
+			for (int i = y1; i < (y1 + y2+1) / 2; i++) {
 				Tile tmp = board[x1][i];
 				board[x1][i] = board[x1][y2 - (i - y1)];
 				board[x1][y2 - (i - y1)] = tmp;
@@ -119,7 +119,7 @@ public class Board implements IRenderable, IUpdatable {
 				x1 = x2;
 				x2 = tmp;
 			}
-			for (int i = x1; i < (x1 + x2) / 2; i++) {
+			for (int i = x1; i < (x1 + x2+1) / 2; i++) {
 				Tile tmp = null;
 				tmp = board[i][y1];
 				board[i][y1] = board[x2 - (i - x1)][y1];
