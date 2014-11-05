@@ -26,7 +26,6 @@ public class GameScreen extends JPanel{
 		renderList.add(board);
 		renderList.add(playerStatus);
 		
-		
 		/////////////////Mouse/////////////////
 		this.addMouseListener(new MouseListener(){
 
@@ -35,7 +34,6 @@ public class GameScreen extends JPanel{
 				// TODO Auto-generated method stub
 				InputUtility.setPicking(true);
 				InputUtility.setPickedPoint(e.getX(), e.getY());
-				
 			}
 
 			@Override
@@ -71,6 +69,10 @@ public class GameScreen extends JPanel{
 	
 	public void addRenderableObject(IRenderable r){
 		renderList.add(r);
+	}
+	
+	public Board getBoard() {
+		return board;
 	}
 	
 	@Override

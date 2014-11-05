@@ -82,8 +82,8 @@ public class Board implements IRenderable {
 		return tileSize;
 	}
 	public Point getTileLocation(int i, int j){
-		int tx = i * tileSize + x;
-		int ty = j * tileSize + y;
+		int tx = i * (tileSize + Config.tileGutter) + x;
+		int ty = j * (tileSize + Config.tileGutter) + y;
 		return new Point(tx, ty);
 	}
 	
