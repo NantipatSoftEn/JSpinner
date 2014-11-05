@@ -140,7 +140,7 @@ public class Board implements IRenderable, IUpdatable {
 			for (int i = x1 ; i<=x2;i++){
 				flip(i,y1,i,y2);
 			}
-			for (int i = y1;i<=y2;y++){
+			for (int i = y1;i<=y2;i++){
 				flip(x1,i,x2,i);
 				
 			}
