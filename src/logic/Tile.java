@@ -10,13 +10,15 @@ public abstract class Tile implements IRenderable {
 
 	private int number;
 	private boolean isSelected;
-
+	private Board board;
+	
 	public Tile(){
 		this.number = 0;
 	}
 	
-	public Tile(int number) {
+	public Tile(int number, Board belongsTo) {
 		this.number = number;
+		this.board = belongsTo;
 	}
 
 	public int getNumber() {
@@ -25,6 +27,14 @@ public abstract class Tile implements IRenderable {
 
 	public void setNumber(int number) {
 		this.number = number;
+	}
+	
+	public boolean isSelected() {
+		return isSelected;
+	}
+	
+	public void setSelected(boolean isSelected) {
+		this.isSelected = isSelected;
 	}
 
 	public abstract void performEffect();

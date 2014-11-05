@@ -10,8 +10,11 @@ import java.awt.*;
 import lib.*;
 
 public class Board implements IRenderable {
-	private Tile[][] board;
 	public static final int DEFAULT_SHUFFLE = 1000;
+	
+	private Tile[][] board;
+	private int x, y, width, height;
+	private int tileSize;
 	
 	public Board(int width, int height){
 		board = new Tile[width][height];
@@ -33,10 +36,35 @@ public class Board implements IRenderable {
 		int k = 1;
 		for(int j = 0; j < board[0].length; j++){
 			for(int i = 0; i < board.length; i++){
-				board[i][j] = new SimpleTile(k);
+				board[i][j] = new SimpleTile(k, this);
 				k++;
 			}
 		}
+		
+		int H = Config.screenHeight;
+		int G = Config.tileGutter;
+		int M = Config.margin;
+		int h = board[0].length;
+		tileSize = (H - G - 2 * M - h * G) / h;
+		
+		width = board.length * tileSize + (board.length - 1) * Config.tileGutter; //board width
+		height = board[0].length * tileSize + (board[0].length - 1) * Config.tileGutter; //board height
+		
+		this.x = Config.screenWidth / 2 - width / 2;
+		this.y = Config.topBarHeight + Config.margin;
+	}
+	
+	public int getX() {
+		return x;
+	}
+	public int getY() {
+		return y;
+	}
+	public int getWidth() {
+		return width;
+	}
+	public int getHeight() {
+		return height;
 	}
 	
 	public void flip(int x1, int y1, int x2, int y2){

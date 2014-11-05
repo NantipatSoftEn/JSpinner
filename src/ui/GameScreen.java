@@ -25,7 +25,7 @@ public class GameScreen extends JPanel{
 		renderList.add(playerStatus);
 	}
 	
-	public addRenderableObject(IRenderable r){
+	public void addRenderableObject(IRenderable r){
 		renderList.add(r);
 	}
 	
