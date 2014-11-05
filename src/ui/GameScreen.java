@@ -3,6 +3,8 @@ package ui;
 import java.util.*;
 import java.util.List;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.*;
 
@@ -23,9 +25,51 @@ public class GameScreen extends JPanel{
 		this.playerStatus = new PlayerStatus();
 		renderList.add(board);
 		renderList.add(playerStatus);
+		
+		
+		/////////////////Mouse/////////////////
+		this.addMouseListener(new MouseListener(){
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				InputUtility.setPicking(true);
+				InputUtility.setPickedPoint(e.getX(), e.getY());
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		
+		
+		
+		//////////////////////////////////////
 	}
 	
-	public addRenderableObject(IRenderable r){
+	public void addRenderableObject(IRenderable r){
 		renderList.add(r);
 	}
 	
