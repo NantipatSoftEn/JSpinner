@@ -26,28 +26,26 @@ public class GameScreen extends JPanel{
 		renderList.add(board);
 		renderList.add(playerStatus);
 		
-		
 		/////////////////Mouse/////////////////
 		this.addMouseListener(new MouseListener(){
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				// TODO Auto-generated method stub
-				InputUtility.setPicking(true);
-				InputUtility.setPickedPoint(e.getX(), e.getY());
 				
 			}
 
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+				InputUtility.setPicking(true);
+				InputUtility.setPickedPoint(e.getX(), e.getY());
 			}
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+				InputUtility.setPickedPoint(InputUtility.NULL_POINT, InputUtility.NULL_POINT);
 			}
 
 			@Override
@@ -71,6 +69,10 @@ public class GameScreen extends JPanel{
 	
 	public void addRenderableObject(IRenderable r){
 		renderList.add(r);
+	}
+	
+	public Board getBoard() {
+		return board;
 	}
 	
 	@Override

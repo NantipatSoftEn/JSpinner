@@ -7,9 +7,11 @@ package logic;
 
 import java.awt.*;
 
+import javax.rmi.CORBA.Util;
+
 import lib.*;
 
-public class Board implements IRenderable {
+public class Board implements IRenderable, IUpdatable {
 	public static final int DEFAULT_SHUFFLE = 1000;
 	
 	private Tile[][] board;
@@ -82,11 +84,10 @@ public class Board implements IRenderable {
 		return tileSize;
 	}
 	public Point getTileLocation(int i, int j){
-		int tx = i * tileSize + x;
-		int ty = j * tileSize + y;
+		int tx = i * (tileSize + Config.tileGutter) + x;
+		int ty = j * (tileSize + Config.tileGutter) + y;
 		return new Point(tx, ty);
 	}
-	
 	
 	public void flip(int x1, int y1, int x2, int y2){
 		if(x1 == x2){
@@ -107,13 +108,18 @@ public class Board implements IRenderable {
 				x1 = x2;
 				x2 = tmp;
 			}
-			for(int i = y1; i < (y1 + y2) / 2; i++){
+			for(int i = x1; i < (x1 + x2) / 2; i++){
 				Tile tmp = null;
 				tmp = board[i][y1] ;
 				board[i][y1] = board[x2 - (i - x1)][y1];
 				board[x2 - (i - x1)][y1] = tmp;
+				
 			}
 		}
+		for(int i = 0; i < board.length; i++)
+			for(int j = 0; j < board[0].length; j++){
+				board[i][j].setCurrentLocation(i, j);
+			}
 	}
 	
 	public void shuffle(int times){
@@ -127,7 +133,7 @@ public class Board implements IRenderable {
 				int ya = Utility.random(0, board[x].length);
 				int yb = Utility.random(0, board[x].length);
 				flip(x, ya, x, yb);
-			}else if(direction == 1){
+			} else if(direction == 1){
 				//vertical
 				int y = Utility.random(0, board[0].length);
 				int xa = Utility.random(0, board.length);
@@ -167,5 +173,16 @@ public class Board implements IRenderable {
 				board[j][i].draw(g);
 			}
 		}
+	}
+	
+	public void update(){
+		//for each game loop...
+		shuffle(1);	//just for testing screen update
+		for(int i = 0; i < board.length; i++)
+			for(int j = 0; j < board[0].length; j++){
+				if(Utility.isPointOnTile(InputUtility.getPickedPoint(), this, i, j)){
+					board[i][j].setSelected(true);
+				}
+			}
 	}
 }
