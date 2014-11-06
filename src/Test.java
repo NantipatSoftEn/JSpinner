@@ -17,7 +17,7 @@ public class Test{
 		f.pack();
 		f.setVisible(true);
 		f.setResizable(false);
-		while(true){
+		while(!gameScreen.getBoard().isWin()){
 			try {
 				Thread.sleep(20);
 //				Thread.sleep(200);

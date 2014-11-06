@@ -102,8 +102,8 @@ public class Board implements IRenderable, IUpdatable {
 		int ty = j * (tileSize + Config.tileGutter) + y;
 		return new Point(tx, ty);
 	}
-	
-	public PlayerStatus getPlayer(){
+
+	public PlayerStatus getPlayer() {
 		return player;
 	}
 
@@ -130,7 +130,7 @@ public class Board implements IRenderable, IUpdatable {
 				tmp = board[i][y1];
 				board[i][y1] = board[x2 - (i - x1)][y1];
 				board[x2 - (i - x1)][y1] = tmp;
-				
+
 			}
 		} else {
 			if (y2 < y1) {
@@ -144,11 +144,11 @@ public class Board implements IRenderable, IUpdatable {
 				x2 = tmp;
 			}
 			if (x2 - x1 == y2 - y1) {
-				for (int i = 0; i <=x2 - x1; i++) {
+				for (int i = 0; i <= x2 - x1; i++) {
 					for (int j = 0; j < +(y2 - y1 - i); j++) {
-					 Tile tmp=board[x1+i][y1+j];
-					 board[x1+i][y1+j]=board[x2-j][y2-i];
-					 board[x2-j][y2-i]=tmp;
+						Tile tmp = board[x1 + i][y1 + j];
+						board[x1 + i][y1 + j] = board[x2 - j][y2 - i];
+						board[x2 - j][y2 - i] = tmp;
 					}
 				}
 			}
@@ -212,6 +212,18 @@ public class Board implements IRenderable, IUpdatable {
 		}
 	}
 
+	public boolean isWin() {
+		boolean check = true;
+		for (int j = 0; j < board[0].length; j++) {
+			for (int i = 0; i < board.length; i++) {
+				if (!board[i][j].isCorrect())
+					check = false;
+
+			}
+		}
+		return check;
+	}
+
 	public void update() {
 		// for each game loop...
 		// shuffle(1); //just for testing screen update
@@ -234,10 +246,15 @@ public class Board implements IRenderable, IUpdatable {
 						}
 						if (selected == 2) {
 							selected = 0;
-							flip((int)forFlip[0].getX(),(int)forFlip[0].getY(),(int)forFlip[1].getX(),(int)forFlip[1].getY());
+							flip((int) forFlip[0].getX(),
+									(int) forFlip[0].getY(),
+									(int) forFlip[1].getX(),
+									(int) forFlip[1].getY());
 							player.move();
-							board[(int)forFlip[0].getX()][(int)forFlip[0].getY()].setSelected(false);
-							board[(int)forFlip[1].getX()][(int)forFlip[1].getY()].setSelected(false);
+							board[(int) forFlip[0].getX()][(int) forFlip[0]
+									.getY()].setSelected(false);
+							board[(int) forFlip[1].getX()][(int) forFlip[1]
+									.getY()].setSelected(false);
 						}
 					}
 				}
