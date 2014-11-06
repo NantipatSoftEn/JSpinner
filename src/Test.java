@@ -27,6 +27,7 @@ public class Test{
 			gameLogic.update();
 			InputUtility.postUpdate();
 		}
+		JOptionPane.showMessageDialog(null, "WIN", "WIN", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 }
