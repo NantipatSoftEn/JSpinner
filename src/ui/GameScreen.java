@@ -17,12 +17,11 @@ public class GameScreen extends JPanel{
 	private Board board;
 	private PlayerStatus playerStatus;
 	
-	public GameScreen(){
+	public GameScreen(Board board){
 		super();
 		setPreferredSize(new Dimension(Config.screenWidth, Config.screenHeight));
 		setBackground(Color.WHITE);
-		this.board = new Board(6, 5);
-		board.shuffle(Board.DEFAULT_SHUFFLE);
+		this.board = board;
 		this.playerStatus = board.getPlayer();
 		renderList.add(board);
 		renderList.add(playerStatus);

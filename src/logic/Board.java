@@ -108,47 +108,50 @@ public class Board implements IRenderable, IUpdatable {
 	}
 
 	public void flip(int x1, int y1, int x2, int y2) {
-		if (x1 == x2) {
-			if (y2 < y1) {
-				int tmp = y1;
-				y1 = y2;
-				y2 = tmp;
-			}
+		int dx = x2 - x1;
+		int dy = y2 - y1;
+		
+		if (y2 < y1) {
+			int tmp = y1;
+			y1 = y2;
+			y2 = tmp;
+		}
+		if (x2 < x1) {
+			int tmp = x1;
+			x1 = x2;
+			x2 = tmp;
+		}
+		
+		if (dx == 0) {
 			for (int i = y1; i < (y1 + y2 + 1) / 2; i++) {
 				Tile tmp = board[x1][i];
 				board[x1][i] = board[x1][y2 - (i - y1)];
 				board[x1][y2 - (i - y1)] = tmp;
 			}
-		} else if (y1 == y2) {
-			if (x2 < x1) {
-				int tmp = x1;
-				x1 = x2;
-				x2 = tmp;
-			}
+		} else if (dy == 0) {
 			for (int i = x1; i < (x1 + x2 + 1) / 2; i++) {
 				Tile tmp = null;
 				tmp = board[i][y1];
 				board[i][y1] = board[x2 - (i - x1)][y1];
 				board[x2 - (i - x1)][y1] = tmp;
-
 			}
-		} else {
-			if (y2 < y1) {
-				int tmp = y1;
-				y1 = y2;
-				y2 = tmp;
-			}
-			if (x2 < x1) {
-				int tmp = x1;
-				x1 = x2;
-				x2 = tmp;
-			}
-			if (x2 - x1 == y2 - y1) {
+		} else if(dx == dy || dx == -dy){
+			
+			if (dx * dy > 0) {
 				for (int i = 0; i <= x2 - x1; i++) {
 					for (int j = 0; j < +(y2 - y1 - i); j++) {
 						Tile tmp = board[x1 + i][y1 + j];
 						board[x1 + i][y1 + j] = board[x2 - j][y2 - i];
 						board[x2 - j][y2 - i] = tmp;
+					}
+				}
+			}
+			if (dx * dy < 0) {
+				for (int i = 0; i <= x2 - x1; i++) {
+					for (int j = i + 1; j <= (y2 - y1); j++) {
+						Tile tmp = board[x1 + i][y1 + j];
+						board[x1 + i][y1 + j] = board[x1 + j][y1 + i];
+						board[x1 + j][y1 + i] = tmp;
 					}
 				}
 			}
@@ -163,20 +166,39 @@ public class Board implements IRenderable, IUpdatable {
 		// still not available with non-rectangle boards;
 		// and also non-linear flips.
 		for (int i = 0; i < times; i++) {
-			int direction = Utility.random(0, 2);
-			if (direction == 0) {
-				// horizontal
-				int x = Utility.random(0, board.length);
-				int ya = Utility.random(0, board[x].length);
-				int yb = Utility.random(0, board[x].length);
-				flip(x, ya, x, yb);
-			} else if (direction == 1) {
-				// vertical
-				int y = Utility.random(0, board[0].length);
-				int xa = Utility.random(0, board.length);
-				int xb = Utility.random(0, board.length);
-				flip(xa, y, xb, y);
-			}
+//			int direction = Utility.random(0, 2);
+//			if (direction == 0) {
+//				// horizontal
+//				int x = Utility.random(0, board.length);
+//				int ya = Utility.random(0, board[x].length);
+//				int yb = Utility.random(0, board[x].length);
+//				flip(x, ya, x, yb);
+//			} else if (direction == 1) {
+//				// vertical
+//				int y = Utility.random(0, board[0].length);
+//				int xa = Utility.random(0, board.length);
+//				int xb = Utility.random(0, board.length);
+//				flip(xa, y, xb, y);
+//			}
+			//test flip only diagonal
+			int x = Utility.random(0, board.length);
+			int y = Utility.random(0, board[0].length);
+			int dx = Utility.random(0, 2) == 1 ? 1 : -1;
+			int dy = Utility.random(0, 2) == 1 ? 1 : -1;
+			int size = 0;
+			if(dx > 0 && dy > 0)
+				size = Utility.random(0, Math.min(getBoardWidth() - 1 - x, getBoardWidth() - 1 - y));
+			if(dx > 0 && dy < 0)
+				size = Utility.random(0, Math.min(getBoardWidth() - 1 - x, y));
+			if(dx < 0 && dy > 0)
+				size = Utility.random(0, Math.min(x, getBoardWidth() - 1 - y));
+			if(dx < 0 && dy < 0)
+				size = Utility.random(0, Math.min(x, y));
+			dx *= size;
+			dy *= size;
+			System.out.println(x + " " + y + " " + (x+dx) + " " + (y+dy));
+			flip(x, y, x + dx, y + dy);
+			
 		}
 	}
 
@@ -229,14 +251,12 @@ public class Board implements IRenderable, IUpdatable {
 		// shuffle(1); //just for testing screen update
 		for (int i = 0; i < board.length; i++)
 			for (int j = 0; j < board[0].length; j++) {
-				if (Utility.isPointOnTile(InputUtility.getPickedPoint(), this,
-						i, j)) {
+				if (Utility.isPointOnTile(InputUtility.getPickedPoint(), this, i, j)) {
 					if (InputUtility.isPicking()) {
 						if (!board[i][j].isSelected()) {
 							board[i][j].setSelected(true);
 							forFlip[selected] = new Point(i, j);
 							selected++;
-
 						} else {
 							board[i][j].setSelected(false);
 							if (board[(int) forFlip[0].getX()][(int) forFlip[0]
