@@ -15,6 +15,10 @@ public class PlayerStatus implements IRenderable{
 		moved++;
 	}
 	
+	public int getMoved(){
+		return moved;
+	}
+	
 	@Override
 	public int getZ() {
 		return Integer.MAX_VALUE;

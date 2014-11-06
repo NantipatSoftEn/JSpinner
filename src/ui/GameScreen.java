@@ -22,7 +22,8 @@ public class GameScreen extends JPanel{
 		setPreferredSize(new Dimension(Config.screenWidth, Config.screenHeight));
 		setBackground(Color.WHITE);
 		this.board = new Board(6, 5);
-		this.playerStatus = new PlayerStatus();
+		board.shuffle(Board.DEFAULT_SHUFFLE);
+		this.playerStatus = board.getPlayer();
 		renderList.add(board);
 		renderList.add(playerStatus);
 		
