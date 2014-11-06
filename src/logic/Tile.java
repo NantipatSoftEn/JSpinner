@@ -23,13 +23,11 @@ public abstract class Tile implements IRenderable {
 		this.number = 0;
 	}
 
-	public Tile(int number, Board belongsTo) {
+	public Tile(int number, Board belongsTo, int correctX, int correctY) {
 		this.number = number;
 		this.board = belongsTo;
-		correctX = (number - 1) % this.board.getBoardWidth();
-		correctY = (number - 1) / this.board.getBoardWidth();
-		currentX = (number - 1) % this.board.getBoardWidth();
-		currentY = (number - 1) / this.board.getBoardWidth();
+		setCorrectLocation(correctX, correctY);
+		setCurrentLocation(correctX, correctY);
 	}
 
 	public void setCorrectX(int x) {
@@ -40,7 +38,7 @@ public abstract class Tile implements IRenderable {
 		this.correctY = y;
 	}
 	public boolean isCorrect (){
-		return correctX==currentX&&correctY==currentY;
+		return correctX == currentX && correctY == currentY;
 	}
 	public int getNumber() {
 		return number;
@@ -61,6 +59,19 @@ public abstract class Tile implements IRenderable {
 	public void setCurrentLocation(int x, int y) {
 		this.currentX = x;
 		this.currentY = y;
+	}
+	
+	public Point getCorrectLocation() {
+		return new Point(correctX, correctY);
+	}
+	public Point getCurrentLocation() {
+		return new Point(currentX, currentY);
+	}
+
+
+	public void setCorrectLocation(int i, int j) {
+		this.correctX = i;
+		this.correctY = j;
 	}
 
 	public abstract void performEffect();
