@@ -88,13 +88,10 @@ public abstract class Tile implements IRenderable {
 		int y = board.getY() + (currentY)
 				* (board.getTileSize() + Config.tileGutter);
 		Font font = new Font("Tahoma", Font.BOLD, 20);
-
-		int gr = Math.abs(128 - number * 255
-				/ (board.getBoardWidth() * board.getBoardHeight()));
-		int re = 255 - number * 255
-				/ (board.getBoardWidth() * board.getBoardHeight());
-		int bl = number * 255
-				/ (board.getBoardWidth() * board.getBoardHeight());
+		
+		int gr = Math.abs(128 - number * 255 / (board.getBoardWidth() * board.getBoardHeight()));
+		int re = 255 - number * 255 / (board.getBoardWidth() * board.getBoardHeight());
+		int bl = number * 255 / (board.getBoardWidth() * board.getBoardHeight());
 		g.setColor(new Color(re, gr, bl));
 
 		if (isSelected)
