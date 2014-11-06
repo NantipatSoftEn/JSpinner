@@ -8,15 +8,15 @@ import ui.GameScreen;
 
 public class Game extends JFrame{
 	private Board board;
-	private GameScreen gameScreen;
+	GameScreen gameScreen;
 	private GameLogic gameLogic;
 	private boolean playing;
 	
 	public Game(){
 		super("JFlipFlop");
 		
-//		board = new Board(6, 4);
-		board = new Board("levels/test.txt");
+		//board = new Board(1, 1);
+		board = new Board("levels/test2.txt");
 		gameScreen = new GameScreen(board);
 		gameLogic = new GameLogic(board);
 		

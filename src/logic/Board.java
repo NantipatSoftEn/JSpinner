@@ -41,11 +41,12 @@ public class Board implements IRenderable, IUpdatable {
 			this.moveLimit = in.nextInt();
 			this.bestScore = in.nextInt();
 			board = new Tile[boardX][boardY];
+			int k = 1;
 			for(int i = 0; i < boardY; i++){
 				for(int j = 0; j < boardX; j++){
 					tileInfo = in.next();
 					if(tileInfo.substring(0,1).equalsIgnoreCase("S"))
-						board[j][i] = new SimpleTile(Integer.parseInt(tileInfo.substring(1)), this, i, j);
+						board[j][i] = new SimpleTile(k++, this, i, j);
 					if(tileInfo.substring(0,1).equalsIgnoreCase("-"))
 						board[j][i] = new SimpleTile(Tile.NOT_A_BLOCK, this, i, j);
 					board[j][i].setCurrentLocation(j, i);
@@ -220,16 +221,17 @@ public class Board implements IRenderable, IUpdatable {
 			int dy = Utility.random(0, 2) == 1 ? 1 : -1;
 			int size = 0;
 			if(dx > 0 && dy > 0)
-				size = Utility.random(0, Math.min(getBoardWidth() - 1 - x, getBoardWidth() - 1 - y));
+				size = Utility.random(0, Math.min(getBoardWidth() - 1 - x, getBoardHeight() - 1 - y));
 			if(dx > 0 && dy < 0)
 				size = Utility.random(0, Math.min(getBoardWidth() - 1 - x, y));
 			if(dx < 0 && dy > 0)
-				size = Utility.random(0, Math.min(x, getBoardWidth() - 1 - y));
+				size = Utility.random(0, Math.min(x, getBoardHeight() - 1 - y));
 			if(dx < 0 && dy < 0)
 				size = Utility.random(0, Math.min(x, y));
 			dx *= size;
 			dy *= size;
-			System.out.println(x + " " + y + " " + (x+dx) + " " + (y+dy));
+//			System.out.println("boardwidth " + getBoardWidth() + " " + getBoardHeight());
+//			System.out.println(x + " " + y + " " + (x + dx) + " " + (y + dy));
 			flip(x, y, x + dx, y + dy);
 			
 		}
