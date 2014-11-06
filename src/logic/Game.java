@@ -14,7 +14,7 @@ public class Game extends JFrame{
 	public Game(){
 		super("JFlipFlop");
 		
-		board = new Board(9, 9);
+		board = new Board(5, 5);
 		gameScreen = new GameScreen(board);
 		gameLogic = new GameLogic(board);
 		

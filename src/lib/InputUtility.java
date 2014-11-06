@@ -6,6 +6,7 @@ public class InputUtility {
 	private static boolean picking;
 	private static Point pickedPoint;
 	public static final int NULL_POINT = -100;
+
 	static{
 		pickedPoint = new Point(NULL_POINT, NULL_POINT);
 	}
@@ -25,4 +26,5 @@ public class InputUtility {
 	public static void postUpdate(){
 		picking = false;
 	}
+	
 }
