@@ -108,7 +108,7 @@ public class Board implements IRenderable, IUpdatable {
 				y1 = y2;
 				y2 = tmp;
 			}
-			for (int i = y1; i < (y1 + y2+1) / 2; i++) {
+			for (int i = y1; i < (y1 + y2 + 1) / 2; i++) {
 				Tile tmp = board[x1][i];
 				board[x1][i] = board[x1][y2 - (i - y1)];
 				board[x1][y2 - (i - y1)] = tmp;
@@ -119,32 +119,34 @@ public class Board implements IRenderable, IUpdatable {
 				x1 = x2;
 				x2 = tmp;
 			}
-			for (int i = x1; i < (x1 + x2+1) / 2; i++) {
+			for (int i = x1; i < (x1 + x2 + 1) / 2; i++) {
 				Tile tmp = null;
 				tmp = board[i][y1];
 				board[i][y1] = board[x2 - (i - x1)][y1];
 				board[x2 - (i - x1)][y1] = tmp;
 
 			}
-		}else{
-			if (y2 < y1) {
-				int tmp = y1;
-				y1 = y2;
-				y2 = tmp;
-			}
+		} else {
+			if (x2 - x1 == y2 - y1)
+				if (y2 < y1) {
+					int tmp = y1;
+					y1 = y2;
+					y2 = tmp;
+				}
 			if (x2 < x1) {
 				int tmp = x1;
 				x1 = x2;
 				x2 = tmp;
 			}
-			for (int i = x1 ; i<=x2;i++){
-				flip(i,y1,i,y2);
+			if (x2 - x1 == y2 - y1) {
+				for (int i = 0; i <=x2 - x1; i++) {
+					for (int j = 0; j < +(y2 - y1 - i); j++) {
+					 Tile tmp=board[x1+i][y1+j];
+					 board[x1+i][y1+j]=board[x2-j][y2-i];
+					 board[x2-j][y2-i]=tmp;
+					}
+				}
 			}
-			for (int i = y1;i<=y2;i++){
-				flip(x1,i,x2,i);
-				
-			}
-			
 		}
 		for (int i = 0; i < board.length; i++)
 			for (int j = 0; j < board[0].length; j++) {
