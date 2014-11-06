@@ -18,11 +18,11 @@ public abstract class Tile implements IRenderable {
 	private int currentX, currentY;
 	private boolean isSelected;
 	private Board board;
-	
-	public Tile(){
+
+	public Tile() {
 		this.number = 0;
 	}
-	
+
 	public Tile(int number, Board belongsTo) {
 		this.number = number;
 		this.board = belongsTo;
@@ -32,6 +32,16 @@ public abstract class Tile implements IRenderable {
 		currentY = (number - 1) / this.board.getBoardWidth();
 	}
 
+	public void setCorrectX(int x) {
+		this.correctX = x;
+	}
+
+	public void setCorrectY(int y) {
+		this.correctY = y;
+	}
+	public boolean isCorrect (){
+		return correctX==currentX&&correctY==currentY;
+	}
 	public int getNumber() {
 		return number;
 	}
@@ -39,42 +49,50 @@ public abstract class Tile implements IRenderable {
 	public void setNumber(int number) {
 		this.number = number;
 	}
-	
+
 	public boolean isSelected() {
 		return isSelected;
 	}
-	
+
 	public void setSelected(boolean isSelected) {
 		this.isSelected = isSelected;
 	}
-	
+
 	public void setCurrentLocation(int x, int y) {
 		this.currentX = x;
 		this.currentY = y;
 	}
 
 	public abstract void performEffect();
+
 	public abstract int getZ();
-	
-	public void draw(Graphics g){
-		if(number == NOT_A_BLOCK)
+
+	public void draw(Graphics g) {
+		if (number == NOT_A_BLOCK)
 			return;
-		int size = board.getTileSize(); //ScreenManager.getTileSize(); //how to determine tile size?
-		int x = board.getX() + (currentX) * (board.getTileSize() + Config.tileGutter);
-		int y = board.getY() + (currentY) * (board.getTileSize() + Config.tileGutter);
+		int size = board.getTileSize(); // ScreenManager.getTileSize(); //how to
+										// determine tile size?
+		int x = board.getX() + (currentX)
+				* (board.getTileSize() + Config.tileGutter);
+		int y = board.getY() + (currentY)
+				* (board.getTileSize() + Config.tileGutter);
 		Font font = new Font("Tahoma", Font.BOLD, 20);
-		
-		int gr = Math.abs(128 - number * 255 / (board.getBoardWidth() * board.getBoardHeight()));
-		int re = 255 - number * 255 / (board.getBoardWidth() * board.getBoardHeight());
-		int bl = number * 255 / (board.getBoardWidth() * board.getBoardHeight());
+
+		int gr = Math.abs(128 - number * 255
+				/ (board.getBoardWidth() * board.getBoardHeight()));
+		int re = 255 - number * 255
+				/ (board.getBoardWidth() * board.getBoardHeight());
+		int bl = number * 255
+				/ (board.getBoardWidth() * board.getBoardHeight());
 		g.setColor(new Color(re, gr, bl));
-		
-		if(isSelected)
+
+		if (isSelected)
 			g.setColor(Color.RED);
 		g.fillRect(x, y, size, size);
-		
+
 		g.setColor(Color.WHITE);
-		DrawingUtility.drawStringInBox("" + number, font, x, y, size, size, DrawingUtility.TEXT_CENTER, g);
+		DrawingUtility.drawStringInBox("" + number, font, x, y, size, size,
+				DrawingUtility.TEXT_CENTER, g);
 	}
 
 	public String toString() {
