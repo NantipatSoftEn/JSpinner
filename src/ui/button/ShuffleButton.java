@@ -11,8 +11,6 @@ import lib.InputUtility;
 import logic.Board;
 
 public class ShuffleButton extends Clickable implements IRenderable {
-	
-	
 	public ShuffleButton(){
 		type = Clickable.CIRCLE;
 		x = Config.screenWidth - 40;

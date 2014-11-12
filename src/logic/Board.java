@@ -14,10 +14,13 @@ import javax.rmi.CORBA.Util;
 import javax.swing.JOptionPane;
 
 import ui.IRenderable;
+import ui.button.Clickable;
 import lib.*;
 
 public class Board implements IRenderable, IUpdatable {
-	public static final int DEFAULT_SHUFFLE = 1000;
+	public static final int DEFAULT_SHUFFLE = 2000;
+	public static final int CW = -1;	
+	public static final int CCW = 1;	
 
 	private Tile[][] board;
 	private int x, y, width, height, selected = 0;
@@ -25,15 +28,14 @@ public class Board implements IRenderable, IUpdatable {
 	private int bestScore, moveLimit;
 	private PlayerStatus player;
 	private Point forFlip[] = new Point[2];
-	private List<Point>[] move = new List[2];
+	private List<Move> move;
 
 	public Board(int width, int height) {
 		board = new Tile[width][height];
 		player = new PlayerStatus(this);
-		move[0] = new ArrayList<Point>();
-		move[1] = new ArrayList<Point>();
+		move = new ArrayList<Move>();
 		initiateBoard();
-		adjustCenter();
+		adjustCenter();	
 	}
 
 	public Board(String directory) {
@@ -67,8 +69,7 @@ public class Board implements IRenderable, IUpdatable {
 			// for (int j = 0; j < board[0].length; j++) {
 			// board[i][j].setCurrentLocation(i, j);
 			// }
-			move[0] = new ArrayList<Point>();
-			move[1] = new ArrayList<Point>();
+			move = new ArrayList<Move>();
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Error loading file", "Error",
 					JOptionPane.ERROR_MESSAGE);
@@ -147,6 +148,10 @@ public class Board implements IRenderable, IUpdatable {
 		int ty = j * (tileSize + Config.tileGutter) + y;
 		return new Point(tx, ty);
 	}
+	
+	public Tile getTileAt(int i, int j){
+		return board[i][j];
+	}
 
 	public PlayerStatus getPlayer() {
 		return player;
@@ -155,70 +160,125 @@ public class Board implements IRenderable, IUpdatable {
 	public int getBestScore() {
 		return bestScore;
 	}
-
-	public void flip(int x1, int y1, int x2, int y2) {
-		int dx = x2 - x1;
-		int dy = y2 - y1;
-
-		if (y2 < y1) {
-			int tmp = y1;
-			y1 = y2;
-			y2 = tmp;
-		}
-		if (x2 < x1) {
-			int tmp = x1;
-			x1 = x2;
-			x2 = tmp;
-		}
-
-		if (dx == 0) {
-			for (int i = y1; i < (y1 + y2 + 1) / 2; i++) {
-				Tile tmp = board[x1][i];
-				board[x1][i] = board[x1][y2 - (i - y1)];
-				board[x1][y2 - (i - y1)] = tmp;
+	
+	public int getFlipX(){
+		return (int) forFlip[0].getX();
+	}
+	
+	public int getFlipY(){
+		return (int) forFlip[0].getY();
+	}
+	
+	public int getFlipSize(){
+		return Math.abs(forFlip[0].x - forFlip[1].x);
+	}
+	
+	public void clearSelected(){
+		selected = 0;
+		for(int j = 0; j < board[0].length; j++){
+			for(int i = 0; i < board.length; i++){
+				board[i][j].setSelected(false);
 			}
-		} else if (dy == 0) {
-			for (int i = x1; i < (x1 + x2 + 1) / 2; i++) {
-				Tile tmp = null;
-				tmp = board[i][y1];
-				board[i][y1] = board[x2 - (i - x1)][y1];
-				board[x2 - (i - x1)][y1] = tmp;
-			}
-		} else if (dx == dy || dx == -dy) {
+		}
+	}
 
-			if (dx * dy > 0) {
-				for (int i = 0; i <= x2 - x1; i++) {
-					for (int j = 0; j < +(y2 - y1 - i); j++) {
-						Tile tmp = board[x1 + i][y1 + j];
-						board[x1 + i][y1 + j] = board[x2 - j][y2 - i];
-						board[x2 - j][y2 - i] = tmp;
-					}
+//	public void flip(int x1, int y1, int x2, int y2) {
+//		int dx = x2 - x1;
+//		int dy = y2 - y1;
+//
+//		if (y2 < y1) {
+//			int tmp = y1;
+//			y1 = y2;
+//			y2 = tmp;
+//		}
+//		if (x2 < x1) {
+//			int tmp = x1;
+//			x1 = x2;
+//			x2 = tmp;
+//		}
+//
+//		if (dx == 0) {
+//			for (int i = y1; i < (y1 + y2 + 1) / 2; i++) {
+//				Tile tmp = board[x1][i];
+//				board[x1][i] = board[x1][y2 - (i - y1)];
+//				board[x1][y2 - (i - y1)] = tmp;
+//			}
+//		} else if (dy == 0) {
+//			for (int i = x1; i < (x1 + x2 + 1) / 2; i++) {
+//				Tile tmp = null;
+//				tmp = board[i][y1];
+//				board[i][y1] = board[x2 - (i - x1)][y1];
+//				board[x2 - (i - x1)][y1] = tmp;
+//			}
+//		} else if (dx == dy || dx == -dy) {
+//
+//			if (dx * dy > 0) {
+//				for (int i = 0; i <= x2 - x1; i++) {
+//					for (int j = 0; j < +(y2 - y1 - i); j++) {
+//						Tile tmp = board[x1 + i][y1 + j];
+//						board[x1 + i][y1 + j] = board[x2 - j][y2 - i];
+//						board[x2 - j][y2 - i] = tmp;
+//					}
+//				}
+//			}
+//			if (dx * dy < 0) {
+//				for (int i = 0; i <= x2 - x1; i++) {
+//					for (int j = i + 1; j <= (y2 - y1); j++) {
+//						Tile tmp = board[x1 + i][y1 + j];
+//						board[x1 + i][y1 + j] = board[x1 + j][y1 + i];
+//						board[x1 + j][y1 + i] = tmp;
+//					}
+//				}
+//			}
+//		}
+//		for (int i = 0; i < board.length; i++)
+//			for (int j = 0; j < board[0].length; j++) {
+//				board[i][j].setCurrentLocation(i, j);
+//			}
+//	}
+	
+	public void flip(int x, int y, int size, int direction, boolean isPlaying){
+		//new move logic: rotation
+		Tile tmp;
+		int s = size;
+		if(direction == CCW){
+			for(int j = 0; j < (size + 1) / 2; j++){
+				for(int i = j; i < s; i++){
+					tmp = board[x + i][y + j];
+					board[x + i][y + j] = board[x + size - j][y + i];
+					board[x + size - j][y + i] = board[x + size - i][y + size - j];
+					board[x + size - i][y + size - j] = board[x + j][y + size - i];
+					board[x + j][y + size - i] = tmp;
 				}
+				s--;
 			}
-			if (dx * dy < 0) {
-				for (int i = 0; i <= x2 - x1; i++) {
-					for (int j = i + 1; j <= (y2 - y1); j++) {
-						Tile tmp = board[x1 + i][y1 + j];
-						board[x1 + i][y1 + j] = board[x1 + j][y1 + i];
-						board[x1 + j][y1 + i] = tmp;
-					}
+		} else if(direction == CW) {
+			for(int j = 0; j < (size + 1) / 2; j++){
+				for(int i = j; i < s; i++){
+					tmp = board[x + i][y + j];
+					board[x + i][y + j] = board[x + j][y + size - i];
+					board[x + j][y + size - i] = board[x + size - i][y + size - j];
+					board[x + size - i][y + size - j] = board[x + size - j][y + i];
+					board[x + size - j][y + i] = tmp;
 				}
+				s--;
 			}
 		}
-		for (int i = 0; i < board.length; i++)
-			for (int j = 0; j < board[0].length; j++) {
+		for (int j = y; j <= y + size; j++)
+			for (int i = x; i <= x + size; i++)
 				board[i][j].setCurrentLocation(i, j);
-			}
+		if(isPlaying){
+			move.add(new Move(x, y, size, direction));
+			player.move();
+		}
 	}
 
 	public void undo(){
-		int i = move[0].size() - 1;
-		if(move[0].size() > 0){
-			Point start = move[0].get(i);
-			Point end = move[1].get(i);
-			flip((int)end.getX(),(int)end.getY(),(int)start.getX(),(int)start.getY());
-			move[0].remove(i);
-			move[1].remove(i);
+		int i = move.size() - 1;
+		if(move.size() > 0){
+			Move latest = move.get(i);
+			flip(latest.x, latest.y, latest.size, latest.dir * -1, false);
+			move.remove(i);
 			player.decreaseMove();
 		} else {
 			JOptionPane.showMessageDialog(null, "not Undoable!");
@@ -230,7 +290,7 @@ public class Board implements IRenderable, IUpdatable {
 		int dy = Math.abs(y2 - y1);
 		if(x2 < x1){ int tmp = x1; x1 = x2; x2 = tmp;}
 		if(y2 < y1){ int tmp = y1; y1 = y2; y2 = tmp;}
-		if(!(dx == dy || dx == 0 || dy == 0) || (dx == 0 && dy == 0)){
+		if((dx != dy) || (dx == 0 && dy == 0)){
 			return false;
 		}
 		for(int j = y1; j <= y2; j++){
@@ -245,50 +305,38 @@ public class Board implements IRenderable, IUpdatable {
 
 	public void shuffle(int times) {
 		player.resetMove();
-		move[0] = new ArrayList<Point>();
-		move[1] = new ArrayList<Point>();
-		// still not available with non-rectangle boards;
-		// and also non-linear flips.
+		move = new ArrayList<Move>();
 		for (int i = 0; i < times; i++) {
-			// int direction = Utility.random(0, 2);
-			// if (direction == 0) {
-			// // horizontal
-			// int x = Utility.random(0, board.length);
-			// int ya = Utility.random(0, board[x].length);
-			// int yb = Utility.random(0, board[x].length);
-			// flip(x, ya, x, yb);
-			// } else if (direction == 1) {
-			// // vertical
-			// int y = Utility.random(0, board[0].length);
-			// int xa = Utility.random(0, board.length);
-			// int xb = Utility.random(0, board.length);
-			// flip(xa, y, xb, y);
-			// }
-			// test flip only diagonal
 			int x = Utility.random(0, board.length);
 			int y = Utility.random(0, board[0].length);
-			int dx = Utility.random(0, 2) == 1 ? 1 : -1;
-			int dy = Utility.random(0, 2) == 1 ? 1 : -1;
-			int size = 0;
-			if (dx > 0 && dy > 0)
-				size = Utility.random(
-						0,
-						Math.min(getBoardWidth() - 1 - x, getBoardHeight() - 1
-								- y));
-			if (dx > 0 && dy < 0)
-				size = Utility.random(0, Math.min(getBoardWidth() - 1 - x, y));
-			if (dx < 0 && dy > 0)
-				size = Utility.random(0, Math.min(x, getBoardHeight() - 1 - y));
-			if (dx < 0 && dy < 0)
+			int dir = Utility.random(0, 4); 
+				// 0 for NE 
+				// 1 for SE 
+				// 2 for SW 
+				// 3 for NW
+			int size;
+						
+			if(dir == 0){
+				size = Utility.random(0, Math.min(board[0].length - x, y));
+				y -= size;
+			}
+			else if(dir == 1){
+				size = Utility.random(0, Math.min(board[0].length - x, board.length - y));
+			}
+			else if(dir == 2){
+				size = Utility.random(0, Math.min(x, board.length - y));
+				x -= size;
+			}
+			else if(dir == 3){
 				size = Utility.random(0, Math.min(x, y));
-			dx *= size;
-			dy *= size;
-			// System.out.println("boardwidth " + getBoardWidth() + " " +
-			// getBoardHeight());
-			// System.out.println(x + " " + y + " " + (x + dx) + " " + (y +
-			// dy));
-			if(isValidMove(x, y, x + dx, y + dy)){
-				flip(x, y, x + dx, y + dy);
+				x -= size;
+				y -= size;
+			}
+			else size = 0;
+						
+			int rotation = Utility.random(0, 2) == 0 ? CW : CCW;
+			if(isValidMove(x, y, x + size, y + size)){
+				flip(x, y, size, rotation, false);
 			}
 		}
 	}
@@ -303,13 +351,6 @@ public class Board implements IRenderable, IUpdatable {
 		}
 		return out;
 	}
-
-	// public static void main(String[] args) {
-	// Board a = new Board(6, 6);
-	// System.out.println(a);
-	// a.shuffle(Board.DEFAULT_SHUFFLE);
-	// System.out.println(a);
-	// }
 
 	// IRenderable Implementation
 
@@ -339,32 +380,45 @@ public class Board implements IRenderable, IUpdatable {
 	public void update() {
 		// for each game loop...
 		// shuffle(1); //just for testing screen update
-		for (int i = 0; i < board.length; i++)
-			for (int j = 0; j < board[0].length; j++) {
-				if (Utility.isPointOnTile(InputUtility.getPickedPoint(), this,
-						i, j)) {
-					if (InputUtility.isPicking()) {
-						board[i][j].setSelected(true);
-						forFlip[selected] = new Point(i, j);
-						selected++;
-
-						if(selected == 2){
-							if(isValidMove((int)forFlip[0].getX(), (int)forFlip[0].getY(),
-									(int)forFlip[1].getX(), (int)forFlip[1].getY())){
-								flip((int) forFlip[0].getX(),
-										(int) forFlip[0].getY(),
-										(int) forFlip[1].getX(),
-										(int) forFlip[1].getY());
-								player.move();
-								move[0].add(forFlip[0]);
-								move[1].add(forFlip[1]);
-							}
-							selected = 0;
-							board[(int)forFlip[0].getX()][(int)forFlip[0].getY()].setSelected(false);
-							board[(int)forFlip[1].getX()][(int)forFlip[1].getY()].setSelected(false);
+		if(selected < 2){
+			Clickable.cwButton.setVisible(false);
+			Clickable.ccwButton.setVisible(false);
+			for (int i = 0; i < board.length; i++) {
+				for (int j = 0; j < board[0].length; j++) {
+					if (Utility.isPointOnTile(InputUtility.getPickedPoint(), this, i, j)) {
+						if (InputUtility.isPicking()) {
+							board[i][j].setSelected(true);
+							forFlip[selected] = new Point(i, j);
+							selected++;
 						}
 					}
 				}
 			}
+		} else if(selected == 2) {
+			if(isValidMove((int) forFlip[0].getX(), (int) forFlip[0].getY(), (int) forFlip[1].getX(), (int) forFlip[1].getY())){
+				int x1 = (int) forFlip[0].getX();
+				int y1 = (int) forFlip[0].getY();
+				int x2 = (int) forFlip[1].getX();
+				int y2 = (int) forFlip[1].getY();
+				forFlip[0].setLocation(Math.min(x1,x2),	Math.min(y1,y2));
+				forFlip[1].setLocation(Math.max(x1,x2),	Math.max(y1,y2));
+				Clickable.cwButton.setVisible(true);
+				Clickable.ccwButton.setVisible(true);
+			} else {
+				clearSelected();
+			}
+		}
+	}
+}
+
+class Move{
+	public int x, y;
+	public int dir;
+	public int size;
+	public Move(int x, int y, int size, int dir){
+		this.x = x;
+		this.y = y;
+		this.size = size;
+		this.dir = dir;
 	}
 }

@@ -16,6 +16,7 @@ public abstract class Tile implements IRenderable {
 	private int number;
 	private int correctX, correctY;
 	private int currentX, currentY;
+	private int drawX, drawY;
 	private boolean isSelected;
 	private Board board;
 
@@ -72,7 +73,14 @@ public abstract class Tile implements IRenderable {
 	public Point getCurrentLocation() {
 		return new Point(currentX, currentY);
 	}
-
+	
+	public int getDrawX() {
+		return drawX;
+	}
+	
+	public int getDrawY() {
+		return drawY;
+	}
 
 	public void setCorrectLocation(int i, int j) {
 		this.correctX = i;
@@ -88,9 +96,9 @@ public abstract class Tile implements IRenderable {
 			return;
 		int size = board.getTileSize(); // ScreenManager.getTileSize(); //how to
 										// determine tile size?
-		int x = board.getX() + (currentX)
+		drawX = board.getX() + (currentX)
 				* (board.getTileSize() + Config.tileGutter);
-		int y = board.getY() + (currentY)
+		drawY = board.getY() + (currentY)
 				* (board.getTileSize() + Config.tileGutter);
 		Font font = new Font("Tahoma", Font.BOLD, 20);
 		
@@ -101,10 +109,10 @@ public abstract class Tile implements IRenderable {
 
 		if (isSelected)
 			g.setColor(Color.RED);
-		g.fillRect(x, y, size, size);
+		g.fillRect(drawX, drawY, size, size);
 
 		g.setColor(Color.WHITE);
-		DrawingUtility.drawStringInBox("" + number, font, x, y, size, size,
+		DrawingUtility.drawStringInBox("" + number, font, drawX, drawY, size, size,
 				DrawingUtility.TEXT_CENTER, g);
 	}
 

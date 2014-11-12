@@ -20,10 +20,14 @@ public abstract class Clickable implements IRenderable, IUpdatable{
 	public static int CIRCLE = 1;
 	public static List<Clickable> buttons = new ArrayList<Clickable>();
 	public static Board board;
+	public static ClockWiseButton cwButton = new ClockWiseButton();
+	public static CounterClockWiseButton ccwButton = new CounterClockWiseButton();
 	
 	static{
 		buttons.add(new ShuffleButton());
 		buttons.add(new UndoButton());
+		buttons.add(cwButton);
+		buttons.add(ccwButton);
 	}
 	
 	public Clickable(){	

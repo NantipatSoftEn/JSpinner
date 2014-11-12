@@ -23,4 +23,13 @@ public class Utility {
 		b = b && (p.getY() <= tileTopLeft.getY() + board.getTileSize());	
 		return b;
 	}
+
+	public static int min(int[] a) {
+		int min = Integer.MAX_VALUE;
+		for(int i : a){
+			if(i < min)
+				min = i;
+		}
+		return min;
+	}
 }
