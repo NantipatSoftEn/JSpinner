@@ -3,7 +3,7 @@ package logic;
 import java.util.ArrayList;
 import java.util.List;
 
-import lib.IUpdatable;
+import ui.button.*;
 
 public class GameLogic {
 	
@@ -11,6 +11,7 @@ public class GameLogic {
 
 	public GameLogic(Board b){
 		updateList.add(b);
+		updateList.addAll(Clickable.buttons);
 	}
 	
 	public void update(){

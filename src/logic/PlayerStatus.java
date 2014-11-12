@@ -1,18 +1,31 @@
 package logic;
 
 import java.awt.*;
+
 import javax.swing.*;
+
+import ui.DrawingUtility;
+import ui.IRenderable;
 import lib.*;
 
 public class PlayerStatus implements IRenderable{
 	private int moved = 0;
-
-	public PlayerStatus(){
-		
+	private Board board;
+	
+	public PlayerStatus(Board playing){
+		this.board = playing;
 	}
 	
 	public void move() {
 		moved++;
+	}
+	
+	public void decreaseMove() {
+		moved--;
+	}
+	
+	public void resetMove(){
+		moved = 0;
 	}
 	
 	public int getMoved(){
@@ -29,7 +42,7 @@ public class PlayerStatus implements IRenderable{
 		Font subFont = new Font("Tahoma", Font.BOLD, 25);
 		Font mainFont = new Font("Tahoma", Font.BOLD, 40);
 		g.setColor(Color.BLACK);
-		DrawingUtility.drawStringInBox("BEST 10", subFont, 0, 0, Config.screenWidth, Config.topBarHeight, DrawingUtility.TEXT_LEFT, g);
+		DrawingUtility.drawStringInBox("BEST " + board.getBestScore(), subFont, 0, 0, Config.screenWidth, Config.topBarHeight, DrawingUtility.TEXT_LEFT, g);
 		DrawingUtility.drawStringInBox("" + moved, mainFont, 0, 0, Config.screenWidth, Config.topBarHeight, DrawingUtility.TEXT_CENTER, g);
 	}
 }
