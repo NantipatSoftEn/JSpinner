@@ -5,9 +5,9 @@ import java.awt.*;
 import javax.rmi.CORBA.Util;
 import javax.swing.text.Utilities;
 
+import ui.DrawingUtility;
+import ui.IRenderable;
 import lib.Config;
-import lib.DrawingUtility;
-import lib.IRenderable;
 import lib.Utility;
 
 public abstract class Tile implements IRenderable {

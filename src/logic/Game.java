@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 
 import lib.InputUtility;
 import ui.GameScreen;
+import ui.button.Clickable;
 
 public class Game extends JFrame{
 	private Board board;
@@ -16,9 +17,10 @@ public class Game extends JFrame{
 		super("JFlipFlop");
 		
 		//board = new Board(1, 1);
-		board = new Board("levels/test.txt");
+		board = new Board("levels/6x5.txt");
 		gameScreen = new GameScreen(board);
 		gameLogic = new GameLogic(board);
+		Clickable.board = board;
 		
 		//board.shuffle(Board.DEFAULT_SHUFFLE);
 		
