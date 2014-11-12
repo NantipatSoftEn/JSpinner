@@ -37,13 +37,16 @@ public abstract class Clickable implements IRenderable, IUpdatable{
 		} else if(type == CIRCLE){
 			int mx = (int) InputUtility.getPickedPoint().getX();
 			int my = (int) InputUtility.getPickedPoint().getY();
+//			System.out.println(InputUtility.getPickedPoint());
 			int r = Math.min(width, height) / 2; 
 			return (mx - (x + r)) * (mx - (x + r)) + (my - (y + r)) * (my - (y + r)) <= r * r;
-		} else
+		} else {
 			return false;
+		}
 	}
 	
 	public void update(){
+//		System.out.println(isMouseOn());
 		if(isMouseOn()){
 			mouseOnAction();
 			if(InputUtility.isPicking()){

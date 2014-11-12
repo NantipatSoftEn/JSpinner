@@ -11,7 +11,7 @@ import lib.Config;
 import lib.Utility;
 
 public abstract class Tile implements IRenderable {
-	public static final int NOT_A_BLOCK = -1; // may check if the tile is null.
+	public static final int NOT_A_TILE = -1; // may check if the tile is null.
 
 	private int number;
 	private int correctX, correctY;
@@ -40,6 +40,7 @@ public abstract class Tile implements IRenderable {
 	public boolean isCorrect (){
 		return correctX == currentX && correctY == currentY;
 	}
+	
 	public int getNumber() {
 		return number;
 	}
@@ -50,6 +51,10 @@ public abstract class Tile implements IRenderable {
 
 	public boolean isSelected() {
 		return isSelected;
+	}
+	
+	public boolean isATile(){
+		return number != NOT_A_TILE;
 	}
 
 	public void setSelected(boolean isSelected) {
@@ -79,7 +84,7 @@ public abstract class Tile implements IRenderable {
 	public abstract int getZ();
 
 	public void draw(Graphics g) {
-		if (number == NOT_A_BLOCK)
+		if (number == NOT_A_TILE)
 			return;
 		int size = board.getTileSize(); // ScreenManager.getTileSize(); //how to
 										// determine tile size?

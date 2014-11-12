@@ -53,7 +53,7 @@ public class Board implements IRenderable, IUpdatable {
 					if (tileInfo.substring(0, 1).equalsIgnoreCase("S"))
 						board[j][i] = new SimpleTile(k++, this, i, j);
 					if (tileInfo.substring(0, 1).equalsIgnoreCase("-"))
-						board[j][i] = new SimpleTile(Tile.NOT_A_BLOCK, this, i,
+						board[j][i] = new SimpleTile(Tile.NOT_A_TILE, this, i,
 								j);
 					board[j][i].setCurrentLocation(j, i);
 					// WHY DOES THIS WORK... I DONT KNOW... WHY DO I HAVE TO SET
@@ -224,8 +224,29 @@ public class Board implements IRenderable, IUpdatable {
 			JOptionPane.showMessageDialog(null, "not Undoable!");
 		}
 	}
+	
+	public boolean isValidMove(int x1, int y1, int x2, int y2){
+		int dx = Math.abs(x2 - x1);
+		int dy = Math.abs(y2 - y1);
+		if(x2 < x1){ int tmp = x1; x1 = x2; x2 = tmp;}
+		if(y2 < y1){ int tmp = y1; y1 = y2; y2 = tmp;}
+		if(!(dx == dy || dx == 0 || dy == 0) || (dx == 0 && dy == 0)){
+			return false;
+		}
+		for(int j = y1; j <= y2; j++){
+			for(int i = x1; i <= x2; i++){
+				if(!board[i][j].isATile()){
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 
 	public void shuffle(int times) {
+		player.resetMove();
+		move[0] = new ArrayList<Point>();
+		move[1] = new ArrayList<Point>();
 		// still not available with non-rectangle boards;
 		// and also non-linear flips.
 		for (int i = 0; i < times; i++) {
@@ -266,8 +287,9 @@ public class Board implements IRenderable, IUpdatable {
 			// getBoardHeight());
 			// System.out.println(x + " " + y + " " + (x + dx) + " " + (y +
 			// dy));
-			flip(x, y, x + dx, y + dy);
-
+			if(isValidMove(x, y, x + dx, y + dy)){
+				flip(x, y, x + dx, y + dy);
+			}
 		}
 	}
 
@@ -322,30 +344,24 @@ public class Board implements IRenderable, IUpdatable {
 				if (Utility.isPointOnTile(InputUtility.getPickedPoint(), this,
 						i, j)) {
 					if (InputUtility.isPicking()) {
-						if (!board[i][j].isSelected()) {
-							board[i][j].setSelected(true);
-							forFlip[selected] = new Point(i, j);
-							selected++;
-						} else {
-							board[i][j].setSelected(false);
-							if (board[(int) forFlip[0].getX()][(int) forFlip[0]
-									.getY()] == board[i][j])
-								forFlip[0] = forFlip[1];
-							selected--;
-						}
-						if (selected == 2) {
+						board[i][j].setSelected(true);
+						forFlip[selected] = new Point(i, j);
+						selected++;
+
+						if(selected == 2){
+							if(isValidMove((int)forFlip[0].getX(), (int)forFlip[0].getY(),
+									(int)forFlip[1].getX(), (int)forFlip[1].getY())){
+								flip((int) forFlip[0].getX(),
+										(int) forFlip[0].getY(),
+										(int) forFlip[1].getX(),
+										(int) forFlip[1].getY());
+								player.move();
+								move[0].add(forFlip[0]);
+								move[1].add(forFlip[1]);
+							}
 							selected = 0;
-							flip((int) forFlip[0].getX(),
-									(int) forFlip[0].getY(),
-									(int) forFlip[1].getX(),
-									(int) forFlip[1].getY());
-							player.move();
-							board[(int) forFlip[0].getX()][(int) forFlip[0]
-									.getY()].setSelected(false);
-							board[(int) forFlip[1].getX()][(int) forFlip[1]
-									.getY()].setSelected(false);
-							move[0].add(forFlip[0]);
-							move[1].add(forFlip[1]);
+							board[(int)forFlip[0].getX()][(int)forFlip[0].getY()].setSelected(false);
+							board[(int)forFlip[1].getX()][(int)forFlip[1].getY()].setSelected(false);
 						}
 					}
 				}

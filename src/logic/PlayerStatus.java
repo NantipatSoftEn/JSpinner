@@ -24,6 +24,10 @@ public class PlayerStatus implements IRenderable{
 		moved--;
 	}
 	
+	public void resetMove(){
+		moved = 0;
+	}
+	
 	public int getMoved(){
 		return moved;
 	}

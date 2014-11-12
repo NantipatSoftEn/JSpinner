@@ -17,7 +17,7 @@ public class Game extends JFrame{
 		super("JFlipFlop");
 		
 		//board = new Board(1, 1);
-		board = new Board("levels/6x5.txt");
+		board = new Board("levels/test.txt");
 		gameScreen = new GameScreen(board);
 		gameLogic = new GameLogic(board);
 		Clickable.board = board;
