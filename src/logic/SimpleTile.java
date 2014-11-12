@@ -8,8 +8,8 @@ public class SimpleTile extends Tile{
 		super();
 	}
 	
-	public SimpleTile(int number, Board belongsTo) {
-		super(number, belongsTo);
+	public SimpleTile(int number, Board belongsTo, int correctX, int correctY) {
+		super(number, belongsTo, correctX, correctY);
 	}
 	
 	@Override

@@ -6,8 +6,11 @@
 package logic;
 
 import java.awt.*;
+import java.io.*;
+import java.util.*;
 
 import javax.rmi.CORBA.Util;
+import javax.swing.JOptionPane;
 
 import lib.*;
 
@@ -17,6 +20,7 @@ public class Board implements IRenderable, IUpdatable {
 	private Tile[][] board;
 	private int x, y, width, height, selected = 0;
 	private int tileSize;
+	private int bestScore, moveLimit;
 	private PlayerStatus player;
 	private Point forFlip[] = new Point[2];
 
@@ -24,28 +28,57 @@ public class Board implements IRenderable, IUpdatable {
 		board = new Tile[width][height];
 		player = new PlayerStatus();
 		initiateBoard();
+		adjustCenter();
 	}
 
-	// public Board(File f){
-	// File format:
-	// w h
-	// x x x x x
-	// x x x x x
-	// (board of width w and height h)
-	// where x can be ... "-" means no tile, "S(number)" means SimpleTile etc.
-	// Scanner in = new Scanner(f);
-	// String board = in.next();
-	// }
+	public Board(String directory){
+		try{
+			Scanner in = new Scanner(new File(directory));
+			String tileInfo;
+			int boardX = in.nextInt();
+			int boardY = in.nextInt();
+			this.player = new PlayerStatus();
+			this.moveLimit = in.nextInt();
+			this.bestScore = in.nextInt();
+			board = new Tile[boardX][boardY];
+			for(int i = 0; i < boardY; i++){
+				for(int j = 0; j < boardX; j++){
+					tileInfo = in.next();
+					if(tileInfo.substring(0,1).equalsIgnoreCase("S"))
+						board[j][i] = new SimpleTile(Integer.parseInt(tileInfo.substring(1)), this, i, j);
+					if(tileInfo.substring(0,1).equalsIgnoreCase("-"))
+						board[j][i] = new SimpleTile(Tile.NOT_A_BLOCK, this, i, j);
+					board[j][i].setCurrentLocation(j, i);
+						//WHY DOES THIS WORK... I DONT KNOW... WHY DO I HAVE TO SET CURRENT LOCATION TWICE!!!!
+//					System.out.print(board[j][i]);
+				}
+//				System.out.println();
+			}
+			adjustCenter();
+//			for (int i = 0; i < board.length; i++)
+//			for (int j = 0; j < board[0].length; j++) {
+//						board[i][j].setCurrentLocation(i, j);
+//					}
+		 } catch(IOException e){
+			 JOptionPane.showMessageDialog(null, "Error loading file", "Error", JOptionPane.ERROR_MESSAGE);
+		 } catch(NumberFormatException e){
+			 JOptionPane.showMessageDialog(null, "File format error", "Error", JOptionPane.ERROR_MESSAGE);
+		 }
+	 }
 
 	public void initiateBoard() {
 		int k = 1;
 		for (int j = 0; j < board[0].length; j++) {
 			for (int i = 0; i < board.length; i++) {
-				board[i][j] = new SimpleTile(k, this);
+				board[i][j] = new SimpleTile(k, this, i, j);
+				System.out.print(board[i][j]);
 				k++;
 			}
+			System.out.println();
 		}
-
+	}
+	
+	public void adjustCenter(){
 		int H = Config.screenHeight;
 		int G = Config.tileGutter;
 		int M = Config.margin;
