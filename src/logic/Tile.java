@@ -148,11 +148,13 @@ public abstract class Tile implements IRenderable {
 			else
 				g.setColor(DrawingUtility.CORRECT);
 			g.fillOval(drawX + 10, drawY + 10, size - 20, size - 20);
-			g.setColor(new Color(re, gr, bl));
+			g.setColor((new Color(re, gr, bl)));
 			if(isMouseOn)
 				g.setColor(g.getColor().brighter());
 			if(isEnabled)
 				g.setColor(g.getColor().brighter());
+			if(!isEnabled && !isSelected)
+				g.setColor(g.getColor().darker());
 			g.fillOval(drawX + 15, drawY + 15, size - 30, size - 30);
 		}
 		

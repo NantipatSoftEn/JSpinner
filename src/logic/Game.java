@@ -2,19 +2,20 @@ package logic;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import lib.InputUtility;
 import ui.GameScreen;
+import ui.GameWindow;
 import ui.button.Clickable;
 
-public class Game extends JFrame{
+public class Game{
 	private Board board;
 	GameScreen gameScreen;
 	private GameLogic gameLogic;
 	private boolean playing;
 	
-	public Game(String levelDirectory){
-		super("JFlipFlop");
+	public Game(GameWindow window, String levelDirectory){
 		
 		//board = new Board(1, 1);
 		board = new Board(levelDirectory);
@@ -23,8 +24,9 @@ public class Game extends JFrame{
 		Clickable.board = board;
 		
 		//board.shuffle(Board.DEFAULT_SHUFFLE);
-		
-		setFrame();
+		window.getContentPane().add(gameScreen);
+		window.setFrame();
+//		setFrame();
 		
 //		while(!gameScreen.getBoard().isWin()){
 		while(true){
@@ -39,11 +41,5 @@ public class Game extends JFrame{
 //		JOptionPane.showMessageDialog(null, "WIN", "WIN", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
-	public void setFrame(){
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		getContentPane().add(gameScreen);
-		pack();
-		setVisible(true);
-		setResizable(false);
-	}
+	
 }

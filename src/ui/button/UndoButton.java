@@ -12,7 +12,7 @@ public class UndoButton extends Clickable implements IRenderable {
 	
 	public UndoButton(){
 		type = Clickable.CIRCLE;
-		x = Config.screenWidth - 90;
+		x = Config.screenWidth - 100;
 		y = 10;
 		width = 40;
 		height = 40;
