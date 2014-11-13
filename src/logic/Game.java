@@ -13,11 +13,11 @@ public class Game extends JFrame{
 	private GameLogic gameLogic;
 	private boolean playing;
 	
-	public Game(){
+	public Game(String levelDirectory){
 		super("JFlipFlop");
 		
 		//board = new Board(1, 1);
-		board = new Board("levels/5x5.txt");
+		board = new Board(levelDirectory);
 		gameScreen = new GameScreen(board);
 		gameLogic = new GameLogic(board);
 		Clickable.board = board;
