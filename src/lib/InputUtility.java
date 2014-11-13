@@ -7,6 +7,7 @@ public class InputUtility {
 	private static Point pickedPoint;
 	private static boolean keyPressed[] = new boolean[256];
 	private static boolean keyTriggered[] = new boolean[256];
+	private static boolean mouseReleased = false;
 	public static final int NULL_POINT = -100;
 	
 	static{
@@ -47,8 +48,17 @@ public class InputUtility {
 		return keyTriggered[key];
 	}
 	
+	public static void setMouseReleased(boolean mouseReleased) {
+		InputUtility.mouseReleased = mouseReleased;
+	}
+	
+	public static boolean isMouseReleased() {
+		return mouseReleased;
+	}
+	
 	public static void postUpdate(){
 		picking = false;
 		keyTriggered = new boolean[256];
+		mouseReleased = false;
 	}
 }

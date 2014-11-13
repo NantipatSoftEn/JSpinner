@@ -182,61 +182,6 @@ public class Board implements IRenderable, IUpdatable {
 			}
 		}
 	}
-
-//	public void flip(int x1, int y1, int x2, int y2) {
-//		int dx = x2 - x1;
-//		int dy = y2 - y1;
-//
-//		if (y2 < y1) {
-//			int tmp = y1;
-//			y1 = y2;
-//			y2 = tmp;
-//		}
-//		if (x2 < x1) {
-//			int tmp = x1;
-//			x1 = x2;
-//			x2 = tmp;
-//		}
-//
-//		if (dx == 0) {
-//			for (int i = y1; i < (y1 + y2 + 1) / 2; i++) {
-//				Tile tmp = board[x1][i];
-//				board[x1][i] = board[x1][y2 - (i - y1)];
-//				board[x1][y2 - (i - y1)] = tmp;
-//			}
-//		} else if (dy == 0) {
-//			for (int i = x1; i < (x1 + x2 + 1) / 2; i++) {
-//				Tile tmp = null;
-//				tmp = board[i][y1];
-//				board[i][y1] = board[x2 - (i - x1)][y1];
-//				board[x2 - (i - x1)][y1] = tmp;
-//			}
-//		} else if (dx == dy || dx == -dy) {
-//
-//			if (dx * dy > 0) {
-//				for (int i = 0; i <= x2 - x1; i++) {
-//					for (int j = 0; j < +(y2 - y1 - i); j++) {
-//						Tile tmp = board[x1 + i][y1 + j];
-//						board[x1 + i][y1 + j] = board[x2 - j][y2 - i];
-//						board[x2 - j][y2 - i] = tmp;
-//					}
-//				}
-//			}
-//			if (dx * dy < 0) {
-//				for (int i = 0; i <= x2 - x1; i++) {
-//					for (int j = i + 1; j <= (y2 - y1); j++) {
-//						Tile tmp = board[x1 + i][y1 + j];
-//						board[x1 + i][y1 + j] = board[x1 + j][y1 + i];
-//						board[x1 + j][y1 + i] = tmp;
-//					}
-//				}
-//			}
-//		}
-//		for (int i = 0; i < board.length; i++)
-//			for (int j = 0; j < board[0].length; j++) {
-//				board[i][j].setCurrentLocation(i, j);
-//			}
-//	}
 	
 	public void flip(int x, int y, int size, int direction, boolean isPlaying){
 		//new move logic: rotation
@@ -380,21 +325,36 @@ public class Board implements IRenderable, IUpdatable {
 
 	public void update() {
 		// for each game loop...
-		// shuffle(1); //just for testing screen update
+		boolean same = selected == 2 && forFlip[0].getX() == forFlip[1].getX() && forFlip[0].getY() == forFlip[1].getY();	
+		if(move.size() > 0 && selected == 0){
+			Move latest = move.get(move.size() - 1);
+			if(InputUtility.getKeyTriggered(KeyEvent.VK_LEFT))
+				flip(latest.x, latest.y, latest.size, Board.CCW, true);
+			if(InputUtility.getKeyTriggered(KeyEvent.VK_RIGHT))
+				flip(latest.x, latest.y, latest.size, Board.CW, true);
+		}
 		if(selected < 2){
 			Clickable.cwButton.setVisible(false);
 			Clickable.ccwButton.setVisible(false);
 			for (int i = 0; i < board.length; i++) {
 				for (int j = 0; j < board[0].length; j++) {
 					if (Utility.isPointOnTile(InputUtility.getPickedPoint(), this, i, j)) {
-						if (InputUtility.isPicking()) {
+						board[i][j].setMouseOn(true);
+						if (InputUtility.isPicking() || (InputUtility.isMouseReleased() && selected > 0)) {
+							if(InputUtility.isMouseReleased() && selected > 0 && forFlip[0].equals(new Point(i, j))){
+								continue;
+							}
 							board[i][j].setSelected(true);
 							forFlip[selected] = new Point(i, j);
 							selected++;
 						}
+					} else {
+						board[i][j].setMouseOn(false);
 					}
 				}
 			}
+			if(same)
+				selected = 1;
 		} else if(selected == 2) {
 			if(isValidMove((int) forFlip[0].getX(), (int) forFlip[0].getY(), (int) forFlip[1].getX(), (int) forFlip[1].getY())){
 				int x1 = (int) forFlip[0].getX();
@@ -414,6 +374,39 @@ public class Board implements IRenderable, IUpdatable {
 			}
 			if(InputUtility.isPicking() && !Clickable.ccwButton.isMouseOn() && !Clickable.cwButton.isMouseOn())
 				clearSelected();
+		}
+		
+		//set enabled for tiles
+		setEnables();
+	}
+	
+	public void setEnables(){
+		if(selected == 0){
+			for (int j = 0; j < board[0].length; j++) {
+				for (int i = 0; i < board.length; i++) {
+					board[i][j].setEnabled(true);
+				}
+			}
+		} else if(selected == 1){
+			for (int j = 0; j < board[0].length; j++) {
+				for (int i = 0; i < board.length; i++) {
+					if(isValidMove((int)forFlip[0].getX(), (int)forFlip[0].getY(), i, j)){
+						board[i][j].setEnabled(true);
+					} else { 
+						board[i][j].setEnabled(false);
+					}
+				}
+			}
+		} else if(selected == 2){
+			for (int j = 0; j < board[0].length; j++) {
+				for (int i = 0; i < board.length; i++) {
+					if(forFlip[0].getX() <= i && i <= forFlip[1].getX() && forFlip[0].getY() <= j && j <= forFlip[1].getY()){
+						board[i][j].setEnabled(true);
+					} else { 
+						board[i][j].setEnabled(false);
+					}
+				}
+			}
 		}
 	}
 }

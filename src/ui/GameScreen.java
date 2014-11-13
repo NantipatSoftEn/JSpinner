@@ -54,6 +54,7 @@ public class GameScreen extends JPanel{
 			public void mouseReleased(MouseEvent e) {
 				// TODO Auto-generated method stub
 				InputUtility.setPicking(false);
+				InputUtility.setMouseReleased(true);
 //				InputUtility.setPickedPoint(InputUtility.NULL_POINT, InputUtility.NULL_POINT);
 			}
 
@@ -76,6 +77,7 @@ public class GameScreen extends JPanel{
 			
 			@Override
 			public void mouseDragged(MouseEvent e) {
+				InputUtility.setPickedPoint(e.getX(), e.getY());
 			}
 		});
 		

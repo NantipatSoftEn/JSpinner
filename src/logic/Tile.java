@@ -19,7 +19,9 @@ public abstract class Tile implements IRenderable {
 	private int drawX, drawY;
 	private boolean isSelected;
 	private Board board;
-
+	private boolean isMouseOn;
+	private boolean isEnabled;
+	
 	public Tile() {
 		this.number = 0;
 	}
@@ -58,6 +60,22 @@ public abstract class Tile implements IRenderable {
 		return number != NOT_A_TILE;
 	}
 
+	public boolean isMouseOn() {
+		return isMouseOn;
+	}
+	
+	public boolean isEnabled() {
+		return isEnabled;
+	}
+	
+	public void setEnabled(boolean isEnabled) {
+		this.isEnabled = isEnabled;
+	}
+	
+	public void setMouseOn(boolean isMouseOn) {
+		this.isMouseOn = isMouseOn;
+	}
+	
 	public void setSelected(boolean isSelected) {
 		this.isSelected = isSelected;
 	}
@@ -108,9 +126,14 @@ public abstract class Tile implements IRenderable {
 		g.setColor(new Color(re, gr, bl));
 
 		if (isSelected)
-			g.setColor(Color.RED);
+			g.setColor(Color.GREEN.darker());
+		if(isMouseOn)
+			g.setColor(g.getColor().brighter());
+		if(!isEnabled)
+			g.setColor(g.getColor().darker());
 		g.fillRect(drawX, drawY, size, size);
 
+		
 		g.setColor(Color.WHITE);
 		DrawingUtility.drawStringInBox("" + number, font, drawX, drawY, size, size,
 				DrawingUtility.TEXT_CENTER, g);
