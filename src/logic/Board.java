@@ -276,12 +276,12 @@ public class Board implements IRenderable, IUpdatable {
 
 	public void undo(){
 		int i = move.size() - 1;
-		if(move.size() > 0){
+		try{
 			Move latest = move.get(i);
-			flip(latest.x, latest.y, latest.size, latest.dir * -1, false);
 			move.remove(i);
+			flip(latest.x, latest.y, latest.size, latest.dir * -1, false);
 			player.decreaseMove();
-		} else {
+		} catch(ArrayIndexOutOfBoundsException e) {
 			JOptionPane.showMessageDialog(null, "not Undoable!");
 		}
 	}
@@ -412,6 +412,8 @@ public class Board implements IRenderable, IUpdatable {
 			} else {
 				clearSelected();
 			}
+			if(InputUtility.isPicking() && !Clickable.ccwButton.isMouseOn() && !Clickable.cwButton.isMouseOn())
+				clearSelected();
 		}
 	}
 }
