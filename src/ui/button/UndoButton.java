@@ -27,7 +27,7 @@ public class UndoButton extends Clickable implements IRenderable {
 	public void draw(Graphics g) {
 		g.setColor(Color.GRAY);
 		if(isMouseOn()){
-			g.setColor(Color.RED);
+			g.setColor(Color.LIGHT_GRAY);
 		}
 		g.fillOval(x, y, width, height);
 	}

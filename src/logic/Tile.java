@@ -30,7 +30,7 @@ public abstract class Tile implements IRenderable {
 		this.number = number;
 		this.board = belongsTo;
 		setCorrectLocation(correctX, correctY);
-		setCurrentLocation(correctX, correctY);
+		setCurrentLocation(correctX, correctY);		
 	}
 
 	public void setCorrectX(int x) {
@@ -112,27 +112,49 @@ public abstract class Tile implements IRenderable {
 	public void draw(Graphics g) {
 		if (number == NOT_A_TILE)
 			return;
-		int size = board.getTileSize(); // ScreenManager.getTileSize(); //how to
-										// determine tile size?
+		int size = board.getTileSize();
+		
 		drawX = board.getX() + (currentX)
 				* (board.getTileSize() + Config.tileGutter);
 		drawY = board.getY() + (currentY)
 				* (board.getTileSize() + Config.tileGutter);
 		Font font = new Font("Tahoma", Font.BOLD, 20);
 		
+		if(isSelected){
+			g.setColor(DrawingUtility.SELECTED);
+			g.fillRect(drawX-5, drawY-5, size+10, size+10);
+		}
+		
 		int gr = Math.abs(128 - number * 255 / (board.getBoardWidth() * board.getBoardHeight()));
 		int re = 255 - number * 255 / (board.getBoardWidth() * board.getBoardHeight());
 		int bl = number * 255 / (board.getBoardWidth() * board.getBoardHeight());
 		g.setColor(new Color(re, gr, bl));
-
-		if (isSelected)
-			g.setColor(Color.GREEN.darker());
+		
 		if(isMouseOn)
 			g.setColor(g.getColor().brighter());
-		if(!isEnabled)
-			g.setColor(g.getColor().darker());
-		g.fillRect(drawX, drawY, size, size);
-
+		if(isEnabled)
+			g.setColor(g.getColor().brighter());
+		
+		g.fillRect(drawX, drawY, size, size);	// <<<<<<<<<<<<<<<<<<<< actually draw
+		
+		if(!isEnabled && !isSelected){
+			g.setColor(new Color(40,40,40,170));
+			g.fillRect(drawX, drawY, size, size);
+		}
+		
+		if (isCorrect()){
+			if(!isEnabled && !isSelected)
+				g.setColor(DrawingUtility.CORRECT.darker());
+			else
+				g.setColor(DrawingUtility.CORRECT);
+			g.fillOval(drawX + 10, drawY + 10, size - 20, size - 20);
+			g.setColor(new Color(re, gr, bl));
+			if(isMouseOn)
+				g.setColor(g.getColor().brighter());
+			if(isEnabled)
+				g.setColor(g.getColor().brighter());
+			g.fillOval(drawX + 15, drawY + 15, size - 30, size - 30);
+		}
 		
 		g.setColor(Color.WHITE);
 		DrawingUtility.drawStringInBox("" + number, font, drawX, drawY, size, size,

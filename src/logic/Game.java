@@ -30,7 +30,6 @@ public class Game extends JFrame{
 		while(true){
 			try {
 				Thread.sleep(20);
-//				Thread.sleep(200);
 			} catch(InterruptedException e) {
 			}
 			gameScreen.repaint();

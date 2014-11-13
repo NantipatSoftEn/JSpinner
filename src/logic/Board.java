@@ -54,16 +54,10 @@ public class Board implements IRenderable, IUpdatable {
 				for (int j = 0; j < boardX; j++) {
 					tileInfo = in.next();
 					if (tileInfo.substring(0, 1).equalsIgnoreCase("S"))
-						board[j][i] = new SimpleTile(k++, this, i, j);
+						board[j][i] = new SimpleTile(k++, this, j, i);
 					if (tileInfo.substring(0, 1).equalsIgnoreCase("-"))
-						board[j][i] = new SimpleTile(Tile.NOT_A_TILE, this, i,
-								j);
-					board[j][i].setCurrentLocation(j, i);
-					// WHY DOES THIS WORK... I DONT KNOW... WHY DO I HAVE TO SET
-					// CURRENT LOCATION TWICE!!!!
-					// System.out.print(board[j][i]);
+						board[j][i] = new SimpleTile(Tile.NOT_A_TILE, this, j, i);
 				}
-				// System.out.println();
 			}
 			adjustCenter();
 			// for (int i = 0; i < board.length; i++)

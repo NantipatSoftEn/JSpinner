@@ -16,6 +16,9 @@ public class DrawingUtility {
 	public static final int TEXT_BOTTOM = 7;
 	public static final int TEXT_BOTTOMRIGHT = 8;
 	
+	public static final Color SELECTED = Color.GREEN;
+	public static final Color CORRECT = new Color(0, 220, 0);
+	
 //	public static int getTextXCentered(String s, Font font, Graphics context, int horizontalRef){
 //		FontMetrics fm = context.getFontMetrics(font);
 //		Rectangle2D strBound = fm.getStringBounds(s, context);
