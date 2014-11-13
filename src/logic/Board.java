@@ -6,6 +6,7 @@
 package logic;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import java.io.*;
 import java.util.*;
@@ -404,6 +405,10 @@ public class Board implements IRenderable, IUpdatable {
 				forFlip[1].setLocation(Math.max(x1,x2),	Math.max(y1,y2));
 				Clickable.cwButton.setVisible(true);
 				Clickable.ccwButton.setVisible(true);
+				if(InputUtility.getKeyTriggered(KeyEvent.VK_LEFT))
+					Clickable.ccwButton.onClickAction();
+				if(InputUtility.getKeyTriggered(KeyEvent.VK_RIGHT))
+					Clickable.cwButton.onClickAction();
 			} else {
 				clearSelected();
 			}

@@ -3,6 +3,8 @@ package ui;
 import java.util.*;
 import java.util.List;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -31,13 +33,14 @@ public class GameScreen extends JPanel{
 //		System.out.println(buttons.buttons);
 		renderList.addAll(Clickable.buttons);
 		
+		this.setFocusable(true);
+		this.requestFocus();
+		
 		/////////////////Mouse/////////////////
 		this.addMouseListener(new MouseListener(){
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
@@ -56,12 +59,10 @@ public class GameScreen extends JPanel{
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				
 			}
 			
 		});
@@ -75,12 +76,28 @@ public class GameScreen extends JPanel{
 			
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 		});
 		
+		///////////////////////key///////////////////////////
 		
+		this.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				InputUtility.setKeyPressed(e.getKeyCode(), false);
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				InputUtility.setKeyTriggered(e.getKeyCode(), true);
+				InputUtility.setKeyPressed(e.getKeyCode(), true);
+			}
+		});
 		
 		//////////////////////////////////////
 	}
