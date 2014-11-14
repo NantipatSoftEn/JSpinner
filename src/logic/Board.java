@@ -18,7 +18,7 @@ import ui.IRenderable;
 import ui.button.Clickable;
 import lib.*;
 
-public class Board implements IRenderable, IUpdatable {
+public class Board implements IUpdatable {
 	public static final int DEFAULT_SHUFFLE = 2000;
 	public static final int CW = -1;	
 	public static final int CCW = 1;	
@@ -30,6 +30,9 @@ public class Board implements IRenderable, IUpdatable {
 	private PlayerStatus player;
 	private Point forFlip[] = new Point[2];
 	private List<Move> move;
+	private Point moveCenter = new Point(0, 0);
+	
+	private int currentFrame = 0;
 
 	public Board(int width, int height) {
 		board = new Tile[width][height];
@@ -137,6 +140,13 @@ public class Board implements IRenderable, IUpdatable {
 	public int getTileSize() {
 		return tileSize;
 	}
+	
+	public int getMoveCenterX() {
+		return (int) moveCenter.getX();
+	}
+	public int getMoveCenterY() {
+		return (int) moveCenter.getY();
+	}
 
 	public Point getTileLocation(int i, int j) {
 		int tx = i * (tileSize + Config.tileGutter) + x;
@@ -168,6 +178,17 @@ public class Board implements IRenderable, IUpdatable {
 		return Math.abs(forFlip[0].x - forFlip[1].x);
 	}
 	
+	public int getCurrentFrame() {
+		return currentFrame;
+	}
+	
+	public Move getLatestMove() {
+		if(move.size() > 0)
+			return move.get(move.size()-1);
+		else
+			return null;
+	}
+	
 	public void clearSelected(){
 		selected = 0;
 		for(int j = 0; j < board[0].length; j++){
@@ -179,6 +200,12 @@ public class Board implements IRenderable, IUpdatable {
 	
 	public void flip(int x, int y, int size, int direction, boolean isPlaying){
 		//new move logic: rotation
+		
+		//set move center for drawing animation
+		int cx = (board[x][y].getDrawX() + board[x + size][y].getDrawX() + tileSize) / 2;
+		int cy = (board[x][y].getDrawY() + board[x][y + size].getDrawY() + tileSize) / 2;
+		moveCenter = new Point(cx, cy);
+		
 		Tile tmp;
 		int s = size;
 		if(direction == CCW){
@@ -204,12 +231,17 @@ public class Board implements IRenderable, IUpdatable {
 				s--;
 			}
 		}
-		for (int j = y; j <= y + size; j++)
-			for (int i = x; i <= x + size; i++)
-				board[i][j].setCurrentLocation(i, j);
+		
 		if(isPlaying){
 			move.add(new Move(x, y, size, direction));
 			player.move();
+			currentFrame = 0;
+			for(int j = 0; j <= size; j++){
+				for(int i = 0; i <= size; i++){
+					board[x + i][y + j].setMoving(true);
+					System.out.println("!");
+				}
+			}
 		}
 	}
 
@@ -292,20 +324,6 @@ public class Board implements IRenderable, IUpdatable {
 		return out;
 	}
 
-	// IRenderable Implementation
-
-	public int getZ() {
-		return 10000;
-	}
-
-	public void draw(Graphics g) {
-		for (int i = 0; i < board[0].length; i++) {
-			for (int j = 0; j < board.length; j++) {
-				board[j][i].draw(g);
-			}
-		}
-	}
-
 	public boolean isWin() {
 		boolean check = true;
 		for (int j = 0; j < board[0].length; j++) {
@@ -319,6 +337,19 @@ public class Board implements IRenderable, IUpdatable {
 
 	public void update() {
 		// for each game loop...
+		
+		//update location (if not playing animation)
+		if(currentFrame >= Config.animationFrameCount){
+			for (int j = 0; j < board[0].length; j++){
+				for (int i = 0; i < board.length; i++){
+					board[i][j].setCurrentLocation(i, j);
+					board[i][j].setMoving(false);
+				}
+			}
+		}else{
+			currentFrame++;
+		}
+		
 		boolean same = selected == 2 && forFlip[0].getX() == forFlip[1].getX() && forFlip[0].getY() == forFlip[1].getY();	
 		if(move.size() > 0 && selected == 0){
 			Move latest = move.get(move.size() - 1);
@@ -359,9 +390,9 @@ public class Board implements IRenderable, IUpdatable {
 				forFlip[1].setLocation(Math.max(x1,x2),	Math.max(y1,y2));
 				Clickable.cwButton.setVisible(true);
 				Clickable.ccwButton.setVisible(true);
-				if(InputUtility.getKeyTriggered(KeyEvent.VK_LEFT))
+				if(InputUtility.getKeyTriggered(KeyEvent.VK_LEFT) || InputUtility.getKeyTriggered(KeyEvent.VK_A))
 					Clickable.ccwButton.onClickAction();
-				if(InputUtility.getKeyTriggered(KeyEvent.VK_RIGHT))
+				if(InputUtility.getKeyTriggered(KeyEvent.VK_RIGHT) || InputUtility.getKeyTriggered(KeyEvent.VK_D))
 					Clickable.cwButton.onClickAction();
 			} else {
 				clearSelected();

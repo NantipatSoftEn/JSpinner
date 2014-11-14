@@ -1,6 +1,9 @@
 package logic;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+import java.util.Date;
 
 import javax.rmi.CORBA.Util;
 import javax.swing.text.Utilities;
@@ -21,6 +24,8 @@ public abstract class Tile implements IRenderable {
 	private Board board;
 	private boolean isMouseOn;
 	private boolean isEnabled;
+	private boolean isMoving;
+	protected int z;
 	
 	public Tile() {
 		this.number = 0;
@@ -40,6 +45,15 @@ public abstract class Tile implements IRenderable {
 	public void setCorrectY(int y) {
 		this.correctY = y;
 	}
+	
+	public void setMoving(boolean isMoving) {
+		this.isMoving = isMoving;
+		if(isMoving)
+			z = 15000;
+		else
+			z = 10000;
+	}
+	
 	public boolean isCorrect (){
 		return correctX == currentX && correctY == currentY;
 	}
@@ -110,16 +124,29 @@ public abstract class Tile implements IRenderable {
 	public abstract int getZ();
 
 	public void draw(Graphics g) {
+		
 		if (number == NOT_A_TILE)
 			return;
+		
+		Graphics2D g2 = (Graphics2D) g;		
+		
 		int size = board.getTileSize();
 		
-		drawX = board.getX() + (currentX)
-				* (board.getTileSize() + Config.tileGutter);
-		drawY = board.getY() + (currentY)
-				* (board.getTileSize() + Config.tileGutter);
+		drawX = board.getX() + (currentX) * (board.getTileSize() + Config.tileGutter);
+		drawY = board.getY() + (currentY) * (board.getTileSize() + Config.tileGutter);
 		Font font = new Font("Tahoma", Font.BOLD, 20);
 		
+		Rectangle2D.Double rect = new Rectangle2D.Double(drawX, drawY, board.getTileSize(), board.getTileSize());
+		AffineTransform at = new AffineTransform(); 
+		
+		Double theta = Math.PI / 2 * board.getCurrentFrame() / Config.animationFrameCount; 
+		if(board.getLatestMove() != null && board.getLatestMove().dir == Board.CCW)
+			theta *= -1;
+		if(isMoving){
+			at.rotate(theta, board.getMoveCenterX(), board.getMoveCenterY());
+		}
+		Shape tileRect = at.createTransformedShape(rect);
+				
 		if(isSelected){
 			g.setColor(DrawingUtility.SELECTED);
 			g.fillRect(drawX-5, drawY-5, size+10, size+10);
@@ -135,14 +162,14 @@ public abstract class Tile implements IRenderable {
 		if(isEnabled)
 			g.setColor(g.getColor().brighter());
 		
-		g.fillRect(drawX, drawY, size, size);	// <<<<<<<<<<<<<<<<<<<< actually draw
+		g2.fill(tileRect);		// <<<<<<<<<<<<<<<<<<<< actually draw
 		
 		if(!isEnabled && !isSelected){
 			g.setColor(new Color(40,40,40,170));
-			g.fillRect(drawX, drawY, size, size);
+			g2.fill(tileRect);
 		}
 		
-		if (isCorrect()){
+		if (isCorrect() && !isMoving){
 			if(!isEnabled && !isSelected)
 				g.setColor(DrawingUtility.CORRECT.darker());
 			else
@@ -159,8 +186,9 @@ public abstract class Tile implements IRenderable {
 		}
 		
 		g.setColor(Color.WHITE);
-		DrawingUtility.drawStringInBox("" + number, font, drawX, drawY, size, size,
-				DrawingUtility.TEXT_CENTER, g);
+		Rectangle2D textBound = tileRect.getBounds2D();
+		DrawingUtility.drawStringInBox("" + number, font, (int)textBound.getMinX(), (int)textBound.getMinY(),
+				(int)textBound.getWidth(), (int)textBound.getHeight(), DrawingUtility.TEXT_CENTER, g);
 	}
 
 	public String toString() {

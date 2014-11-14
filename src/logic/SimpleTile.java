@@ -30,6 +30,6 @@ public class SimpleTile extends Tile{
 
 	@Override
 	public int getZ() {
-		return 12000;
+		return z;
 	}
 }

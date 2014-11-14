@@ -25,7 +25,7 @@ public class GameWindow extends JFrame {
 //		} catch (InterruptedException e) {
 //		}
 		
-		new Game(this, "levels/5x5.txt");
+		new Game(this, "levels/3x3.txt");
 	}
 	
 	public void setFrame(){

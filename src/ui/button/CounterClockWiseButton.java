@@ -26,7 +26,7 @@ public class CounterClockWiseButton extends Clickable implements IRenderable,
 
 	@Override
 	public int getZ() {
-		return 10000;
+		return 20000;
 	}
 	
 	@Override

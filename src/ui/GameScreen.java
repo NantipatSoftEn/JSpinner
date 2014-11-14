@@ -27,7 +27,9 @@ public class GameScreen extends JPanel{
 		setBackground(Color.WHITE);
 		this.board = board;
 		this.playerStatus = board.getPlayer();
-		renderList.add(board);
+		for(int j = 0; j < board.getBoardWidth(); j++)
+			for(int i = 0; i < board.getBoardHeight(); i++)
+				renderList.add(board.getTileAt(i, j));
 		renderList.add(playerStatus);
 //		Clickable buttons = new Clickable();
 //		System.out.println(buttons.buttons);
@@ -115,6 +117,8 @@ public class GameScreen extends JPanel{
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		Collections.sort(renderList, new Comparator<ui.IRenderable>() {
 			public int compare(IRenderable r1, IRenderable r2){
 				if(r1.getZ() > r2.getZ()) return 1;
