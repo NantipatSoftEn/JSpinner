@@ -2,6 +2,11 @@ package ui;
 
 import java.awt.*;
 import java.awt.geom.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 public class DrawingUtility {
 	
@@ -19,43 +24,28 @@ public class DrawingUtility {
 	public static final Color SELECTED = Color.GREEN;
 	public static final Color CORRECT = new Color(0, 220, 0);
 	
-//	public static int getTextXCentered(String s, Font font, Graphics context, int horizontalRef){
-//		FontMetrics fm = context.getFontMetrics(font);
-//		Rectangle2D strBound = fm.getStringBounds(s, context);
-//		int x = horizontalRef - (int) strBound.getWidth() / 2;
-//		return x;
-//	}
-//	
-//	public static int getTextXAlignedLeft(String s, Font font, Graphics context, int horizontalRef){
-//		return horizontalRef;
-//	}
-//	
-//	public static int getTextXAlignedRight(String s, Font font, Graphics context, int horizontalRef){
-//		FontMetrics fm = context.getFontMetrics(font);
-//		Rectangle2D strBound = fm.getStringBounds(s, context);
-//		int x = horizontalRef - (int) strBound.getWidth();
-//		return x;
-//	}
-//	
-//	public static Point getCenteredTextPosition(String s, Font font, Point topLeft, Point bottomRight, Graphics context){
-//		//return point (x, y) for drawing text centered in a box
-//		FontMetrics fm = context.getFontMetrics(font);
-//		Rectangle2D strBound = fm.getStringBounds(s, context);
-//		int xRef = (topLeft.getX() + bottomRight.getX()) / 2;
-//		int yRef = (topLeft.getY() + bottomRight.getY()) / 2;
-//		int xDraw = xRef - (int) strBound.getWidth() / 2; 
-//		int yDraw = yRef + (int) strBound.getHeight() / 2; 
-//		return new Point(xDraw, yDraw);
-//	}
-//	
-//	public static Point getCenteredTextPosition(String s, Font font, int xRef, int yRef, Graphics context){
-//		//return point (x, y) for drawing text centered in crossing reference lines (xRef and yRef)
-//		FontMetrics fm = context.getFontMetrics(font);
-//		Rectangle2D strBound = fm.getStringBounds(s, context);
-//		int xDraw = xRef - (int) strBound.getWidth() / 2; 
-//		int yDraw = yRef + (int) strBound.getHeight() / 2; 
-//		return new Point(xDraw, yDraw);
-//	}
+	public static final int STATE_NORMAL = 0;
+	public static final int STATE_HOVER = 1;
+	public static final int STATE_CLICK = 2;
+	
+	public static final BufferedImage cwButtonImg = loadImage("res/img/cwButton.png");
+	public static final BufferedImage ccwButtonImg = loadImage("res/img/ccwButton.png");
+	public static final BufferedImage gameBG = loadImage("res/img/gameBG.png");
+	
+	public static BufferedImage loadImage(String directory){
+		try {
+			return ImageIO.read(DrawingUtility.class.getClassLoader().getResource(directory));
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Image not found!", "Error", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+	}
+	
+	public static BufferedImage getClickableImg(BufferedImage spriteSheet, int state){
+		if(state < 3)
+			return spriteSheet.getSubimage(spriteSheet.getWidth() * state / 3, 0, spriteSheet.getWidth() / 3, spriteSheet.getHeight());
+		else return null;
+	}
 	
 	public static void drawStringAt(String s, Font font, int xRef, int yRef, int aligned, Graphics context){
 		FontMetrics fm = context.getFontMetrics(font);
@@ -141,4 +131,5 @@ public class DrawingUtility {
 		context.drawString(s, xDraw, yDraw);
 		context.setFont(tmpFont);	//return to original font
 	}
+	
 }

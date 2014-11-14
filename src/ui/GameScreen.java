@@ -35,9 +35,11 @@ public class GameScreen extends JPanel{
 				renderList.add(board.getTileAt(i, j));
 			}
 		renderList.add(playerStatus);
+		renderList.add(new GameBackground());
 		renderList.addAll(WinPanel.winElements);
 		renderList.addAll(Clickable.buttons);
 		
+		this.setDoubleBuffered(true);
 		this.setFocusable(true);
 		this.requestFocus();
 		

@@ -3,6 +3,7 @@ package ui.gamebutton;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import lib.Config;
 import logic.Board;
@@ -21,8 +22,8 @@ public class CounterClockWiseButton extends Clickable implements IRenderable,
 		type = Clickable.CIRCLE;
 		x = Config.screenWidth / 2 - 100;
 		y = 100;
-		width = 50;
-		height = 50;
+		width = 60;
+		height = 60;
 	}
 
 	@Override
@@ -33,16 +34,21 @@ public class CounterClockWiseButton extends Clickable implements IRenderable,
 	@Override
 	public void draw(Graphics g) {
 		if(isVisible){
-			g.setColor(Color.LIGHT_GRAY);
-			g.fillOval(x - 4, y - 4, width + 8, height + 8);
-			g.setColor(Color.darkGray);
-			if(isMouseOn()){
-				g.setColor(Color.GRAY);
-			}
-			g.fillOval(x, y, width, height);
-			g.setColor(Color.WHITE);
-			Font font = new Font("Tahoma", Font.BOLD, 15);
-			DrawingUtility.drawStringInBox("CCW", font, x, y, width, height, DrawingUtility.TEXT_CENTER, g);
+//			g.setColor(Color.LIGHT_GRAY);
+//			g.fillOval(x - 4, y - 4, width + 8, height + 8);
+//			g.setColor(Color.darkGray);
+//			if(isMouseOn()){
+//				g.setColor(Color.GRAY);
+//			}
+//			g.fillOval(x, y, width, height);
+//			g.setColor(Color.WHITE);
+//			Font font = new Font("Tahoma", Font.BOLD, 15);
+//			DrawingUtility.drawStringInBox("CCW", font, x, y, width, height, DrawingUtility.TEXT_CENTER, g);
+			Graphics2D g2 = (Graphics2D) g;
+			if(!isMouseOn())
+				g2.drawImage(DrawingUtility.getClickableImg(DrawingUtility.ccwButtonImg, DrawingUtility.STATE_NORMAL), null, x, y);
+			else
+				g2.drawImage(DrawingUtility.getClickableImg(DrawingUtility.ccwButtonImg, DrawingUtility.STATE_HOVER), null, x, y);
 		}
 	}
 	
@@ -64,7 +70,7 @@ public class CounterClockWiseButton extends Clickable implements IRenderable,
 		if(isVisible){
 			Tile flipping = board.getTileAt(board.getFlipX(), board.getFlipY());
 			int size = (board.getFlipSize() + 1) * board.getTileSize() + Config.tileGutter * board.getFlipSize();
-			x = flipping.getDrawX() - 55;
+			x = flipping.getDrawX() - width - 5;
 			y = flipping.getDrawY() + size / 2 - 25;
 		}
 		this.isVisible = isVisible;
