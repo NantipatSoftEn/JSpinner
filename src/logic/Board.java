@@ -234,12 +234,13 @@ public class Board implements IUpdatable {
 		
 		if(isPlaying){
 			move.add(new Move(x, y, size, direction));
+			System.out.println("("+x+","+y+")"+" "+size+"--"+direction);
 			player.move();
 			currentFrame = 0;
 			for(int j = 0; j <= size; j++){
 				for(int i = 0; i <= size; i++){
 					board[x + i][y + j].setMoving(true);
-					System.out.println("!");
+					//System.out.println("!");
 				}
 			}
 		}
