@@ -32,6 +32,8 @@ public class CounterClockWiseButton extends Clickable implements IRenderable,
 	@Override
 	public void draw(Graphics g) {
 		if(isVisible){
+			g.setColor(Color.LIGHT_GRAY);
+			g.fillOval(x - 4, y - 4, width + 8, height + 8);
 			g.setColor(Color.darkGray);
 			if(isMouseOn()){
 				g.setColor(Color.GRAY);
