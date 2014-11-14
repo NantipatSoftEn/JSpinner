@@ -117,6 +117,8 @@ public class Board implements IUpdatable {
 		move = new ArrayList<Move>();
 		this.shuffle(Board.DEFAULT_SHUFFLE);
 		isPlaying = true;
+		clearSelected();
+		setEnables();
 		WinPanel.setVisible(false);
 	}
 	

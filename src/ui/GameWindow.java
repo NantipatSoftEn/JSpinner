@@ -11,30 +11,25 @@ import logic.Game;
 
 public class GameWindow extends JFrame {
 	public GameWindow(){
-		super("JFlipFlop");
-		
-		//		test screen changing		//
-		
-//		JPanel p = new JPanel();
-//		p.setPreferredSize(new Dimension(300,300));
-//		p.setBackground(Color.BLACK);
-//		this.getContentPane().add(p);
-//		setFrame();
+		super("JSpinner");
+
+//		while(true){
+//			new GameTitle(this);
+//			
+//			try {
+//				Thread.sleep(2000);
+//			} catch (InterruptedException e) {
+//			}
 //		
-//		try {
-//			Thread.sleep(200);
-//		} catch (InterruptedException e) {
+		//	BUG: If Game is initiated after another JPanel, it lost focus and cannot listen to keys
+		//	BUG: If Game is initiated after another JPanel, it lost focus and cannot listen to keys
+			new Game(this, "levels/3x3.txt");
 //		}
-		
-		new Game(this, "levels/3x3.txt");
 	}
 	
 	public void setFrame(){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		pack();
-	
-		setSize(Config.screenWidth,Config.screenHeight);
-		System.out.println(this.getWidth());
+		pack();
 		setVisible(true);
 		setResizable(false);
 	}

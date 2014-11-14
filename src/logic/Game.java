@@ -28,7 +28,7 @@ public class Game{
 		//GAME START
 		board.shuffle(Board.DEFAULT_SHUFFLE);
 		
-		window.getContentPane().add(gameScreen);
+		window.add(gameScreen);
 		window.setFrame();
 		
 		while(true){

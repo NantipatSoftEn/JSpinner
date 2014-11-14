@@ -4,12 +4,37 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 
 import lib.Config;
 
-public class GameBackground implements IRenderable {
+public class GameBackground implements IRenderable, Runnable {
 	
-	private double theta = 0;
+	private volatile double theta = 0.002;
+	private BufferedImage gb = DrawingUtility.gameBG;
+	private int x = (Config.screenWidth - gb.getWidth()) / 2;;
+	private int y = (Config.screenWidth - gb.getHeight()) / 2;
+	private AffineTransform at = new AffineTransform();
+	private AffineTransformOp ato;
+	
+	public GameBackground() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	@Override
+	public void run() {
+		//STILL LAG.... DIDN'T USE
+		while(true){
+			x = (Config.screenWidth - gb.getWidth()) / 2;
+			y = (Config.screenWidth - gb.getHeight()) / 2;
+			at.rotate(theta, gb.getWidth() / 2, gb.getHeight() / 2);
+			ato = new AffineTransformOp(at, AffineTransformOp.TYPE_BICUBIC); 
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+			}
+		}
+	}
 	
 	@Override
 	public int getZ() {
@@ -19,12 +44,7 @@ public class GameBackground implements IRenderable {
 	@Override
 	public void draw(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		int x = (Config.screenWidth - DrawingUtility.gameBG.getWidth()) / 2;
-		int y = (Config.screenWidth - DrawingUtility.gameBG.getHeight()) / 2;
-//		AffineTransform at = new AffineTransform();
-//		at.rotate(theta, Config.screenWidth / 2, Config.screenHeight / 2);
-//		theta += 0.01;
-//		g2.drawImage(DrawingUtility.gameBG, new AffineTransformOp(at, AffineTransformOp.TYPE_BICUBIC), x, y);
+//		g2.drawImage(gb, ato, x, y);
 		g2.drawImage(DrawingUtility.gameBG, null, x, y);
 	}
 

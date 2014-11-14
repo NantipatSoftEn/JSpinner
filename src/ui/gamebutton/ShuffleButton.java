@@ -36,6 +36,6 @@ public class ShuffleButton extends Clickable implements IRenderable {
 	
 	@Override
 	public void onClickAction() {
-		Clickable.board.shuffle(Board.DEFAULT_SHUFFLE);
+		Clickable.board.newGame();
 	}
 }

@@ -42,7 +42,7 @@ public class PlayerStatus implements IRenderable{
 		Font subFont = new Font("Tahoma", Font.BOLD, 25);
 		Font mainFont = new Font("Tahoma", Font.BOLD, 40);
 		g.setColor(Color.BLACK);
-		DrawingUtility.drawStringInBox("BEST " + board.getBestScore(), subFont, 0, 0, Config.screenWidth, Config.topBarHeight, DrawingUtility.TEXT_LEFT, g);
+		DrawingUtility.drawStringInBox("BEST " + board.getBestScore(), subFont, 10, 0, Config.screenWidth, Config.topBarHeight, DrawingUtility.TEXT_LEFT, g);
 		DrawingUtility.drawStringInBox("" + moved, mainFont, 0, 0, Config.screenWidth, Config.topBarHeight, DrawingUtility.TEXT_CENTER, g);
 	}
 }
