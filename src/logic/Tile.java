@@ -99,13 +99,18 @@ public abstract class Tile implements IRenderable {
 		this.currentY = y;
 	}
 	
+	public void setDrawLocation(){
+		drawX = board.getX() + (currentX) * (board.getTileSize() + Config.tileGutter);
+		drawY = board.getY() + (currentY) * (board.getTileSize() + Config.tileGutter);
+	}
+	
 	public Point getCorrectLocation() {
 		return new Point(correctX, correctY);
 	}
 	public Point getCurrentLocation() {
 		return new Point(currentX, currentY);
 	}
-	
+
 	public int getDrawX() {
 		return drawX;
 	}
