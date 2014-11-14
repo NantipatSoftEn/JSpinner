@@ -5,15 +5,10 @@ import java.awt.Graphics;
 import java.util.List;
 import java.util.ArrayList;
 
-import ui.gamebutton.ClockWiseButton;
-import ui.gamebutton.CounterClockWiseButton;
-import ui.gamebutton.ShuffleButton;
-import ui.gamebutton.UndoButton;
-import ui.winpanel.RestartButton;
+import ui.gamebutton.*;
+import ui.winpanel.*;
 import lib.InputUtility;
-import logic.Board;
-import logic.GameLogic;
-import logic.IUpdatable;
+import logic.*;
 
 public abstract class Clickable implements IRenderable, IUpdatable{
 	protected int x, y;
@@ -33,6 +28,7 @@ public abstract class Clickable implements IRenderable, IUpdatable{
 		buttons.add(cwButton);
 		buttons.add(ccwButton);
 		buttons.add(new RestartButton());
+		buttons.add(new NextLevelButton());
 	}
 	
 	public Clickable(){	
