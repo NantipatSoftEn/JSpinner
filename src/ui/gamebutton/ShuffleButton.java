@@ -1,10 +1,11 @@
-package ui.button;
+package ui.gamebutton;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
 import javax.swing.JOptionPane;
 
+import ui.Clickable;
 import ui.IRenderable;
 import lib.Config;
 import lib.InputUtility;

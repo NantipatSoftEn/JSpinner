@@ -1,12 +1,15 @@
-package ui.button;
+package ui;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.List;
 import java.util.ArrayList;
 
-import ui.GameScreen;
-import ui.IRenderable;
+import ui.gamebutton.ClockWiseButton;
+import ui.gamebutton.CounterClockWiseButton;
+import ui.gamebutton.ShuffleButton;
+import ui.gamebutton.UndoButton;
+import ui.winpanel.RestartButton;
 import lib.InputUtility;
 import logic.Board;
 import logic.GameLogic;
@@ -16,6 +19,7 @@ public abstract class Clickable implements IRenderable, IUpdatable{
 	protected int x, y;
 	protected int width, height;
 	protected int type;
+	protected boolean isVisible = true;
 	public static int RECTANGLE = 0;
 	public static int CIRCLE = 1;
 	public static List<Clickable> buttons = new ArrayList<Clickable>();
@@ -28,6 +32,7 @@ public abstract class Clickable implements IRenderable, IUpdatable{
 		buttons.add(new UndoButton());
 		buttons.add(cwButton);
 		buttons.add(ccwButton);
+		buttons.add(new RestartButton());
 	}
 	
 	public Clickable(){	
@@ -36,7 +41,7 @@ public abstract class Clickable implements IRenderable, IUpdatable{
 	public boolean isMouseOn(){
 		if(type == RECTANGLE){
 			boolean validX = InputUtility.getPickedPoint().getX() >= x && InputUtility.getPickedPoint().getX() <= x + width;
-			boolean validY = InputUtility.getPickedPoint().getY() >= y && InputUtility.getPickedPoint().getX() <= y + height;
+			boolean validY = InputUtility.getPickedPoint().getY() >= y && InputUtility.getPickedPoint().getY() <= y + height;
 			return validX && validY;
 		} else if(type == CIRCLE){
 			int mx = (int) InputUtility.getPickedPoint().getX();

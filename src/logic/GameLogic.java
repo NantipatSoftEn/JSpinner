@@ -3,7 +3,9 @@ package logic;
 import java.util.ArrayList;
 import java.util.List;
 
-import ui.button.*;
+import ui.Clickable;
+import ui.gamebutton.*;
+import ui.winpanel.WinPanel;
 
 public class GameLogic {
 	
@@ -12,6 +14,7 @@ public class GameLogic {
 	public GameLogic(Board b){
 		updateList.add(b);
 		updateList.addAll(Clickable.buttons);
+//		updateList.addAll(WinPanel.winElements);
 	}
 	
 	public void update(){

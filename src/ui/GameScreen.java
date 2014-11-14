@@ -11,7 +11,8 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.*;
 
-import ui.button.*;
+import ui.gamebutton.*;
+import ui.winpanel.WinPanel;
 import lib.*;
 import logic.*;
 
@@ -20,6 +21,7 @@ public class GameScreen extends JPanel{
 	private List<IRenderable> renderList = new ArrayList<IRenderable>();
 	private Board board;
 	private PlayerStatus playerStatus;
+	private WinPanel winPanel;
 	
 	public GameScreen(Board board){
 		super();
@@ -27,12 +29,13 @@ public class GameScreen extends JPanel{
 		setBackground(Color.WHITE);
 		this.board = board;
 		this.playerStatus = board.getPlayer();
-		for(int j = 0; j < board.getBoardWidth(); j++)
-			for(int i = 0; i < board.getBoardHeight(); i++)
+		this.winPanel = new WinPanel();
+		for(int j = 0; j < board.getBoardHeight(); j++)
+			for(int i = 0; i < board.getBoardWidth(); i++){
 				renderList.add(board.getTileAt(i, j));
+			}
 		renderList.add(playerStatus);
-//		Clickable buttons = new Clickable();
-//		System.out.println(buttons.buttons);
+		renderList.addAll(WinPanel.winElements);
 		renderList.addAll(Clickable.buttons);
 		
 		this.setFocusable(true);
@@ -112,6 +115,10 @@ public class GameScreen extends JPanel{
 	
 	public Board getBoard() {
 		return board;
+	}
+	
+	public WinPanel getWinPanel() {
+		return winPanel;
 	}
 	
 	@Override

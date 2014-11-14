@@ -1,4 +1,4 @@
-package ui.button;
+package ui.gamebutton;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -8,17 +8,18 @@ import lib.Config;
 import logic.Board;
 import logic.IUpdatable;
 import logic.Tile;
+import ui.Clickable;
 import ui.DrawingUtility;
 import ui.IRenderable;
 
-public class CounterClockWiseButton extends Clickable implements IRenderable,
+public class ClockWiseButton extends Clickable implements IRenderable,
 		IUpdatable {
 
 	private boolean isVisible = false;
 	
-	public CounterClockWiseButton(){
+	public ClockWiseButton(){
 		type = Clickable.CIRCLE;
-		x = Config.screenWidth / 2 - 100;
+		x = Config.screenWidth / 2;
 		y = 100;
 		width = 50;
 		height = 50;
@@ -41,14 +42,14 @@ public class CounterClockWiseButton extends Clickable implements IRenderable,
 			g.fillOval(x, y, width, height);
 			g.setColor(Color.WHITE);
 			Font font = new Font("Tahoma", Font.BOLD, 15);
-			DrawingUtility.drawStringInBox("CCW", font, x, y, width, height, DrawingUtility.TEXT_CENTER, g);
+			DrawingUtility.drawStringInBox("CW", font, x, y, width, height, DrawingUtility.TEXT_CENTER, g);
 		}
 	}
 	
 	@Override
 	public void onClickAction() {
 		if(isVisible){
-			board.flip(board.getFlipX(), board.getFlipY(), board.getFlipSize(), Board.CCW, true);
+			board.flip(board.getFlipX(), board.getFlipY(), board.getFlipSize(), Board.CW, true);
 			board.clearSelected();
 		}
 	}
@@ -62,8 +63,8 @@ public class CounterClockWiseButton extends Clickable implements IRenderable,
 	public void setVisible(boolean isVisible) {
 		if(isVisible){
 			Tile flipping = board.getTileAt(board.getFlipX(), board.getFlipY());
-			int size = (board.getFlipSize() + 1) * board.getTileSize() + Config.tileGutter * board.getFlipSize();
-			x = flipping.getDrawX() - 55;
+			int size = (board.getFlipSize() + 1) * board.getTileSize() + Config.tileGutter * (board.getFlipSize());
+			x = flipping.getDrawX() + size + 5;
 			y = flipping.getDrawY() + size / 2 - 25;
 		}
 		this.isVisible = isVisible;

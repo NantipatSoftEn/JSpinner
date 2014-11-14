@@ -139,7 +139,6 @@ public abstract class Tile implements IRenderable {
 		
 		drawX = board.getX() + (currentX) * (board.getTileSize() + Config.tileGutter);
 		drawY = board.getY() + (currentY) * (board.getTileSize() + Config.tileGutter);
-		Font font = new Font("Tahoma", Font.BOLD, 20);
 		
 		Rectangle2D.Double rect = new Rectangle2D.Double(drawX, drawY, board.getTileSize(), board.getTileSize());
 		AffineTransform at = new AffineTransform(); 
@@ -189,6 +188,8 @@ public abstract class Tile implements IRenderable {
 				g.setColor(g.getColor().darker());
 			g.fillOval(drawX + 15, drawY + 15, size - 30, size - 30);
 		}
+		
+		Font font = new Font("Tahoma", Font.BOLD, 20);
 		
 		g.setColor(Color.WHITE);
 		Rectangle2D textBound = tileRect.getBounds2D();

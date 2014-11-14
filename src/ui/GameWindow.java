@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import lib.Config;
 import logic.Game;
 
 public class GameWindow extends JFrame {
@@ -25,12 +26,15 @@ public class GameWindow extends JFrame {
 //		} catch (InterruptedException e) {
 //		}
 		
-		new Game(this, "levels/3x3.txt");
+		new Game(this, "levels/test.txt");
 	}
 	
 	public void setFrame(){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		pack();
+//		pack();
+	
+		setSize(Config.screenWidth,Config.screenHeight);
+		System.out.println(this.getWidth());
 		setVisible(true);
 		setResizable(false);
 	}

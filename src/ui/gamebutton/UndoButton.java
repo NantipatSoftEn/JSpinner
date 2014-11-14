@@ -1,8 +1,9 @@
-package ui.button;
+package ui.gamebutton;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
+import ui.Clickable;
 import ui.IRenderable;
 import lib.Config;
 import lib.InputUtility;

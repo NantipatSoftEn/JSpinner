@@ -14,8 +14,10 @@ import java.util.*;
 import javax.rmi.CORBA.Util;
 import javax.swing.JOptionPane;
 
+import ui.Clickable;
+import ui.GameScreen;
 import ui.IRenderable;
-import ui.button.Clickable;
+import ui.winpanel.WinPanel;
 import lib.*;
 
 public class Board implements IUpdatable {
@@ -31,6 +33,7 @@ public class Board implements IUpdatable {
 	private Point forFlip[] = new Point[2];
 	private List<Move> move;
 	private Point moveCenter = new Point(0, 0);
+	private boolean isPlaying = true;
 	
 	private int currentFrame = 0;
 
@@ -105,10 +108,18 @@ public class Board implements IUpdatable {
 		this.x = Config.screenWidth / 2 - width / 2;
 		this.y = Config.topBarHeight + Config.margin;
 
-		System.out.println(x + " " + y + " " + width + " " + height + " "
-				+ tileSize + " " + Config.tileGutter);
+//		System.out.println(x + " " + y + " " + width + " " + height + " "
+//				+ tileSize + " " + Config.tileGutter);
 	}
 
+	public void newGame(){
+		player = new PlayerStatus(this);
+		move = new ArrayList<Move>();
+		this.shuffle(Board.DEFAULT_SHUFFLE);
+		isPlaying = true;
+		WinPanel.setVisible(false);
+	}
+	
 	public int getX() {
 		return x;
 	}
@@ -206,8 +217,8 @@ public class Board implements IUpdatable {
 		int cx = (board[x][y].getDrawX() + board[x + size][y].getDrawX() + tileSize) / 2;
 		int cy = (board[x][y].getDrawY() + board[x][y + size].getDrawY() + tileSize) / 2;
 		moveCenter = new Point(cx, cy);
-		System.out.println(moveCenter);
-		System.out.println(x + " " + y + " " + size + " " + board[x][y] + " " + board[x][y].getDrawX() + " " + board[x][y].getDrawY());
+//		System.out.println(moveCenter);
+//		System.out.println(x + " " + y + " " + size + " " + board[x][y] + " " + board[x][y].getDrawX() + " " + board[x][y].getDrawY());
 		
 		Tile tmp;
 		int s = size;
@@ -246,8 +257,10 @@ public class Board implements IUpdatable {
 					//System.out.println("!");
 				}
 			}
+		} else {
+			setBoard();
 		}
-		System.out.println(this);
+//		System.out.println(this);
 	}
 
 	public void undo(){
@@ -270,12 +283,16 @@ public class Board implements IUpdatable {
 		if((dx != dy) || (dx == 0 && dy == 0)){
 			return false;
 		}
-		for(int j = y1; j <= y2; j++){
-			for(int i = x1; i <= x2; i++){
-				if(!board[i][j].isATile()){
-					return false;
+		try{
+			for(int j = y1; j <= y2; j++){
+				for(int i = x1; i <= x2; i++){
+					if(!board[i][j].isATile()){
+						return false;
+					}
 				}
 			}
+		} catch (ArrayIndexOutOfBoundsException e) { 
+			return false;
 		}
 		return true;
 	}
@@ -333,8 +350,9 @@ public class Board implements IUpdatable {
 		boolean check = true;
 		for (int j = 0; j < board[0].length; j++) {
 			for (int i = 0; i < board.length; i++) {
-				if (!board[i][j].isCorrect())
+				if (!board[i][j].isCorrect()){
 					check = false;
+				}
 			}
 		}
 		return check;
@@ -343,75 +361,90 @@ public class Board implements IUpdatable {
 	public void update() {
 		// for each game loop...
 		
+		//FOR THE SAKE OF DEBUGGING
+		if(InputUtility.getKeyPressed(KeyEvent.VK_Z))
+			if(InputUtility.getKeyPressed(KeyEvent.VK_X))
+				if(InputUtility.getKeyPressed(KeyEvent.VK_C))
+						cheat();
+								
+		
 		//update location (if not playing animation)
-		
-		if(currentFrame >= Config.animationFrameCount){
-			setBoard();
-		}else{
-			currentFrame++;
-		}
-		
-		boolean same = selected == 2 && forFlip[0].getX() == forFlip[1].getX() && forFlip[0].getY() == forFlip[1].getY();	
-		if(move.size() > 0 && selected == 0){
-			Move latest = move.get(move.size() - 1);
+		if(isPlaying){
 			
-			if(InputUtility.getKeyTriggered(KeyEvent.VK_LEFT)){
+			if(currentFrame >= Config.animationFrameCount){
 				setBoard();
-				flip(latest.x, latest.y, latest.size, Board.CCW, true);
+			}else{
+				currentFrame++;
 			}
+			
+			boolean same = selected == 2 && forFlip[0].getX() == forFlip[1].getX() && forFlip[0].getY() == forFlip[1].getY();	
+			if(move.size() > 0 && selected == 0){
+				Move latest = move.get(move.size() - 1);
 				
-			if(InputUtility.getKeyTriggered(KeyEvent.VK_RIGHT)){
-				setBoard();
-				flip(latest.x, latest.y, latest.size, Board.CW, true);
+				if(InputUtility.getKeyTriggered(KeyEvent.VK_LEFT)){
+					setBoard();
+					flip(latest.x, latest.y, latest.size, Board.CCW, true);
+				}
+					
+				if(InputUtility.getKeyTriggered(KeyEvent.VK_RIGHT)){
+					setBoard();
+					flip(latest.x, latest.y, latest.size, Board.CW, true);
+				}
 			}
-		}
-		if(selected < 2){
-			Clickable.cwButton.setVisible(false);
-			Clickable.ccwButton.setVisible(false);
-			for (int i = 0; i < board.length; i++) {
-				for (int j = 0; j < board[0].length; j++) {
-					if (Utility.isPointOnTile(InputUtility.getPickedPoint(), this, i, j)) {
-						board[i][j].setMouseOn(true);
-						if (InputUtility.isPicking() || (InputUtility.isMouseReleased() && selected > 0)) {
-							if(InputUtility.isMouseReleased() && selected > 0 && forFlip[0].equals(new Point(i, j))){
-								continue;
+			if(selected < 2){
+				Clickable.cwButton.setVisible(false);
+				Clickable.ccwButton.setVisible(false);
+				for (int i = 0; i < board.length; i++) {
+					for (int j = 0; j < board[0].length; j++) {
+						if (Utility.isPointOnTile(InputUtility.getPickedPoint(), this, i, j)) {
+							board[i][j].setMouseOn(true);
+							if (InputUtility.isPicking() || (InputUtility.isMouseReleased() && selected > 0)) {
+								if(InputUtility.isMouseReleased() && selected > 0 && forFlip[0].equals(new Point(i, j))){
+									continue;
+								}
+								board[i][j].setSelected(true);
+								forFlip[selected] = new Point(i, j);
+								selected++;
 							}
-							board[i][j].setSelected(true);
-							forFlip[selected] = new Point(i, j);
-							selected++;
+						} else {
+							board[i][j].setMouseOn(false);
 						}
-					} else {
-						board[i][j].setMouseOn(false);
 					}
 				}
-			}
-			if(same)
-				selected = 1;
-		} else if(selected == 2) {
-			if(isValidMove((int) forFlip[0].getX(), (int) forFlip[0].getY(), (int) forFlip[1].getX(), (int) forFlip[1].getY())){
-				int x1 = (int) forFlip[0].getX();
-				int y1 = (int) forFlip[0].getY();
-				int x2 = (int) forFlip[1].getX();
-				int y2 = (int) forFlip[1].getY();
-				forFlip[0].setLocation(Math.min(x1,x2),	Math.min(y1,y2));
-				forFlip[1].setLocation(Math.max(x1,x2),	Math.max(y1,y2));
-				Clickable.cwButton.setVisible(true);
-				Clickable.ccwButton.setVisible(true);
-				if(InputUtility.getKeyTriggered(KeyEvent.VK_LEFT) || InputUtility.getKeyTriggered(KeyEvent.VK_A)){
-					Clickable.ccwButton.onClickAction();
+				if(same)
+					selected = 1;
+			} else if(selected == 2) {
+				if(isValidMove((int) forFlip[0].getX(), (int) forFlip[0].getY(), (int) forFlip[1].getX(), (int) forFlip[1].getY())){
+					int x1 = (int) forFlip[0].getX();
+					int y1 = (int) forFlip[0].getY();
+					int x2 = (int) forFlip[1].getX();
+					int y2 = (int) forFlip[1].getY();
+					forFlip[0].setLocation(Math.min(x1,x2),	Math.min(y1,y2));
+					forFlip[1].setLocation(Math.max(x1,x2),	Math.max(y1,y2));
+					Clickable.cwButton.setVisible(true);
+					Clickable.ccwButton.setVisible(true);
+					if(InputUtility.getKeyTriggered(KeyEvent.VK_LEFT) || InputUtility.getKeyTriggered(KeyEvent.VK_A)){
+						Clickable.ccwButton.onClickAction();
+					}
+					if(InputUtility.getKeyTriggered(KeyEvent.VK_RIGHT) || InputUtility.getKeyTriggered(KeyEvent.VK_D)){
+						Clickable.cwButton.onClickAction();
+					}
+				} else {
+					clearSelected();
 				}
-				if(InputUtility.getKeyTriggered(KeyEvent.VK_RIGHT) || InputUtility.getKeyTriggered(KeyEvent.VK_D)){
-					Clickable.cwButton.onClickAction();
-				}
-			} else {
-				clearSelected();
+				if(InputUtility.isPicking() && !Clickable.ccwButton.isMouseOn() && !Clickable.cwButton.isMouseOn())
+					clearSelected();
 			}
-			if(InputUtility.isPicking() && !Clickable.ccwButton.isMouseOn() && !Clickable.cwButton.isMouseOn())
-				clearSelected();
+			
+			//set enabled for tiles
+			setEnables();
+			isPlaying = !isWin();
+			
+		} else {
+			setBoard();
+			WinPanel.setVisible(true);
+			saveScore();
 		}
-		
-		//set enabled for tiles
-		setEnables();
 	}
 	
 	public void setEnables(){
@@ -452,6 +485,15 @@ public class Board implements IUpdatable {
 				board[i][j].setMoving(false);
 			}
 		}
+	}
+	
+	private void cheat(){
+		isPlaying = false;
+	}
+	
+	private void saveScore(){
+		//fill code
+		//file name = Game.levelDirectory;
 	}
 }
 

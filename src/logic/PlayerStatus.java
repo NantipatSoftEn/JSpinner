@@ -9,26 +9,26 @@ import ui.IRenderable;
 import lib.*;
 
 public class PlayerStatus implements IRenderable{
-	private int moved = 0;
+	private static int moved = 0;
 	private Board board;
 	
 	public PlayerStatus(Board playing){
 		this.board = playing;
 	}
 	
-	public void move() {
+	public static void move() {
 		moved++;
 	}
 	
-	public void decreaseMove() {
+	public static void decreaseMove() {
 		moved--;
 	}
 	
-	public void resetMove(){
+	public static void resetMove(){
 		moved = 0;
 	}
 	
-	public int getMoved(){
+	public static int getMoved(){
 		return moved;
 	}
 	
