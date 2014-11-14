@@ -30,6 +30,7 @@ public class Game{
 		
 		window.add(gameScreen);
 		window.setFrame();
+		window.pack();
 		
 		while(true){
 			try {

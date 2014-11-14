@@ -40,6 +40,7 @@ public class GameScreen extends JPanel{
 		
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
+		this.setVisible(true);
 		this.requestFocus();
 		
 		GameBackground gb = new GameBackground();
