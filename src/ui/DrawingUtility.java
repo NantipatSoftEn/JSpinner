@@ -30,7 +30,11 @@ public class DrawingUtility {
 	
 	public static final BufferedImage cwButtonImg = loadImage("res/img/cwButton.png");
 	public static final BufferedImage ccwButtonImg = loadImage("res/img/ccwButton.png");
+	public static final BufferedImage backButtonImg = loadImage("res/img/backButton.png");
+	public static final BufferedImage helpButtonImg = loadImage("res/img/helpButton.png");
+	public static final BufferedImage undoButtonImg = loadImage("res/img/undoButton.png");
 	public static final BufferedImage gameBG = loadImage("res/img/gameBG.png");
+	public static final BufferedImage cloudBG = loadImage("res/img/gameBG_cloud.png");
 	
 	public static BufferedImage loadImage(String directory){
 		try {

@@ -18,6 +18,8 @@ public class GameWindow extends JFrame {
 		super("JSpinner");
 		this.setLocationByPlatform(true);
 //		setFrame();
+		setSize(Config.screenWidth + 16, Config.screenHeight + 24);
+		setResizable(false);
 		
 //		while(true){
 //			gameTitle = new GameTitle(this);
@@ -35,6 +37,7 @@ public class GameWindow extends JFrame {
 	
 	public void setFrame(){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(Config.screenWidth + 16, Config.screenHeight + 24);
 		setVisible(true);
 		setResizable(false);
 	}

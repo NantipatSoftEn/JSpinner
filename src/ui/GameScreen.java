@@ -45,7 +45,7 @@ public class GameScreen extends JPanel{
 		
 		GameBackground gb = new GameBackground();
 		renderList.add(gb);
-//		(new Thread(gb)).start();
+		(new Thread(gb)).start();
 		
 		/////////////////Mouse/////////////////
 		this.addMouseListener(new MouseListener(){

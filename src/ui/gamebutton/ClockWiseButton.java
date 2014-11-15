@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import lib.Config;
+import lib.InputUtility;
 import logic.Board;
 import logic.IUpdatable;
 import logic.Tile;
@@ -34,21 +35,14 @@ public class ClockWiseButton extends Clickable implements IRenderable,
 	@Override
 	public void draw(Graphics g) {
 		if(isVisible){
-//			g.setColor(Color.LIGHT_GRAY);
-//			g.fillOval(x - 4, y - 4, width + 8, height + 8);
-//			g.setColor(Color.darkGray);
-//			if(isMouseOn()){
-//				g.setColor(Color.GRAY);
-//			}
-//			g.fillOval(x, y, width, height);
-//			g.setColor(Color.WHITE);
-//			Font font = new Font("Tahoma", Font.BOLD, 15);
-//			DrawingUtility.drawStringInBox("CW", font, x, y, width, height, DrawingUtility.TEXT_CENTER, g);
 			Graphics2D g2 = (Graphics2D) g;
 			if(!isMouseOn())
 				g2.drawImage(DrawingUtility.getClickableImg(DrawingUtility.cwButtonImg, DrawingUtility.STATE_NORMAL), null, x, y);
 			else
-				g2.drawImage(DrawingUtility.getClickableImg(DrawingUtility.cwButtonImg, DrawingUtility.STATE_HOVER), null, x, y);
+				if(InputUtility.isPicking())
+					g2.drawImage(DrawingUtility.getClickableImg(DrawingUtility.cwButtonImg, DrawingUtility.STATE_CLICK), null, x, y);
+				else	
+					g2.drawImage(DrawingUtility.getClickableImg(DrawingUtility.cwButtonImg, DrawingUtility.STATE_HOVER), null, x, y);
 		}
 	}
 	

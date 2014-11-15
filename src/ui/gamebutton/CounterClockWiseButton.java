@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import lib.Config;
+import lib.InputUtility;
 import logic.Board;
 import logic.IUpdatable;
 import logic.Tile;
@@ -48,7 +49,10 @@ public class CounterClockWiseButton extends Clickable implements IRenderable,
 			if(!isMouseOn())
 				g2.drawImage(DrawingUtility.getClickableImg(DrawingUtility.ccwButtonImg, DrawingUtility.STATE_NORMAL), null, x, y);
 			else
-				g2.drawImage(DrawingUtility.getClickableImg(DrawingUtility.ccwButtonImg, DrawingUtility.STATE_HOVER), null, x, y);
+				if(InputUtility.isPicking())
+					g2.drawImage(DrawingUtility.getClickableImg(DrawingUtility.ccwButtonImg, DrawingUtility.STATE_CLICK), null, x, y);
+				else	
+					g2.drawImage(DrawingUtility.getClickableImg(DrawingUtility.ccwButtonImg, DrawingUtility.STATE_HOVER), null, x, y);
 		}
 	}
 	

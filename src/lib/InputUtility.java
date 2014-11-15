@@ -31,11 +31,19 @@ public class InputUtility {
 	}
 	
 	public static void setKeyPressed(int key, boolean pressed) {
-		InputUtility.keyPressed[key] = pressed;
+		try{
+			InputUtility.keyPressed[key] = pressed;
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return;
+		}
 	}
 	
 	public static boolean getKeyPressed(int key) {
-		return keyPressed[key];
+		try{
+			return keyPressed[key];
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return false;
+		}	
 	}
 	
 	public static void setKeyTriggered(int key, boolean triggered) {
