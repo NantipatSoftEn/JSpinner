@@ -35,6 +35,7 @@ public class DrawingUtility {
 	public static final BufferedImage undoButtonImg = loadImage("res/img/undoButton.png");
 	public static final BufferedImage gameBG = loadImage("res/img/gameBG.png");
 	public static final BufferedImage cloudBG = loadImage("res/img/gameBG_cloud.png");
+	public static final BufferedImage correctImg = loadImage("res/img/correct.png");
 	
 	public static BufferedImage loadImage(String directory){
 		try {

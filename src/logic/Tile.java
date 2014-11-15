@@ -2,7 +2,12 @@ package logic;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+import java.awt.image.ColorModel;
 import java.util.Date;
 
 import javax.rmi.CORBA.Util;
@@ -168,25 +173,18 @@ public abstract class Tile implements IRenderable {
 		
 		g2.fill(tileRect);		// <<<<<<<<<<<<<<<<<<<< actually draw
 		
+		if (isCorrect() && !isMoving){
+			g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+			if(board.getBoardWidth() < 5)
+				g2.drawImage((Image)DrawingUtility.correctImg, drawX + 10, drawY + 10, size - 20, size - 20, null);
+			else
+				g2.drawImage((Image)DrawingUtility.correctImg, drawX + 6, drawY + 6, size - 12, size - 12, null);
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		}
+		
 		if(!isEnabled && !isSelected){
 			g.setColor(new Color(40,40,40,170));
 			g2.fill(tileRect);
-		}
-		
-		if (isCorrect() && !isMoving){
-			if(!isEnabled && !isSelected)
-				g.setColor(DrawingUtility.CORRECT.darker());
-			else
-				g.setColor(DrawingUtility.CORRECT);
-			g.fillOval(drawX + 10, drawY + 10, size - 20, size - 20);
-			g.setColor((new Color(re, gr, bl)));
-			if(isMouseOn)
-				g.setColor(g.getColor().brighter());
-			if(isEnabled)
-				g.setColor(g.getColor().brighter());
-			if(!isEnabled && !isSelected)
-				g.setColor(g.getColor().darker());
-			g.fillOval(drawX + 15, drawY + 15, size - 30, size - 30);
 		}
 		
 		Font font = new Font("Tahoma", Font.BOLD, 20);
