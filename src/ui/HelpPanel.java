@@ -28,8 +28,8 @@ public class HelpPanel implements IRenderable, IUpdatable {
 	public static BufferedImage[] help = new BufferedImage[PAGES];
 	public static HelpPanel helpPanel;
 	private int k = 0;
-	private Rectangle2D nextButton = new Rectangle2D.Double(x + 290, y + 430, 40, 20);
-	private Rectangle2D prevButton = new Rectangle2D.Double(x + 420, y + 430, 40, 20);
+	private Rectangle2D prevButton = new Rectangle2D.Double(x + 290, y + 430, 40, 20);
+	private Rectangle2D nextButton = new Rectangle2D.Double(x + 420, y + 430, 40, 20);
 	private Rectangle2D closeButton = new Rectangle2D.Double(x + 685, y + 25, 40, 40);
 	
 	static{
