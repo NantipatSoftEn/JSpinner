@@ -1,6 +1,6 @@
 /**
  * @author Thanawit Prasongpongchai (5631045321)
- * @author Phatrasek Jirabovonvisut (5630xxxx21)
+ * @author Phatrasek Jirabovonvisut (5630469621)
  */
 
 package logic;
@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 
 import ui.Clickable;
 import ui.GameScreen;
+import ui.HelpPanel;
 import ui.IRenderable;
 import ui.winpanel.WinPanel;
 import lib.*;
@@ -34,6 +35,7 @@ public class Board implements IUpdatable {
 	private List<Move> move;
 	private Point moveCenter = new Point(0, 0);
 	private boolean isPlaying = true;
+	private boolean isCheated = false;
 	
 	private int currentFrame = 0;
 
@@ -117,6 +119,7 @@ public class Board implements IUpdatable {
 		move = new ArrayList<Move>();
 		this.shuffle(Board.DEFAULT_SHUFFLE);
 		isPlaying = true;
+		isCheated = false;
 		clearSelected();
 		setEnables();
 		WinPanel.setVisible(false);
@@ -371,7 +374,7 @@ public class Board implements IUpdatable {
 								
 		
 		//update location (if not playing animation)
-		if(isPlaying){
+		if(isPlaying && !HelpPanel.isVisible()){
 			
 			if(currentFrame >= Config.animationFrameCount){
 				setBoard();
@@ -444,8 +447,10 @@ public class Board implements IUpdatable {
 			
 		} else {
 			setBoard();
-			WinPanel.setVisible(true);
-			saveScore();
+			if(isWin() || isCheated)
+				WinPanel.setVisible(true);
+			if(!isCheated)
+				saveScore();
 		}
 	}
 	
@@ -491,6 +496,7 @@ public class Board implements IUpdatable {
 	
 	private void cheat(){
 		isPlaying = false;
+		isCheated = true;
 	}
 	
 	private void saveScore(){

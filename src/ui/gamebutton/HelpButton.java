@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 
 import ui.Clickable;
 import ui.DrawingUtility;
+import ui.HelpPanel;
 import ui.IRenderable;
 import lib.Config;
 import lib.InputUtility;
@@ -41,6 +42,6 @@ public class HelpButton extends Clickable implements IRenderable {
 
 	@Override
 	public void onClickAction() {
-		JOptionPane.showMessageDialog(null, "HELP");
+		HelpPanel.helpPanel.setVisible(true);
 	}
 }

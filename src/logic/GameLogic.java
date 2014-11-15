@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ui.Clickable;
+import ui.HelpPanel;
 import ui.gamebutton.*;
 import ui.winpanel.WinPanel;
 
@@ -14,6 +15,7 @@ public class GameLogic {
 	public GameLogic(Board b){
 		updateList.add(b);
 		updateList.addAll(Clickable.buttons);
+		updateList.add(HelpPanel.helpPanel);
 //		updateList.addAll(WinPanel.winElements);
 	}
 	
