@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
 import java.io.*;
+import java.net.URISyntaxException;
 import java.util.*;
 
 import javax.rmi.CORBA.Util;
@@ -49,7 +50,11 @@ public class Board implements IUpdatable {
 
 	public Board(String directory) {
 		try {
-			Scanner in = new Scanner(new File(directory));
+			Scanner in;
+//			in = new Scanner(new File(Board.class.getClassLoader().getResource(directory).toURI()));
+//			System.out.println(directory);
+//			in = new Scanner(new File(directory));
+			in = new Scanner(getClass().getResourceAsStream(directory));
 			String tileInfo;
 			int boardX = in.nextInt();
 			int boardY = in.nextInt();
@@ -73,13 +78,18 @@ public class Board implements IUpdatable {
 			// board[i][j].setCurrentLocation(i, j);
 			// }
 			move = new ArrayList<Move>();
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Error loading file", "Error",
-					JOptionPane.ERROR_MESSAGE);
-		} catch (NumberFormatException e) {
+		} 
+//		catch (IOException e) {
+//			JOptionPane.showMessageDialog(null, "Error loading level file", "Error",
+//					JOptionPane.ERROR_MESSAGE);
+//		} 
+		catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "File format error", "Error",
 					JOptionPane.ERROR_MESSAGE);
-		}
+		} 
+//		catch (URISyntaxException e) {
+//			System.out.println("Error: URI");
+//		}
 	}
 
 	public void initiateBoard() {

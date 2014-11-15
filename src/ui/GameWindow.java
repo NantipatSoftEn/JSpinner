@@ -31,7 +31,7 @@ public class GameWindow extends JFrame {
 //		
 		//	BUG: If Game is initiated after another JPanel, it lost focus and cannot listen to keys
 		//	BUG: packing doesn't get the right size
-			game = new Game(this, "levels/3x3.txt");
+			game = new Game(this, "/res/levels/3x3.txt");
 //		}
 	}
 	
