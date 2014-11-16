@@ -47,6 +47,29 @@ public class Board implements IUpdatable {
 		initiateBoard();
 		adjustCenter();
 	}
+	public Board (Board in){
+		this.directory = in.directory;
+		String tileInfo;
+		int boardX = in.board.length;
+		int boardY = in.board[0].length;
+		this.player = in.player;
+		this.moveLimit = in.moveLimit;
+		this.bestScore = in.bestScore;
+		board = new Tile[boardX][boardY];
+		int k = 1;
+		for (int i = 0; i < boardY; i++) {
+			for (int j = 0; j < boardX; j++) {
+				this.board[x][y]= new SimpleTile(in.board[x][y],this);
+			}
+		}
+		adjustCenter();
+		// for (int i = 0; i < board.length; i++)
+		// for (int j = 0; j < board[0].length; j++) {
+		// board[i][j].setCurrentLocation(i, j);
+		// }
+		move = new ArrayList<Move>();
+		
+	}
 
 	public Board(String directory) {
 		try {
@@ -91,6 +114,7 @@ public class Board implements IUpdatable {
 			JOptionPane.showMessageDialog(null, "File format error", "Error",
 					JOptionPane.ERROR_MESSAGE);
 		}
+		
 		// catch (URISyntaxException e) {
 		// System.out.println("Error: URI");
 		// }

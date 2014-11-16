@@ -7,7 +7,9 @@ public class SimpleTile extends Tile{
 	public SimpleTile() {
 		super();
 	}
-	
+	public SimpleTile(Tile in,Board br){
+		super (in,br);
+	}
 	public SimpleTile(int number, Board belongsTo, int correctX, int correctY) {
 		super(number, belongsTo, correctX, correctY);
 	}
