@@ -486,8 +486,6 @@ public class Board implements IUpdatable {
 			setBoard();
 			if (isWin() || isCheated)
 				WinPanel.setVisible(true);
-			if (!isCheated)
-				saveScore();
 
 			if (isWin()) {
 				if (bestScore > move.size())
@@ -572,10 +570,7 @@ public class Board implements IUpdatable {
 		isCheated = true;
 	}
 
-	private void saveScore() {
-		// fill code
-		// file name = Game.levelDirectory;
-	}
+
 }
 
 class Move {
