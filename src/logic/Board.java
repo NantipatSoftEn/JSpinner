@@ -52,7 +52,7 @@ public class Board implements IUpdatable {
 		String tileInfo;
 		int boardX = in.board.length;
 		int boardY = in.board[0].length;
-		this.player = in.player;
+		this.player = new PlayerStatus(this);
 		this.moveLimit = in.moveLimit;
 		this.bestScore = in.bestScore;
 		board = new Tile[boardX][boardY];
