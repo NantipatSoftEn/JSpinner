@@ -47,13 +47,20 @@ public class InputUtility {
 	}
 	
 	public static void setKeyTriggered(int key, boolean triggered) {
-		if(!keyTriggered[key]){
-			InputUtility.keyTriggered[key] = triggered;
-		}
+		try{
+			if(!keyTriggered[key])
+				InputUtility.keyTriggered[key] = triggered;
+		} catch (ArrayIndexOutOfBoundsException e) {
+		}	
+			
 	}
 	
 	public static boolean getKeyTriggered(int key) {
-		return keyTriggered[key];
+		try{
+			return keyTriggered[key];
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return false;
+		}
 	}
 	
 	public static void setMouseReleased(boolean mouseReleased) {

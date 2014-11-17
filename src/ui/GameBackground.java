@@ -17,7 +17,7 @@ public class GameBackground implements IRenderable, Runnable {
 	private AffineTransform at = new AffineTransform();
 	private AffineTransformOp ato;
 	private int cloudWidth = DrawingUtility.cloudBG.getWidth();
-	private int anim1X = - cloudWidth;
+	private int anim1X = -cloudWidth;
 	private int anim2X = 0;
 	private int anim3X = cloudWidth;
 	

@@ -18,30 +18,30 @@ import logic.Game;
 
 public class GameWindow extends JFrame {
 	
-	GameTitle gameTitle;
-	Game game;
+	private GameTitle gameTitle;
+	private Game game;
+	public static GameBackground gameBackground;
 	
 	public GameWindow(){
 		super("JSpinner");
 		this.setLocationByPlatform(true);
-//		setFrame();
-		setSize(Config.screenWidth + 16, Config.screenHeight + 24);
-		setResizable(false);
-		
 		Container pane = this.getContentPane();
 		addListener(pane);
+		setFrame();
+		setSize(Config.screenWidth + 16, Config.screenHeight + 24);
+		setResizable(false);		
 				
-//		while(true){
-			gameTitle = new GameTitle(this);
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-			}
-			this.remove(gameTitle);
+		gameBackground = new GameBackground();
+		(new Thread(gameBackground)).start();
 		
+		while(true){
+			gameTitle = new GameTitle(this);
+			this.remove(gameTitle);
+			
 		//	BUG: packing doesn't get the right size
-			game = new Game(this, "/res/levels/3x3.txt");
-//		}
+			game = new Game(this, "/res/levels/testFreeze.txt");
+			this.remove((JPanel) (game.getGameScreen()));
+		}
 	}
 	
 	public void addPanel(JPanel jp){

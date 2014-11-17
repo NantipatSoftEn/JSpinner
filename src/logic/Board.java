@@ -68,6 +68,8 @@ public class Board implements IUpdatable {
 					tileInfo = in.next();
 					if (tileInfo.substring(0, 1).equalsIgnoreCase("S"))
 						board[j][i] = new SimpleTile(k++, this, j, i);
+					if (tileInfo.substring(0, 1).equalsIgnoreCase("F"))
+						board[j][i] = new FreezeTile(k++, this, j, i);
 					if (tileInfo.substring(0, 1).equalsIgnoreCase("-"))
 						board[j][i] = new SimpleTile(Tile.NOT_A_TILE, this, j, i);
 				}
@@ -226,56 +228,59 @@ public class Board implements IUpdatable {
 	
 	public void flip(int x, int y, int size, int direction, boolean isPlaying){
 		//new move logic: rotation
-		
-		//set move center for drawing animation
-		
-		int cx = (board[x][y].getDrawX() + board[x + size][y].getDrawX() + tileSize) / 2;
-		int cy = (board[x][y].getDrawY() + board[x][y + size].getDrawY() + tileSize) / 2;
-		moveCenter = new Point(cx, cy);
-//		System.out.println(moveCenter);
-//		System.out.println(x + " " + y + " " + size + " " + board[x][y] + " " + board[x][y].getDrawX() + " " + board[x][y].getDrawY());
-		
-		Tile tmp;
-		int s = size;
-		if(direction == CCW){
-			for(int j = 0; j < (size + 1) / 2; j++){
-				for(int i = j; i < s; i++){
-					tmp = board[x + i][y + j];
-					board[x + i][y + j] = board[x + size - j][y + i];
-					board[x + size - j][y + i] = board[x + size - i][y + size - j];
-					board[x + size - i][y + size - j] = board[x + j][y + size - i];
-					board[x + j][y + size - i] = tmp;
+		if(isValidMove(x, y, x + size, y + size, isPlaying)){
+			//set move center for drawing animation
+			int cx = (board[x][y].getDrawX() + board[x + size][y].getDrawX() + tileSize) / 2;
+			int cy = (board[x][y].getDrawY() + board[x][y + size].getDrawY() + tileSize) / 2;
+			moveCenter = new Point(cx, cy);
+			
+			Tile tmp;
+			int s = size;
+			if(direction == CCW){
+				for(int j = 0; j < (size + 1) / 2; j++){
+					for(int i = j; i < s; i++){
+						tmp = board[x + i][y + j];
+						board[x + i][y + j] = board[x + size - j][y + i];
+						board[x + size - j][y + i] = board[x + size - i][y + size - j];
+						board[x + size - i][y + size - j] = board[x + j][y + size - i];
+						board[x + j][y + size - i] = tmp;
+					}
+					s--;
 				}
-				s--;
+			} else if(direction == CW) {
+				for(int j = 0; j < (size + 1) / 2; j++){
+					for(int i = j; i < s; i++){
+						tmp = board[x + i][y + j];
+						board[x + i][y + j] = board[x + j][y + size - i];
+						board[x + j][y + size - i] = board[x + size - i][y + size - j];
+						board[x + size - i][y + size - j] = board[x + size - j][y + i];
+						board[x + size - j][y + i] = tmp;
+					}
+					s--;
+				}
 			}
-		} else if(direction == CW) {
-			for(int j = 0; j < (size + 1) / 2; j++){
-				for(int i = j; i < s; i++){
-					tmp = board[x + i][y + j];
-					board[x + i][y + j] = board[x + j][y + size - i];
-					board[x + j][y + size - i] = board[x + size - i][y + size - j];
-					board[x + size - i][y + size - j] = board[x + size - j][y + i];
-					board[x + size - j][y + i] = tmp;
+			
+			if(isPlaying){
+				move.add(new Move(x, y, size, direction));
+	//			System.out.println("("+x+","+y+")"+" "+size+"--"+direction);
+				player.move();
+				currentFrame = 0;
+				for(int j = 0; j <= size; j++){
+					for(int i = 0; i <= size; i++){
+						board[x + i][y + j].setMoving(true);
+					}
 				}
-				s--;
+				
+				for (int j = 0; j < board[0].length; j++) {
+					for (int i = 0; i < board.length; i++) {
+						board[i][j].performEffect();
+					}
+				}
+				
+			} else {
+				setBoard();
 			}
 		}
-		
-		if(isPlaying){
-			move.add(new Move(x, y, size, direction));
-//			System.out.println("("+x+","+y+")"+" "+size+"--"+direction);
-			player.move();
-			currentFrame = 0;
-			for(int j = 0; j <= size; j++){
-				for(int i = 0; i <= size; i++){
-					board[x + i][y + j].setMoving(true);
-					//System.out.println("!");
-				}
-			}
-		} else {
-			setBoard();
-		}
-//		System.out.println(this);
 	}
 
 	public void undo(){
@@ -290,7 +295,7 @@ public class Board implements IUpdatable {
 		}
 	}
 	
-	public boolean isValidMove(int x1, int y1, int x2, int y2){
+	public boolean isValidMove(int x1, int y1, int x2, int y2, boolean playing){
 		int dx = Math.abs(x2 - x1);
 		int dy = Math.abs(y2 - y1);
 		if(x2 < x1){ int tmp = x1; x1 = x2; x2 = tmp;}
@@ -302,6 +307,9 @@ public class Board implements IUpdatable {
 			for(int j = y1; j <= y2; j++){
 				for(int i = x1; i <= x2; i++){
 					if(!board[i][j].isATile()){
+						return false;
+					}
+					if(playing && ((board[i][j] instanceof FreezeTile) && ((FreezeTile) board[i][j]).isLocked())){
 						return false;
 					}
 				}
@@ -344,9 +352,7 @@ public class Board implements IUpdatable {
 			else size = 0;
 						
 			int rotation = Utility.random(0, 2) == 0 ? CW : CCW;
-			if(isValidMove(x, y, x + size, y + size)){
-				flip(x, y, size, rotation, false);
-			}
+			flip(x, y, size, rotation, false);
 		}
 	}
 
@@ -382,7 +388,6 @@ public class Board implements IUpdatable {
 				if(InputUtility.getKeyPressed(KeyEvent.VK_C))
 						cheat();
 								
-		
 		//update location (if not playing animation)
 		if(isPlaying && !HelpPanel.isVisible()){
 			
@@ -429,7 +434,7 @@ public class Board implements IUpdatable {
 				if(same)
 					selected = 1;
 			} else if(selected == 2) {
-				if(isValidMove((int) forFlip[0].getX(), (int) forFlip[0].getY(), (int) forFlip[1].getX(), (int) forFlip[1].getY())){
+				if(isValidMove((int) forFlip[0].getX(), (int) forFlip[0].getY(), (int) forFlip[1].getX(), (int) forFlip[1].getY(), true)){
 					int x1 = (int) forFlip[0].getX();
 					int y1 = (int) forFlip[0].getY();
 					int x2 = (int) forFlip[1].getX();
@@ -474,7 +479,7 @@ public class Board implements IUpdatable {
 		} else if(selected == 1){
 			for (int j = 0; j < board[0].length; j++) {
 				for (int i = 0; i < board.length; i++) {
-					if(isValidMove((int)forFlip[0].getX(), (int)forFlip[0].getY(), i, j)){
+					if(isValidMove((int)forFlip[0].getX(), (int)forFlip[0].getY(), i, j, true)){
 						board[i][j].setEnabled(true);
 					} else { 
 						board[i][j].setEnabled(false);

@@ -11,19 +11,21 @@ import ui.GameWindow;
 
 public class Game{
 	private Board board;
-	GameScreen gameScreen;
+	private GameScreen gameScreen;
 	private GameLogic gameLogic;
-	private boolean playing;
+	private static boolean playing;
 	private static String levelDirectory;
 	
 	public Game(GameWindow window, String levelDirectory){
 		
 //		board = new Board(3, 2);
+				
 		board = new Board(levelDirectory);
 		gameScreen = new GameScreen(board);
 		gameLogic = new GameLogic(board);
 		Clickable.board = board;
 		Game.levelDirectory = levelDirectory;
+		Game.playing = true;
 		
 		//GAME START
 		board.shuffle(Board.DEFAULT_SHUFFLE);
@@ -32,7 +34,7 @@ public class Game{
 		window.setFrame();
 		window.pack();
 		
-		while(true){
+		while(playing){
 			try {
 				Thread.sleep(20);
 			} catch(InterruptedException e) {
@@ -45,5 +47,13 @@ public class Game{
 	
 	public String getLevelDirectory() {
 		return levelDirectory;
+	}
+	
+	public static void setPlaying(boolean playing) {
+		Game.playing = playing;
+	}
+	
+	public GameScreen getGameScreen() {
+		return gameScreen;
 	}
 }

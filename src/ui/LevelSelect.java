@@ -18,9 +18,9 @@ import javax.swing.JPanel;
 import lib.Config;
 import lib.InputUtility;
 
-public class GameTitle extends JPanel {
+public class LevelSelect extends JPanel {
 	private List<IRenderable> renderList = new ArrayList<IRenderable>();
-	public GameTitle(GameWindow window) {
+	public LevelSelect(GameWindow window) {
 		super();
 		window.addPanel(this);
 		window.setFrame();
@@ -53,6 +53,6 @@ public class GameTitle extends JPanel {
 		
 		//DrawLogo
 		Font font = new Font("Tahoma", Font.BOLD, 70);
-		DrawingUtility.drawStringInBox("JSpinner", font, 0, 0, Config.screenWidth, Config.screenHeight * 2 / 3, DrawingUtility.TEXT_CENTER, g2);
+		DrawingUtility.drawStringInBox("Level Select", font, 0, 0, Config.screenWidth, Config.screenHeight * 2 / 3, DrawingUtility.TEXT_CENTER, g2);
 	}
 }

@@ -12,6 +12,7 @@ import ui.IRenderable;
 import lib.Config;
 import lib.InputUtility;
 import logic.Board;
+import logic.Game;
 
 public class BackButton extends Clickable implements IRenderable {
 	public BackButton(){
@@ -42,5 +43,6 @@ public class BackButton extends Clickable implements IRenderable {
 	@Override
 	public void onClickAction() {
 		JOptionPane.showMessageDialog(null, "BACK");
+		Game.setPlaying(false);
 	}
 }
