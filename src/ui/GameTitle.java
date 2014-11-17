@@ -20,32 +20,32 @@ public class GameTitle extends JPanel {
 	private List<IRenderable> renderList = new ArrayList<IRenderable>();
 	public GameTitle(GameWindow window) {
 		super();
-		window.add(this);
+		window.addPanel(this);
 		window.setFrame();
 		setPreferredSize(new Dimension(Config.screenWidth, Config.screenHeight));
 		window.pack();
-		this.setFocusable(true);
-		this.requestFocus();
-		this.addKeyListener(new KeyListener() {
-			
-			@Override
-			public void keyTyped(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void keyReleased(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-				JOptionPane.showMessageDialog(null, "!");
-			}
-			
-			@Override
-			public void keyPressed(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+//		this.setFocusable(true);
+//		this.requestFocus();
+//		this.addKeyListener(new KeyListener() {
+//			
+//			@Override
+//			public void keyTyped(KeyEvent arg0) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//			
+//			@Override
+//			public void keyReleased(KeyEvent arg0) {
+//				// TODO Auto-generated method stub
+//				JOptionPane.showMessageDialog(null, "!");
+//			}
+//			
+//			@Override
+//			public void keyPressed(KeyEvent arg0) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//		});
 	}
 	
 	@Override
