@@ -24,8 +24,8 @@ import lib.*;
 
 public class Board implements IUpdatable {
 	public static final int DEFAULT_SHUFFLE = 2000;
-	public static final int CW = -1;	
-	public static final int CCW = 1;	
+	public static final int CW = -1;
+	public static final int CCW = 1;
 
 	private Tile[][] board;
 	private int x, y, width, height, selected = 0;
@@ -37,7 +37,7 @@ public class Board implements IUpdatable {
 	private Point moveCenter = new Point(0, 0);
 	private boolean isPlaying = true;
 	private boolean isCheated = false;
-	
+	private String directory;
 	private int currentFrame = 0;
 
 	public Board(int width, int height) {
@@ -45,7 +45,30 @@ public class Board implements IUpdatable {
 		player = new PlayerStatus(this);
 		move = new ArrayList<Move>();
 		initiateBoard();
-		adjustCenter();	
+		adjustCenter();
+	}
+	public Board (Board in){
+		this.directory = in.directory;
+		String tileInfo;
+		int boardX = in.board.length;
+		int boardY = in.board[0].length;
+		this.player = new PlayerStatus(this);
+		this.moveLimit = in.moveLimit;
+		this.bestScore = in.bestScore;
+		board = new Tile[boardX][boardY];
+		int k = 1;
+		for (int i = 0; i < boardY; i++) {
+			for (int j = 0; j < boardX; j++) {
+				this.board[x][y]= new SimpleTile(in.board[x][y],this);
+			}
+		}
+		adjustCenter();
+		// for (int i = 0; i < board.length; i++)
+		// for (int j = 0; j < board[0].length; j++) {
+		// board[i][j].setCurrentLocation(i, j);
+		// }
+		move = new ArrayList<Move>();
+		
 	}
 
 	public Board(String directory) throws LevelFormatException, IOException {
@@ -85,11 +108,12 @@ public class Board implements IUpdatable {
 			}
 			adjustCenter();
 			move = new ArrayList<Move>();
-		} 
-//		catch (IOException e) {
-//			JOptionPane.showMessageDialog(null, "Error loading level file", "Error",
-//					JOptionPane.ERROR_MESSAGE);
-//		} 
+		}
+		// catch (IOException e) {
+		// JOptionPane.showMessageDialog(null, "Error loading level file",
+		// "Error",
+		// JOptionPane.ERROR_MESSAGE);
+		// }
 		catch (NumberFormatException e) {
 			throw new LevelFormatException(directory);
 		} 
@@ -129,11 +153,11 @@ public class Board implements IUpdatable {
 		this.x = Config.screenWidth / 2 - width / 2;
 		this.y = Config.topBarHeight + Config.margin;
 
-//		System.out.println(x + " " + y + " " + width + " " + height + " "
-//				+ tileSize + " " + Config.tileGutter);
+		// System.out.println(x + " " + y + " " + width + " " + height + " "
+		// + tileSize + " " + Config.tileGutter);
 	}
 
-	public void newGame(){
+	public void newGame() {
 		player = new PlayerStatus(this);
 		move = new ArrayList<Move>();
 		this.shuffle(Board.DEFAULT_SHUFFLE);
@@ -143,7 +167,7 @@ public class Board implements IUpdatable {
 		setEnables();
 		WinPanel.setVisible(false);
 	}
-	
+
 	public int getX() {
 		return x;
 	}
@@ -175,10 +199,11 @@ public class Board implements IUpdatable {
 	public int getTileSize() {
 		return tileSize;
 	}
-	
+
 	public int getMoveCenterX() {
 		return (int) moveCenter.getX();
 	}
+
 	public int getMoveCenterY() {
 		return (int) moveCenter.getY();
 	}
@@ -188,8 +213,8 @@ public class Board implements IUpdatable {
 		int ty = j * (tileSize + Config.tileGutter) + y;
 		return new Point(tx, ty);
 	}
-	
-	public Tile getTileAt(int i, int j){
+
+	public Tile getTileAt(int i, int j) {
 		return board[i][j];
 	}
 
@@ -200,41 +225,40 @@ public class Board implements IUpdatable {
 	public int getBestScore() {
 		return bestScore;
 	}
-	
-	public int getFlipX(){
+
+	public int getFlipX() {
 		return (int) forFlip[0].getX();
 	}
-	
-	public int getFlipY(){
+
+	public int getFlipY() {
 		return (int) forFlip[0].getY();
 	}
-	
-	public int getFlipSize(){
+
+	public int getFlipSize() {
 		return Math.abs(forFlip[0].x - forFlip[1].x);
 	}
-	
+
 	public int getCurrentFrame() {
 		return currentFrame;
 	}
-	
+
 	public Move getLatestMove() {
-		if(move.size() > 0)
-			return move.get(move.size()-1);
+		if (move.size() > 0)
+			return move.get(move.size() - 1);
 		else
 			return null;
 	}
-	
-	public void clearSelected(){
+
+	public void clearSelected() {
 		selected = 0;
-		for(int j = 0; j < board[0].length; j++){
-			for(int i = 0; i < board.length; i++){
+		for (int j = 0; j < board[0].length; j++) {
+			for (int i = 0; i < board.length; i++) {
 				board[i][j].setSelected(false);
 			}
 		}
 	}
 	
 	public void flip(int x, int y, int size, int direction, boolean isPlaying){
-		//new move logic: rotation
 		if(isValidMove(x, y, x + size, y + size, isPlaying)){
 			//set move center for drawing animation
 			int cx = (board[x][y].getDrawX() + board[x + size][y].getDrawX() + tileSize) / 2;
@@ -282,6 +306,7 @@ public class Board implements IUpdatable {
 					for (int i = 0; i < board.length; i++) {
 						board[i][j].performEffect();
 					}
+
 				}
 				
 			} else {
@@ -290,30 +315,39 @@ public class Board implements IUpdatable {
 		}
 	}
 
-	public void undo(){
+	public void undo() {
 		int i = move.size() - 1;
-		try{
+		try {
 			Move latest = move.get(i);
 			move.remove(i);
 			flip(latest.x, latest.y, latest.size, latest.dir * -1, false);
 			player.decreaseMove();
-		} catch(ArrayIndexOutOfBoundsException e) {
+		} catch (ArrayIndexOutOfBoundsException e) {
 			JOptionPane.showMessageDialog(null, "not Undoable!");
 		}
 	}
 	
 	public boolean isValidMove(int x1, int y1, int x2, int y2, boolean playing){
+
 		int dx = Math.abs(x2 - x1);
 		int dy = Math.abs(y2 - y1);
-		if(x2 < x1){ int tmp = x1; x1 = x2; x2 = tmp;}
-		if(y2 < y1){ int tmp = y1; y1 = y2; y2 = tmp;}
-		if((dx != dy) || (dx == 0 && dy == 0)){
+		if (x2 < x1) {
+			int tmp = x1;
+			x1 = x2;
+			x2 = tmp;
+		}
+		if (y2 < y1) {
+			int tmp = y1;
+			y1 = y2;
+			y2 = tmp;
+		}
+		if ((dx != dy) || (dx == 0 && dy == 0)) {
 			return false;
 		}
-		try{
-			for(int j = y1; j <= y2; j++){
-				for(int i = x1; i <= x2; i++){
-					if(!board[i][j].isATile()){
+		try {
+			for (int j = y1; j <= y2; j++) {
+				for (int i = x1; i <= x2; i++) {
+					if (!board[i][j].isATile()) {
 						return false;
 					}
 					if(playing && ((board[i][j] instanceof FreezeTile) && ((FreezeTile) board[i][j]).isLocked())){
@@ -321,7 +355,7 @@ public class Board implements IUpdatable {
 					}
 				}
 			}
-		} catch (ArrayIndexOutOfBoundsException e) { 
+		} catch (ArrayIndexOutOfBoundsException e) {
 			return false;
 		}
 		return true;
@@ -333,33 +367,32 @@ public class Board implements IUpdatable {
 		for (int i = 0; i < times; i++) {
 			int x = Utility.random(0, board.length);
 			int y = Utility.random(0, board[0].length);
-			int dir = Utility.random(0, 4); 
-				// 0 for NE 
-				// 1 for SE 
-				// 2 for SW 
-				// 3 for NW
+			int dir = Utility.random(0, 4);
+			// 0 for NE
+			// 1 for SE
+			// 2 for SW
+			// 3 for NW
 			int size;
-						
-			if(dir == 0){
+
+			if (dir == 0) {
 				size = Utility.random(0, Math.min(board[0].length - x, y));
 				y -= size;
-			}
-			else if(dir == 1){
-				size = Utility.random(0, Math.min(board[0].length - x, board.length - y));
-			}
-			else if(dir == 2){
+			} else if (dir == 1) {
+				size = Utility.random(0,
+						Math.min(board[0].length - x, board.length - y));
+			} else if (dir == 2) {
 				size = Utility.random(0, Math.min(x, board.length - y));
 				x -= size;
-			}
-			else if(dir == 3){
+			} else if (dir == 3) {
 				size = Utility.random(0, Math.min(x, y));
 				x -= size;
 				y -= size;
-			}
-			else size = 0;
-						
+			} else
+				size = 0;
+
 			int rotation = Utility.random(0, 2) == 0 ? CW : CCW;
 			flip(x, y, size, rotation, false);
+
 		}
 	}
 
@@ -378,7 +411,7 @@ public class Board implements IUpdatable {
 		boolean check = true;
 		for (int j = 0; j < board[0].length; j++) {
 			for (int i = 0; i < board.length; i++) {
-				if (!board[i][j].isCorrect()){
+				if (!board[i][j].isCorrect()) {
 					check = false;
 				}
 			}
@@ -396,37 +429,43 @@ public class Board implements IUpdatable {
 						cheat();
 								
 		//update location (if not playing animation)
-		if(isPlaying && !HelpPanel.isVisible()){
-			
+		if(isPlaying && !HelpPanel.isVisible()){		
 			if(currentFrame >= Config.animationFrameCount){
+
 				setBoard();
-			}else{
+			} else {
 				currentFrame++;
 			}
-			
-			boolean same = selected == 2 && forFlip[0].getX() == forFlip[1].getX() && forFlip[0].getY() == forFlip[1].getY();	
-			if(move.size() > 0 && selected == 0){
+
+			boolean same = selected == 2
+					&& forFlip[0].getX() == forFlip[1].getX()
+					&& forFlip[0].getY() == forFlip[1].getY();
+			if (move.size() > 0 && selected == 0) {
 				Move latest = move.get(move.size() - 1);
-				
-				if(InputUtility.getKeyTriggered(KeyEvent.VK_LEFT)){
+
+				if (InputUtility.getKeyTriggered(KeyEvent.VK_LEFT)) {
 					setBoard();
 					flip(latest.x, latest.y, latest.size, Board.CCW, true);
 				}
-					
-				if(InputUtility.getKeyTriggered(KeyEvent.VK_RIGHT)){
+
+				if (InputUtility.getKeyTriggered(KeyEvent.VK_RIGHT)) {
 					setBoard();
 					flip(latest.x, latest.y, latest.size, Board.CW, true);
 				}
 			}
-			if(selected < 2){
+			if (selected < 2) {
 				Clickable.cwButton.setVisible(false);
 				Clickable.ccwButton.setVisible(false);
 				for (int i = 0; i < board.length; i++) {
 					for (int j = 0; j < board[0].length; j++) {
-						if (Utility.isPointOnTile(InputUtility.getPickedPoint(), this, i, j)) {
+						if (Utility.isPointOnTile(
+								InputUtility.getPickedPoint(), this, i, j)) {
 							board[i][j].setMouseOn(true);
-							if (InputUtility.isPicking() || (InputUtility.isMouseReleased() && selected > 0)) {
-								if(InputUtility.isMouseReleased() && selected > 0 && forFlip[0].equals(new Point(i, j))){
+							if (InputUtility.isPicking()
+									|| (InputUtility.isMouseReleased() && selected > 0)) {
+								if (InputUtility.isMouseReleased()
+										&& selected > 0
+										&& forFlip[0].equals(new Point(i, j))) {
 									continue;
 								}
 								board[i][j].setSelected(true);
@@ -438,7 +477,7 @@ public class Board implements IUpdatable {
 						}
 					}
 				}
-				if(same)
+				if (same)
 					selected = 1;
 			} else if(selected == 2) {
 				if(isValidMove((int) forFlip[0].getX(), (int) forFlip[0].getY(), (int) forFlip[1].getX(), (int) forFlip[1].getY(), true)){
@@ -446,92 +485,127 @@ public class Board implements IUpdatable {
 					int y1 = (int) forFlip[0].getY();
 					int x2 = (int) forFlip[1].getX();
 					int y2 = (int) forFlip[1].getY();
-					forFlip[0].setLocation(Math.min(x1,x2),	Math.min(y1,y2));
-					forFlip[1].setLocation(Math.max(x1,x2),	Math.max(y1,y2));
+					forFlip[0].setLocation(Math.min(x1, x2), Math.min(y1, y2));
+					forFlip[1].setLocation(Math.max(x1, x2), Math.max(y1, y2));
 					Clickable.cwButton.setVisible(true);
 					Clickable.ccwButton.setVisible(true);
-					if(InputUtility.getKeyTriggered(KeyEvent.VK_LEFT) || InputUtility.getKeyTriggered(KeyEvent.VK_A)){
+					if (InputUtility.getKeyTriggered(KeyEvent.VK_LEFT)
+							|| InputUtility.getKeyTriggered(KeyEvent.VK_A)) {
 						Clickable.ccwButton.onClickAction();
 					}
-					if(InputUtility.getKeyTriggered(KeyEvent.VK_RIGHT) || InputUtility.getKeyTriggered(KeyEvent.VK_D)){
+					if (InputUtility.getKeyTriggered(KeyEvent.VK_RIGHT)
+							|| InputUtility.getKeyTriggered(KeyEvent.VK_D)) {
 						Clickable.cwButton.onClickAction();
 					}
 				} else {
 					clearSelected();
 				}
-				if(InputUtility.isPicking() && !Clickable.ccwButton.isMouseOn() && !Clickable.cwButton.isMouseOn())
+				if (InputUtility.isPicking()
+						&& !Clickable.ccwButton.isMouseOn()
+						&& !Clickable.cwButton.isMouseOn())
 					clearSelected();
 			}
-			
-			//set enabled for tiles
+
+			// set enabled for tiles
 			setEnables();
 			isPlaying = !isWin();
-			
+
 		} else {
 			setBoard();
-			if(isWin() || isCheated)
+			if (isWin() || isCheated)
 				WinPanel.setVisible(true);
-			if(!isCheated)
-				saveScore();
+
+			if (isWin()) {
+				if (bestScore > move.size())
+					updateHighScore();
+
+			}
+
 		}
 	}
-	
-	public void setEnables(){
-		if(selected == 0){
+
+	private void updateHighScore() {
+		Writer writer = null;
+
+		try {
+			writer = new BufferedWriter(new OutputStreamWriter(
+					new FileOutputStream(directory), "utf-8"));
+			writer.write("" + board.length + " " + board[0].length + "\n"
+					+ moveLimit + "\n" + move.size());
+			for(int i =0 ;i<board[0].length;i++)
+				for(int j=0;j<board.length;j++)
+				{
+					if(board[i][j].isATile())
+						writer.write("S ");
+					else
+						writer.write("- ");
+				}
+		} catch (IOException ex) {
+		} finally {
+			try {
+				writer.close();
+			} catch (Exception ex) {
+			}
+		}
+		// TODO Auto-generated method stub
+
+	}
+
+	public void setEnables() {
+		if (selected == 0) {
 			for (int j = 0; j < board[0].length; j++) {
 				for (int i = 0; i < board.length; i++) {
 					board[i][j].setEnabled(true);
 				}
 			}
-		} else if(selected == 1){
+		} else if (selected == 1) {
 			for (int j = 0; j < board[0].length; j++) {
 				for (int i = 0; i < board.length; i++) {
 					if(isValidMove((int)forFlip[0].getX(), (int)forFlip[0].getY(), i, j, true)){
 						board[i][j].setEnabled(true);
-					} else { 
+					} else {
 						board[i][j].setEnabled(false);
 					}
 				}
 			}
-		} else if(selected == 2){
+		} else if (selected == 2) {
 			for (int j = 0; j < board[0].length; j++) {
 				for (int i = 0; i < board.length; i++) {
-					if(forFlip[0].getX() <= i && i <= forFlip[1].getX() && forFlip[0].getY() <= j && j <= forFlip[1].getY()){
+					if (forFlip[0].getX() <= i && i <= forFlip[1].getX()
+							&& forFlip[0].getY() <= j && j <= forFlip[1].getY()) {
 						board[i][j].setEnabled(true);
-					} else { 
+					} else {
 						board[i][j].setEnabled(false);
 					}
 				}
 			}
 		}
 	}
-	
-	public void setBoard(){
-		for (int j = 0; j < board[0].length; j++){
-			for (int i = 0; i < board.length; i++){
+
+	public void setBoard() {
+		for (int j = 0; j < board[0].length; j++) {
+			for (int i = 0; i < board.length; i++) {
 				board[i][j].setCurrentLocation(i, j);
 				board[i][j].setDrawLocation();
 				board[i][j].setMoving(false);
 			}
 		}
 	}
-	
-	private void cheat(){
+
+	private void cheat() {
 		isPlaying = false;
 		isCheated = true;
 	}
-	
-	private void saveScore(){
-		//fill code
-		//file name = Game.levelDirectory;
-	}
+
+
 }
 
-class Move{
+class Move {
 	public int x, y;
 	public int dir;
 	public int size;
-	public Move(int x, int y, int size, int dir){
+
+	public Move(int x, int y, int size, int dir) {
 		this.x = x;
 		this.y = y;
 		this.size = size;
