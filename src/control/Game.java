@@ -2,6 +2,7 @@ package control;
 
 import java.io.IOException;
 
+import javax.print.attribute.standard.Finishings;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -18,6 +19,7 @@ public class Game{
 	private GameScreen gameScreen;
 	private GameLogic gameLogic;
 	private static String levelDirectory;
+	public static volatile boolean finishUpdate = false;
 	
 	public Game(GameWindow window, String levelDirectory) throws LevelFormatException, IOException{
 		
