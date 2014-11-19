@@ -11,6 +11,7 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.*;
 
+import control.GameWindow;
 import ui.gamebutton.*;
 import ui.winpanel.WinPanel;
 import lib.*;

@@ -6,13 +6,13 @@ import java.awt.Graphics2D;
 
 import javax.swing.JOptionPane;
 
+import control.Game;
 import ui.Clickable;
 import ui.DrawingUtility;
 import ui.IRenderable;
 import lib.Config;
 import lib.InputUtility;
 import logic.Board;
-import logic.Game;
 
 public class BackButton extends Clickable implements IRenderable {
 	public BackButton(){

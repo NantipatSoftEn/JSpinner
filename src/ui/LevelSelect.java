@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import control.GameWindow;
 import lib.Config;
 import lib.InputUtility;
 

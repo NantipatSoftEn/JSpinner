@@ -1,4 +1,4 @@
-package ui;
+package control;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -8,13 +8,17 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.IOException;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import ui.GameBackground;
+import ui.GameTitle;
 import lib.Config;
 import lib.InputUtility;
-import logic.Game;
+import logic.LevelFormatException;
 
 public class GameWindow extends JFrame {
 	
@@ -38,9 +42,15 @@ public class GameWindow extends JFrame {
 			gameTitle = new GameTitle(this);
 			this.remove(gameTitle);
 			
-		//	BUG: packing doesn't get the right size
-			game = new Game(this, "/res/levels/testFreeze.txt");
-			this.remove((JPanel) (game.getGameScreen()));
+			//	BUG: packing doesn't get the right size
+			try {
+				game = new Game(this, "/res/levels/testFreeze.txt");
+				this.remove((JPanel) (game.getGameScreen()));
+			} catch (LevelFormatException e) {
+				JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			} catch (IOException e){
+				JOptionPane.showMessageDialog(null, "Level file not found.", "Error", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
 	

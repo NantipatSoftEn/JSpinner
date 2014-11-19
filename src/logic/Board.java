@@ -48,13 +48,16 @@ public class Board implements IUpdatable {
 		adjustCenter();	
 	}
 
-	public Board(String directory) {
+	public Board(String directory) throws LevelFormatException, IOException {
 		try {
 			Scanner in;
 //			in = new Scanner(new File(Board.class.getClassLoader().getResource(directory).toURI()));
-//			System.out.println(directory);
 //			in = new Scanner(new File(directory));
-			in = new Scanner(getClass().getResourceAsStream(directory));
+			try{
+				in = new Scanner(getClass().getResourceAsStream(directory));
+			} catch (NullPointerException e){
+				throw new IOException();
+			}
 			String tileInfo;
 			int boardX = in.nextInt();
 			int boardY = in.nextInt();
@@ -65,20 +68,22 @@ public class Board implements IUpdatable {
 			int k = 1;
 			for (int i = 0; i < boardY; i++) {
 				for (int j = 0; j < boardX; j++) {
-					tileInfo = in.next();
+					if(in.hasNext())
+						tileInfo = in.next();
+					else
+						throw new LevelFormatException(directory);
+					
 					if (tileInfo.substring(0, 1).equalsIgnoreCase("S"))
 						board[j][i] = new SimpleTile(k++, this, j, i);
-					if (tileInfo.substring(0, 1).equalsIgnoreCase("F"))
+					else if (tileInfo.substring(0, 1).equalsIgnoreCase("F"))
 						board[j][i] = new FreezeTile(k++, this, j, i);
-					if (tileInfo.substring(0, 1).equalsIgnoreCase("-"))
+					else if (tileInfo.substring(0, 1).equalsIgnoreCase("-"))
 						board[j][i] = new SimpleTile(Tile.NOT_A_TILE, this, j, i);
+					else
+						throw new LevelFormatException(directory);
 				}
 			}
 			adjustCenter();
-			// for (int i = 0; i < board.length; i++)
-			// for (int j = 0; j < board[0].length; j++) {
-			// board[i][j].setCurrentLocation(i, j);
-			// }
 			move = new ArrayList<Move>();
 		} 
 //		catch (IOException e) {
@@ -86,9 +91,11 @@ public class Board implements IUpdatable {
 //					JOptionPane.ERROR_MESSAGE);
 //		} 
 		catch (NumberFormatException e) {
-			JOptionPane.showMessageDialog(null, "File format error", "Error",
-					JOptionPane.ERROR_MESSAGE);
+			throw new LevelFormatException(directory);
 		} 
+		catch (InputMismatchException e) {
+			throw new LevelFormatException(directory);
+		}
 //		catch (URISyntaxException e) {
 //			System.out.println("Error: URI");
 //		}

@@ -31,6 +31,7 @@ public abstract class Tile implements IRenderable {
 	protected boolean isMouseOn;
 	protected boolean isEnabled;
 	protected boolean isMoving;
+	protected Rectangle2D.Double rect;
 	protected int z;
 	
 	public Tile() {
@@ -40,6 +41,8 @@ public abstract class Tile implements IRenderable {
 	public Tile(int number, Board belongsTo, int correctX, int correctY) {
 		this.number = number;
 		this.board = belongsTo;
+		rect = new Rectangle2D.Double(drawX, drawY, board.getTileSize(), board.getTileSize());
+		tileRect = rect.getBounds();
 		setCorrectLocation(correctX, correctY);
 		setCurrentLocation(correctX, correctY);		
 	}
@@ -147,7 +150,7 @@ public abstract class Tile implements IRenderable {
 		drawX = board.getX() + (currentX) * (board.getTileSize() + Config.tileGutter);
 		drawY = board.getY() + (currentY) * (board.getTileSize() + Config.tileGutter);
 		
-		Rectangle2D.Double rect = new Rectangle2D.Double(drawX, drawY, board.getTileSize(), board.getTileSize());
+		rect = new Rectangle2D.Double(drawX, drawY, board.getTileSize(), board.getTileSize());
 		AffineTransform at = new AffineTransform(); 
 		
 		Double theta = Math.PI / 2 * board.getCurrentFrame() / Config.animationFrameCount; 

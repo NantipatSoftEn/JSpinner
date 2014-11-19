@@ -1,13 +1,17 @@
-package logic;
+package control;
+
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import lib.InputUtility;
+import logic.Board;
+import logic.GameLogic;
+import logic.LevelFormatException;
 import ui.Clickable;
 import ui.GameScreen;
-import ui.GameWindow;
 
 public class Game{
 	private Board board;
@@ -16,11 +20,14 @@ public class Game{
 	private static boolean playing;
 	private static String levelDirectory;
 	
-	public Game(GameWindow window, String levelDirectory){
+	public Game(GameWindow window, String levelDirectory) throws LevelFormatException, IOException{
 		
 //		board = new Board(3, 2);
-				
-		board = new Board(levelDirectory);
+//		try{
+			board = new Board(levelDirectory);
+//		} catch (LevelFormatException e) {
+//			JOptionPane.showMessageDialog(null, e.getMessage());
+//		}
 		gameScreen = new GameScreen(board);
 		gameLogic = new GameLogic(board);
 		Clickable.board = board;

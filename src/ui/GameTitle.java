@@ -15,20 +15,26 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import control.GameWindow;
 import lib.Config;
 import lib.InputUtility;
 
 public class GameTitle extends JPanel {
+	
 	private List<IRenderable> renderList = new ArrayList<IRenderable>();
+	private boolean isOnThisScreen;
+	
 	public GameTitle(GameWindow window) {
 		super();
 		window.addPanel(this);
 		window.setFrame();
 		setPreferredSize(new Dimension(Config.screenWidth, Config.screenHeight));
 		window.pack();
+		isOnThisScreen = true;
 
-		while(true){
+		while(isOnThisScreen){
 			repaint();
+			
 			try{
 				Thread.sleep(20);
 			} catch(InterruptedException e) {
@@ -36,7 +42,7 @@ public class GameTitle extends JPanel {
 			
 			//update
 			if(InputUtility.getKeyTriggered(KeyEvent.VK_SPACE)){
-				break;
+				isOnThisScreen = false;
 			}
 			InputUtility.postUpdate();
 		}
@@ -54,5 +60,9 @@ public class GameTitle extends JPanel {
 		//DrawLogo
 		Font font = new Font("Tahoma", Font.BOLD, 70);
 		DrawingUtility.drawStringInBox("JSpinner", font, 0, 0, Config.screenWidth, Config.screenHeight * 2 / 3, DrawingUtility.TEXT_CENTER, g2);
+
+		//should be a clickable button
+		font = new Font("Tahoma", Font.BOLD, 30);
+		DrawingUtility.drawStringInBox("Press spacebar to start", font, 0, Config.screenHeight * 2 / 3, Config.screenWidth, Config.screenHeight * 5 / 6, DrawingUtility.TEXT_TOP, g2);
 	}
 }
