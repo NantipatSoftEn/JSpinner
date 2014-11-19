@@ -17,22 +17,18 @@ public class Game{
 	private Board board;
 	private GameScreen gameScreen;
 	private GameLogic gameLogic;
-	private static boolean playing;
 	private static String levelDirectory;
 	
 	public Game(GameWindow window, String levelDirectory) throws LevelFormatException, IOException{
 		
+		ScreenState.presentScreen = ScreenState.GAME;
+		
 //		board = new Board(3, 2);
-//		try{
-			board = new Board(levelDirectory);
-//		} catch (LevelFormatException e) {
-//			JOptionPane.showMessageDialog(null, e.getMessage());
-//		}
+		board = new Board(levelDirectory);
 		gameScreen = new GameScreen(board);
 		gameLogic = new GameLogic(board);
 		Clickable.board = board;
 		Game.levelDirectory = levelDirectory;
-		Game.playing = true;
 		
 		//GAME START
 		board.shuffle(Board.DEFAULT_SHUFFLE);
@@ -41,7 +37,7 @@ public class Game{
 		window.setFrame();
 		window.pack();
 		
-		while(playing){
+		while(ScreenState.presentScreen == ScreenState.GAME){
 			try {
 				Thread.sleep(20);
 			} catch(InterruptedException e) {
@@ -54,10 +50,6 @@ public class Game{
 	
 	public String getLevelDirectory() {
 		return levelDirectory;
-	}
-	
-	public static void setPlaying(boolean playing) {
-		Game.playing = playing;
 	}
 	
 	public GameScreen getGameScreen() {

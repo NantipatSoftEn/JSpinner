@@ -35,24 +35,7 @@ public class CounterClockWiseButton extends Clickable implements IRenderable,
 	@Override
 	public void draw(Graphics g) {
 		if(isVisible){
-//			g.setColor(Color.LIGHT_GRAY);
-//			g.fillOval(x - 4, y - 4, width + 8, height + 8);
-//			g.setColor(Color.darkGray);
-//			if(isMouseOn()){
-//				g.setColor(Color.GRAY);
-//			}
-//			g.fillOval(x, y, width, height);
-//			g.setColor(Color.WHITE);
-//			Font font = new Font("Tahoma", Font.BOLD, 15);
-//			DrawingUtility.drawStringInBox("CCW", font, x, y, width, height, DrawingUtility.TEXT_CENTER, g);
-			Graphics2D g2 = (Graphics2D) g;
-			if(!isMouseOn())
-				g2.drawImage(DrawingUtility.getClickableImg(DrawingUtility.ccwButtonImg, DrawingUtility.STATE_NORMAL), null, x, y);
-			else
-				if(InputUtility.isPicking())
-					g2.drawImage(DrawingUtility.getClickableImg(DrawingUtility.ccwButtonImg, DrawingUtility.STATE_CLICK), null, x, y);
-				else	
-					g2.drawImage(DrawingUtility.getClickableImg(DrawingUtility.ccwButtonImg, DrawingUtility.STATE_HOVER), null, x, y);
+			drawButton(g, DrawingUtility.ccwButtonImg);
 		}
 	}
 	

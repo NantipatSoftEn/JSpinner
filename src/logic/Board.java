@@ -30,7 +30,7 @@ public class Board implements IUpdatable {
 	private Tile[][] board;
 	private int x, y, width, height, selected = 0;
 	private int tileSize;
-	private int bestScore, moveLimit;
+	private int bestScore;
 	private PlayerStatus player;
 	private Point forFlip[] = new Point[2];
 	private List<Move> move;
@@ -53,8 +53,9 @@ public class Board implements IUpdatable {
 		int boardX = in.board.length;
 		int boardY = in.board[0].length;
 		this.player = new PlayerStatus(this);
-		this.moveLimit = in.moveLimit;
-		this.bestScore = in.bestScore;
+//		this.bestScore = in.bestScore;
+//		use this vvv
+		this.bestScore = HighScoreUtility.getBestScore(in.directory);
 		board = new Tile[boardX][boardY];
 		int k = 1;
 		for (int i = 0; i < boardY; i++) {
@@ -85,16 +86,20 @@ public class Board implements IUpdatable {
 			int boardX = in.nextInt();
 			int boardY = in.nextInt();
 			this.player = new PlayerStatus(this);
-			this.moveLimit = in.nextInt();
-			this.bestScore = in.nextInt();
+//			this.bestScore = in.nextInt();
+//			use this vvv
+			this.bestScore = HighScoreUtility.getBestScore(directory);
+			
 			board = new Tile[boardX][boardY];
+			
 			int k = 1;
 			for (int i = 0; i < boardY; i++) {
 				for (int j = 0; j < boardX; j++) {
 					if(in.hasNext())
 						tileInfo = in.next();
-					else
+					else{
 						throw new LevelFormatException(directory);
+					}
 					
 					if (tileInfo.substring(0, 1).equalsIgnoreCase("S"))
 						board[j][i] = new SimpleTile(k++, this, j, i);
@@ -102,27 +107,22 @@ public class Board implements IUpdatable {
 						board[j][i] = new FreezeTile(k++, this, j, i);
 					else if (tileInfo.substring(0, 1).equalsIgnoreCase("-"))
 						board[j][i] = new SimpleTile(Tile.NOT_A_TILE, this, j, i);
-					else
+					else{
+						System.out.println(tileInfo.substring(0, 1));
 						throw new LevelFormatException(directory);
+						
+					}
 				}
 			}
 			adjustCenter();
 			move = new ArrayList<Move>();
 		}
-		// catch (IOException e) {
-		// JOptionPane.showMessageDialog(null, "Error loading level file",
-		// "Error",
-		// JOptionPane.ERROR_MESSAGE);
-		// }
 		catch (NumberFormatException e) {
 			throw new LevelFormatException(directory);
 		} 
 		catch (InputMismatchException e) {
 			throw new LevelFormatException(directory);
 		}
-//		catch (URISyntaxException e) {
-//			System.out.println("Error: URI");
-//		}
 	}
 
 	public void initiateBoard() {
@@ -517,38 +517,11 @@ public class Board implements IUpdatable {
 
 			if (isWin()) {
 				if (bestScore > move.size())
-					updateHighScore();
+					HighScoreUtility.updateBestScore(directory);
 
 			}
 
 		}
-	}
-
-	private void updateHighScore() {
-		Writer writer = null;
-
-		try {
-			writer = new BufferedWriter(new OutputStreamWriter(
-					new FileOutputStream(directory), "utf-8"));
-			writer.write("" + board.length + " " + board[0].length + "\n"
-					+ moveLimit + "\n" + move.size());
-			for(int i =0 ;i<board[0].length;i++)
-				for(int j=0;j<board.length;j++)
-				{
-					if(board[i][j].isATile())
-						writer.write("S ");
-					else
-						writer.write("- ");
-				}
-		} catch (IOException ex) {
-		} finally {
-			try {
-				writer.close();
-			} catch (Exception ex) {
-			}
-		}
-		// TODO Auto-generated method stub
-
 	}
 
 	public void setEnables() {

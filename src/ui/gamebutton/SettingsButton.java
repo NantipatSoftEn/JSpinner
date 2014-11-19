@@ -4,6 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import javax.swing.JOptionPane;
+
+import control.Game;
+import control.ScreenState;
 import ui.Clickable;
 import ui.DrawingUtility;
 import ui.IRenderable;
@@ -11,14 +15,13 @@ import lib.Config;
 import lib.InputUtility;
 import logic.Board;
 
-public class UndoButton extends Clickable implements IRenderable {
-	
-	public UndoButton(){
+public class SettingsButton extends Clickable implements IRenderable {
+	public SettingsButton(){
 		type = Clickable.CIRCLE;
 		width = 50;
 		height = 50;
-		x = Config.screenWidth - 105;
-		y = 5;
+		x = 5;
+		y = Config.screenHeight - width - 5;
 	}
 
 	@Override
@@ -28,11 +31,11 @@ public class UndoButton extends Clickable implements IRenderable {
 
 	@Override
 	public void draw(Graphics g) {
-		drawButton(g, DrawingUtility.undoButtonImg);
+		drawButton(g, DrawingUtility.defaultButtonImg);
 	}
-	
+
 	@Override
 	public void onClickAction() {
-		Clickable.board.undo();
+		JOptionPane.showMessageDialog(null, "Settings");
 	}
 }

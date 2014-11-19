@@ -2,6 +2,8 @@ package ui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -74,4 +76,15 @@ public abstract class Clickable implements IRenderable, IUpdatable{
 	
 	public abstract int getZ();
 	public abstract void draw(Graphics g);
+	
+	protected void drawButton(Graphics g, BufferedImage buttonSprite){
+		Graphics2D g2 = (Graphics2D) g;
+		if(!isMouseOn())
+			g2.drawImage(DrawingUtility.getClickableImg(buttonSprite, DrawingUtility.STATE_NORMAL), null, x, y);
+		else
+			if(InputUtility.isPicking())
+				g2.drawImage(DrawingUtility.getClickableImg(buttonSprite, DrawingUtility.STATE_CLICK), null, x, y);
+			else	
+				g2.drawImage(DrawingUtility.getClickableImg(buttonSprite, DrawingUtility.STATE_HOVER), null, x, y);
+	}
 }

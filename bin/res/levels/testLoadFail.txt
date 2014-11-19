@@ -1,7 +1,5 @@
 4 4
-s
-0
 s s s s
-s s f s
+s a f s
 s f s s
 s s s s

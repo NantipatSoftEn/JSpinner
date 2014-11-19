@@ -12,6 +12,7 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.*;
 
 import control.GameWindow;
+import control.ScreenState;
 import ui.gamebutton.*;
 import ui.winpanel.WinPanel;
 import lib.*;
@@ -26,6 +27,9 @@ public class GameScreen extends JPanel{
 	
 	public GameScreen(Board board){
 		super();
+		
+		ScreenState.presentScreen = ScreenState.GAME;
+		
 		setPreferredSize(new Dimension(Config.screenWidth, Config.screenHeight));
 		setBackground(Color.WHITE);
 		this.board = board;

@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 
 import ui.GameBackground;
 import ui.GameTitle;
+import ui.LevelSelectScreen;
 import lib.Config;
 import lib.InputUtility;
 import logic.LevelFormatException;
@@ -24,6 +25,7 @@ public class GameWindow extends JFrame {
 	
 	private GameTitle gameTitle;
 	private Game game;
+	private LevelSelectScreen levelSelect;
 	public static GameBackground gameBackground;
 	
 	public GameWindow(){
@@ -38,18 +40,33 @@ public class GameWindow extends JFrame {
 		gameBackground = new GameBackground();
 		(new Thread(gameBackground)).start();
 		
+		ScreenState.presentScreen = ScreenState.TITLE;
+		
 		while(true){
-			gameTitle = new GameTitle(this);
-			this.remove(gameTitle);
+			if(ScreenState.presentScreen == ScreenState.TITLE){
+				gameTitle = new GameTitle(this);
+				this.remove(gameTitle);
+			}
+			
+			if(ScreenState.presentScreen == ScreenState.LEVEL_SELECT){
+				levelSelect = new LevelSelectScreen(this);
+				this.remove(levelSelect);
+			}
 			
 			//	BUG: packing doesn't get the right size
-			try {
-				game = new Game(this, "/res/levels/testFreeze.txt");
-				this.remove((JPanel) (game.getGameScreen()));
-			} catch (LevelFormatException e) {
-				JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-			} catch (IOException e){
-				JOptionPane.showMessageDialog(null, "Level file not found.", "Error", JOptionPane.ERROR_MESSAGE);
+			else if(ScreenState.presentScreen == ScreenState.GAME){
+				try {
+					game = new Game(this, "/res/levels/testFreeze.txt");
+					this.remove((JPanel) (game.getGameScreen()));
+				} catch (LevelFormatException e) {
+					JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				} catch (IOException e){
+					JOptionPane.showMessageDialog(null, "Level file not found.", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			
+			else{
+				JOptionPane.showMessageDialog(null, "Error! some error in screen loop");
 			}
 		}
 	}
