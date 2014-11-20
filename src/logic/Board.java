@@ -34,9 +34,11 @@ public class Board implements IUpdatable {
 	private PlayerStatus player;
 	private Point forFlip[] = new Point[2];
 	private List<Move> move;
+	private List<Move> solveMove;
 	private Point moveCenter = new Point(0, 0);
 	private boolean isPlaying = true;
 	private boolean isCheated = false;
+	private boolean isSolving = false;
 	private String directory;
 	private int currentFrame = 0;
 
@@ -47,7 +49,8 @@ public class Board implements IUpdatable {
 		initiateBoard();
 		adjustCenter();
 	}
-	public Board (Board in){
+
+	public Board(Board in) {
 		this.directory = in.directory;
 		String tileInfo;
 		int boardX = in.board.length;
@@ -59,7 +62,7 @@ public class Board implements IUpdatable {
 		int k = 1;
 		for (int i = 0; i < boardY; i++) {
 			for (int j = 0; j < boardX; j++) {
-				this.board[x][y]= new SimpleTile(in.board[x][y],this);
+				this.board[x][y] = new SimpleTile(in.board[x][y], this);
 			}
 		}
 		adjustCenter();
@@ -68,7 +71,7 @@ public class Board implements IUpdatable {
 		// board[i][j].setCurrentLocation(i, j);
 		// }
 		move = new ArrayList<Move>();
-		
+
 	}
 
 	public Board(String directory) {
@@ -114,7 +117,7 @@ public class Board implements IUpdatable {
 			JOptionPane.showMessageDialog(null, "File format error", "Error",
 					JOptionPane.ERROR_MESSAGE);
 		}
-		
+
 		// catch (URISyntaxException e) {
 		// System.out.println("Error: URI");
 		// }
@@ -421,90 +424,108 @@ public class Board implements IUpdatable {
 			if (InputUtility.getKeyPressed(KeyEvent.VK_X))
 				if (InputUtility.getKeyPressed(KeyEvent.VK_C))
 					cheat();
+		if (InputUtility.getKeyPressed(KeyEvent.VK_A))
+			if (InputUtility.getKeyPressed(KeyEvent.VK_S))
+				if (InputUtility.getKeyPressed(KeyEvent.VK_D)) {
+					solveMove = solveSQ();
+					isSolving = true;
+				}
 
 		// update location (if not playing animation)
 		if (isPlaying && !HelpPanel.isVisible()) {
+			if (!isSolving) {
 
-			if (currentFrame >= Config.animationFrameCount) {
-				setBoard();
-			} else {
-				currentFrame++;
-			}
-
-			boolean same = selected == 2
-					&& forFlip[0].getX() == forFlip[1].getX()
-					&& forFlip[0].getY() == forFlip[1].getY();
-			if (move.size() > 0 && selected == 0) {
-				Move latest = move.get(move.size() - 1);
-
-				if (InputUtility.getKeyTriggered(KeyEvent.VK_LEFT)) {
+				if (currentFrame >= Config.animationFrameCount) {
 					setBoard();
-					flip(latest.x, latest.y, latest.size, Board.CCW, true);
+				} else {
+					currentFrame++;
 				}
 
-				if (InputUtility.getKeyTriggered(KeyEvent.VK_RIGHT)) {
-					setBoard();
-					flip(latest.x, latest.y, latest.size, Board.CW, true);
+				boolean same = selected == 2
+						&& forFlip[0].getX() == forFlip[1].getX()
+						&& forFlip[0].getY() == forFlip[1].getY();
+				if (move.size() > 0 && selected == 0) {
+					Move latest = move.get(move.size() - 1);
+
+					if (InputUtility.getKeyTriggered(KeyEvent.VK_LEFT)) {
+						setBoard();
+						flip(latest.x, latest.y, latest.size, Board.CCW, true);
+					}
+
+					if (InputUtility.getKeyTriggered(KeyEvent.VK_RIGHT)) {
+						setBoard();
+						flip(latest.x, latest.y, latest.size, Board.CW, true);
+					}
 				}
-			}
-			if (selected < 2) {
-				Clickable.cwButton.setVisible(false);
-				Clickable.ccwButton.setVisible(false);
-				for (int i = 0; i < board.length; i++) {
-					for (int j = 0; j < board[0].length; j++) {
-						if (Utility.isPointOnTile(
-								InputUtility.getPickedPoint(), this, i, j)) {
-							board[i][j].setMouseOn(true);
-							if (InputUtility.isPicking()
-									|| (InputUtility.isMouseReleased() && selected > 0)) {
-								if (InputUtility.isMouseReleased()
-										&& selected > 0
-										&& forFlip[0].equals(new Point(i, j))) {
-									continue;
+				if (selected < 2) {
+					Clickable.cwButton.setVisible(false);
+					Clickable.ccwButton.setVisible(false);
+					for (int i = 0; i < board.length; i++) {
+						for (int j = 0; j < board[0].length; j++) {
+							if (Utility.isPointOnTile(
+									InputUtility.getPickedPoint(), this, i, j)) {
+								board[i][j].setMouseOn(true);
+								if (InputUtility.isPicking()
+										|| (InputUtility.isMouseReleased() && selected > 0)) {
+									if (InputUtility.isMouseReleased()
+											&& selected > 0
+											&& forFlip[0]
+													.equals(new Point(i, j))) {
+										continue;
+									}
+									board[i][j].setSelected(true);
+									forFlip[selected] = new Point(i, j);
+									selected++;
 								}
-								board[i][j].setSelected(true);
-								forFlip[selected] = new Point(i, j);
-								selected++;
+							} else {
+								board[i][j].setMouseOn(false);
 							}
-						} else {
-							board[i][j].setMouseOn(false);
 						}
 					}
-				}
-				if (same)
-					selected = 1;
-			} else if (selected == 2) {
-				if (isValidMove((int) forFlip[0].getX(),
-						(int) forFlip[0].getY(), (int) forFlip[1].getX(),
-						(int) forFlip[1].getY())) {
-					int x1 = (int) forFlip[0].getX();
-					int y1 = (int) forFlip[0].getY();
-					int x2 = (int) forFlip[1].getX();
-					int y2 = (int) forFlip[1].getY();
-					forFlip[0].setLocation(Math.min(x1, x2), Math.min(y1, y2));
-					forFlip[1].setLocation(Math.max(x1, x2), Math.max(y1, y2));
-					Clickable.cwButton.setVisible(true);
-					Clickable.ccwButton.setVisible(true);
-					if (InputUtility.getKeyTriggered(KeyEvent.VK_LEFT)
-							|| InputUtility.getKeyTriggered(KeyEvent.VK_A)) {
-						Clickable.ccwButton.onClickAction();
+					if (same)
+						selected = 1;
+				} else if (selected == 2) {
+					if (isValidMove((int) forFlip[0].getX(),
+							(int) forFlip[0].getY(), (int) forFlip[1].getX(),
+							(int) forFlip[1].getY())) {
+						int x1 = (int) forFlip[0].getX();
+						int y1 = (int) forFlip[0].getY();
+						int x2 = (int) forFlip[1].getX();
+						int y2 = (int) forFlip[1].getY();
+						forFlip[0].setLocation(Math.min(x1, x2),
+								Math.min(y1, y2));
+						forFlip[1].setLocation(Math.max(x1, x2),
+								Math.max(y1, y2));
+						Clickable.cwButton.setVisible(true);
+						Clickable.ccwButton.setVisible(true);
+						if (InputUtility.getKeyTriggered(KeyEvent.VK_LEFT)
+								|| InputUtility.getKeyTriggered(KeyEvent.VK_A)) {
+							Clickable.ccwButton.onClickAction();
+						}
+						if (InputUtility.getKeyTriggered(KeyEvent.VK_RIGHT)
+								|| InputUtility.getKeyTriggered(KeyEvent.VK_D)) {
+							Clickable.cwButton.onClickAction();
+						}
+					} else {
+						clearSelected();
 					}
-					if (InputUtility.getKeyTriggered(KeyEvent.VK_RIGHT)
-							|| InputUtility.getKeyTriggered(KeyEvent.VK_D)) {
-						Clickable.cwButton.onClickAction();
-					}
-				} else {
-					clearSelected();
+					if (InputUtility.isPicking()
+							&& !Clickable.ccwButton.isMouseOn()
+							&& !Clickable.cwButton.isMouseOn())
+						clearSelected();
 				}
-				if (InputUtility.isPicking()
-						&& !Clickable.ccwButton.isMouseOn()
-						&& !Clickable.cwButton.isMouseOn())
-					clearSelected();
-			}
 
-			// set enabled for tiles
-			setEnables();
-			isPlaying = !isWin();
+				// set enabled for tiles
+				setEnables();
+				isPlaying = !isWin();
+			} else {
+				if (!solveMove.isEmpty()) {
+					Move forFlip = solveMove.remove(0);
+					flip(forFlip.x, forFlip.y, forFlip.size, forFlip.dir, false);
+				} else {
+					isSolving = false;
+				}
+			}
 
 		} else {
 			setBoard();
@@ -528,10 +549,9 @@ public class Board implements IUpdatable {
 					new FileOutputStream(directory), "utf-8"));
 			writer.write("" + board.length + " " + board[0].length + "\n"
 					+ moveLimit + "\n" + move.size());
-			for(int i =0 ;i<board[0].length;i++)
-				for(int j=0;j<board.length;j++)
-				{
-					if(board[i][j].isATile())
+			for (int i = 0; i < board[0].length; i++)
+				for (int j = 0; j < board.length; j++) {
+					if (board[i][j].isATile())
 						writer.write("S ");
 					else
 						writer.write("- ");
@@ -594,6 +614,42 @@ public class Board implements IUpdatable {
 		isCheated = true;
 	}
 
+	public ArrayList<Move> solveSQ() {
+		int target = 1;
+		int curx, cury, corx, cory;
+		ArrayList<Move> ans = new ArrayList<Move>();
+		Board xcla = new Board(this);
+		Tile[][] xbor = xcla.board;
+		
+		while(target==1){
+			curx=0;
+			cury=0;
+			corx=0;
+			cory=0;
+		for (int i = 0; i < xbor.length; i++) {
+			for (int j = 0; j < xbor[0].length; j++) {
+				if (xbor[i][j].getNumber() == target) {
+					curx = xbor[i][j].getCurrentLocation().x;
+					cury = xbor[i][j].getCurrentLocation().y;
+					corx = xbor[i][j].getCorrectLocation().x;
+					cory = xbor[i][j].getCorrectLocation().y;
+
+				}
+
+			}
+		}
+		while (curx!=corx||cury!=cory){
+			if(curx!=corx){
+				
+			}
+			if(cury!=cory){
+				
+			}
+		}
+		}
+
+		return ans;
+	}
 
 }
 

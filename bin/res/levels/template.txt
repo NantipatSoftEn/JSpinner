@@ -1,6 +1,4 @@
 w h
-m
-s
 x x x x x x
 x x x x x x
 x x x x x x
