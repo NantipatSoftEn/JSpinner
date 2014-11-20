@@ -11,6 +11,8 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.*;
 
+import control.GameWindow;
+import control.ScreenState;
 import ui.gamebutton.*;
 import ui.winpanel.WinPanel;
 import lib.*;
@@ -25,6 +27,9 @@ public class GameScreen extends JPanel{
 	
 	public GameScreen(Board board){
 		super();
+		
+		ScreenState.presentScreen = ScreenState.GAME;
+		
 		setPreferredSize(new Dimension(Config.screenWidth, Config.screenHeight));
 		setBackground(Color.WHITE);
 		this.board = board;
@@ -44,76 +49,9 @@ public class GameScreen extends JPanel{
 		this.setVisible(true);
 		this.requestFocus();
 		
-		GameBackground gb = new GameBackground();
-		renderList.add(gb);
-		(new Thread(gb)).start();
-		
-		/////////////////Mouse/////////////////
-		this.addMouseListener(new MouseListener(){
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				InputUtility.setPicking(true);
-//				InputUtility.setPickedPoint(e.getX(), e.getY());
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				InputUtility.setPicking(false);
-				InputUtility.setMouseReleased(true);
-//				InputUtility.setPickedPoint(InputUtility.NULL_POINT, InputUtility.NULL_POINT);
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-			}
-			
-		});
-		
-		this.addMouseMotionListener(new MouseMotionListener() {
-			
-			@Override
-			public void mouseMoved(MouseEvent e) {
-				InputUtility.setPickedPoint(e.getX(), e.getY());
-			}
-			
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				InputUtility.setPickedPoint(e.getX(), e.getY());
-			}
-		});
-		
-		///////////////////////key///////////////////////////
-		
-		this.addKeyListener(new KeyListener() {
-			
-			@Override
-			public void keyTyped(KeyEvent arg0) {
-			}
-			
-			@Override
-			public void keyReleased(KeyEvent e) {
-				InputUtility.setKeyPressed(e.getKeyCode(), false);
-			}
-			
-			@Override
-			public void keyPressed(KeyEvent e) {
-				InputUtility.setKeyTriggered(e.getKeyCode(), true);
-				InputUtility.setKeyPressed(e.getKeyCode(), true);
-			}
-		});
-		
-		//////////////////////////////////////
+//		GameBackground gb = new GameBackground();
+		renderList.add(GameWindow.gameBackground);
+//		(new Thread(gb)).start();
 	}
 	
 	public void addRenderableObject(IRenderable r){
@@ -131,8 +69,10 @@ public class GameScreen extends JPanel{
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		
 		Collections.sort(renderList, new Comparator<ui.IRenderable>() {
 			public int compare(IRenderable r1, IRenderable r2){
 				if(r1.getZ() > r2.getZ()) return 1;
@@ -141,9 +81,17 @@ public class GameScreen extends JPanel{
 				else return 0;
 			}
 		});
-//		System.out.println(renderList.toString());
+
 		for(int i = 0; i < renderList.size(); i++){
 			renderList.get(i).draw(g);
 		}
 	}
+	
+//	//for thread
+//	private void run() {
+//		GameScreen gameScreen = new GameScreen(board);
+//		while(true){
+//			gameScreen.repaint();
+//		}
+//	}
 }

@@ -30,14 +30,7 @@ public class HelpButton extends Clickable implements IRenderable {
 
 	@Override
 	public void draw(Graphics g) {
-		Graphics2D g2 = (Graphics2D) g;
-		if(!isMouseOn())
-			g2.drawImage(DrawingUtility.getClickableImg(DrawingUtility.helpButtonImg, DrawingUtility.STATE_NORMAL), null, x, y);
-		else
-			if(InputUtility.isPicking())
-				g2.drawImage(DrawingUtility.getClickableImg(DrawingUtility.helpButtonImg, DrawingUtility.STATE_CLICK), null, x, y);
-			else	
-				g2.drawImage(DrawingUtility.getClickableImg(DrawingUtility.helpButtonImg, DrawingUtility.STATE_HOVER), null, x, y);
+		drawButton(g, DrawingUtility.helpButtonImg);
 	}
 
 	@Override

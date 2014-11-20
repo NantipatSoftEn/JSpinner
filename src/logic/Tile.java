@@ -21,15 +21,17 @@ import lib.Utility;
 public abstract class Tile implements IRenderable {
 	public static final int NOT_A_TILE = -1; // may check if the tile is null.
 
-	private int number;
-	private int correctX, correctY;
-	private int currentX, currentY;
-	private int drawX, drawY;
-	private boolean isSelected;
-	private Board board;
-	private boolean isMouseOn;
-	private boolean isEnabled;
-	private boolean isMoving;
+	protected int number;
+	protected int correctX, correctY;
+	protected int currentX, currentY;
+	protected int drawX, drawY;
+	protected Shape tileRect;
+	protected boolean isSelected;
+	protected Board board;
+	protected boolean isMouseOn;
+	protected boolean isEnabled;
+	protected boolean isMoving;
+	protected Rectangle2D.Double rect;
 	protected int z;
 	
 	public Tile() {
@@ -47,6 +49,8 @@ public abstract class Tile implements IRenderable {
 	public Tile(int number, Board belongsTo, int correctX, int correctY) {
 		this.number = number;
 		this.board = belongsTo;
+		rect = new Rectangle2D.Double(drawX, drawY, board.getTileSize(), board.getTileSize());
+		tileRect = rect.getBounds();
 		setCorrectLocation(correctX, correctY);
 		setCurrentLocation(correctX, correctY);		
 	}
@@ -138,6 +142,7 @@ public abstract class Tile implements IRenderable {
 	}
 
 	public abstract void performEffect();
+	public abstract void undoEffect();
 
 	public abstract int getZ();
 
@@ -153,7 +158,7 @@ public abstract class Tile implements IRenderable {
 		drawX = board.getX() + (currentX) * (board.getTileSize() + Config.tileGutter);
 		drawY = board.getY() + (currentY) * (board.getTileSize() + Config.tileGutter);
 		
-		Rectangle2D.Double rect = new Rectangle2D.Double(drawX, drawY, board.getTileSize(), board.getTileSize());
+		rect = new Rectangle2D.Double(drawX, drawY, board.getTileSize(), board.getTileSize());
 		AffineTransform at = new AffineTransform(); 
 		
 		Double theta = Math.PI / 2 * board.getCurrentFrame() / Config.animationFrameCount; 
@@ -162,7 +167,7 @@ public abstract class Tile implements IRenderable {
 		if(isMoving){
 			at.rotate(theta, board.getMoveCenterX(), board.getMoveCenterY());
 		}
-		Shape tileRect = at.createTransformedShape(rect);
+		tileRect = at.createTransformedShape(rect);
 				
 		if(isSelected){
 			g.setColor(DrawingUtility.SELECTED);
@@ -195,12 +200,15 @@ public abstract class Tile implements IRenderable {
 			g2.fill(tileRect);
 		}
 		
+//		drawNumber("", tileRect, g2);
+	}
+	
+	protected void drawNumber(String prefix, Shape tileRect, Graphics2D g2){
 		Font font = new Font("Tahoma", Font.BOLD, 20);
-		
-		g.setColor(Color.WHITE);
+		g2.setColor(Color.WHITE);
 		Rectangle2D textBound = tileRect.getBounds2D();
-		DrawingUtility.drawStringInBox("" + number, font, (int)textBound.getMinX(), (int)textBound.getMinY(),
-				(int)textBound.getWidth(), (int)textBound.getHeight(), DrawingUtility.TEXT_CENTER, g);
+		DrawingUtility.drawStringInBox(prefix + "" + number, font, (int)textBound.getMinX(), (int)textBound.getMinY(),
+				(int)textBound.getWidth(), (int)textBound.getHeight(), DrawingUtility.TEXT_CENTER, g2);
 	}
 
 	public String toString() {

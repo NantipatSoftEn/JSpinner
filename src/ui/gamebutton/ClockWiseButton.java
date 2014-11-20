@@ -35,14 +35,7 @@ public class ClockWiseButton extends Clickable implements IRenderable,
 	@Override
 	public void draw(Graphics g) {
 		if(isVisible){
-			Graphics2D g2 = (Graphics2D) g;
-			if(!isMouseOn())
-				g2.drawImage(DrawingUtility.getClickableImg(DrawingUtility.cwButtonImg, DrawingUtility.STATE_NORMAL), null, x, y);
-			else
-				if(InputUtility.isPicking())
-					g2.drawImage(DrawingUtility.getClickableImg(DrawingUtility.cwButtonImg, DrawingUtility.STATE_CLICK), null, x, y);
-				else	
-					g2.drawImage(DrawingUtility.getClickableImg(DrawingUtility.cwButtonImg, DrawingUtility.STATE_HOVER), null, x, y);
+			drawButton(g, DrawingUtility.cwButtonImg);
 		}
 	}
 	

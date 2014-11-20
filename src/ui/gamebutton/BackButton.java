@@ -6,6 +6,8 @@ import java.awt.Graphics2D;
 
 import javax.swing.JOptionPane;
 
+import control.Game;
+import control.ScreenState;
 import ui.Clickable;
 import ui.DrawingUtility;
 import ui.IRenderable;
@@ -29,18 +31,15 @@ public class BackButton extends Clickable implements IRenderable {
 
 	@Override
 	public void draw(Graphics g) {
-		Graphics2D g2 = (Graphics2D) g;
-		if(!isMouseOn())
-			g2.drawImage(DrawingUtility.getClickableImg(DrawingUtility.backButtonImg, DrawingUtility.STATE_NORMAL), null, x, y);
-		else
-			if(InputUtility.isPicking())
-				g2.drawImage(DrawingUtility.getClickableImg(DrawingUtility.backButtonImg, DrawingUtility.STATE_CLICK), null, x, y);
-			else	
-				g2.drawImage(DrawingUtility.getClickableImg(DrawingUtility.backButtonImg, DrawingUtility.STATE_HOVER), null, x, y);
+		drawButton(g, DrawingUtility.backButtonImg);
 	}
 
 	@Override
 	public void onClickAction() {
-		JOptionPane.showMessageDialog(null, "BACK");
+//		JOptionPane.showMessageDialog(null, "BACK");
+		if(ScreenState.presentScreen == ScreenState.LEVEL_SELECT)
+			ScreenState.presentScreen = ScreenState.TITLE;
+		if(ScreenState.presentScreen == ScreenState.GAME)
+			ScreenState.presentScreen = ScreenState.LEVEL_SELECT;
 	}
 }

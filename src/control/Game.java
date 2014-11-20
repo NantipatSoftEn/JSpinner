@@ -1,22 +1,29 @@
-package logic;
+package control;
 
+import java.io.IOException;
+
+import javax.print.attribute.standard.Finishings;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import lib.InputUtility;
+import logic.Board;
+import logic.GameLogic;
+import logic.LevelFormatException;
 import ui.Clickable;
 import ui.GameScreen;
-import ui.GameWindow;
 
 public class Game{
 	private Board board;
-	GameScreen gameScreen;
+	private GameScreen gameScreen;
 	private GameLogic gameLogic;
-	private boolean playing;
 	private static String levelDirectory;
+	public static volatile boolean finishUpdate = false;
 	
-	public Game(GameWindow window, String levelDirectory){
+	public Game(GameWindow window, String levelDirectory) throws LevelFormatException, IOException{
+		
+		ScreenState.presentScreen = ScreenState.GAME;
 		
 //		board = new Board(3, 2);
 		board = new Board(levelDirectory);
@@ -28,11 +35,11 @@ public class Game{
 		//GAME START
 		board.shuffle(Board.DEFAULT_SHUFFLE);
 		
-		window.add(gameScreen);
+		window.addPanel(gameScreen);
 		window.setFrame();
 		window.pack();
 		
-		while(true){
+		while(ScreenState.presentScreen == ScreenState.GAME){
 			try {
 				Thread.sleep(20);
 			} catch(InterruptedException e) {
@@ -45,5 +52,9 @@ public class Game{
 	
 	public String getLevelDirectory() {
 		return levelDirectory;
+	}
+	
+	public GameScreen getGameScreen() {
+		return gameScreen;
 	}
 }

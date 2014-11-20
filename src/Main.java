@@ -1,4 +1,4 @@
-import ui.GameWindow;
+import control.GameWindow;
 import logic.*;
 
 public class Main{
