@@ -28,14 +28,15 @@ public class DrawingUtility {
 	public static final int STATE_HOVER = 1;
 	public static final int STATE_CLICK = 2;
 	
+	public static final BufferedImage gameBG = loadImage("res/img/gameBG.png");
+	public static final BufferedImage cloudBG = loadImage("res/img/gameBG_cloud.png");
 	public static final BufferedImage cwButtonImg = loadImage("res/img/cwButton.png");
 	public static final BufferedImage ccwButtonImg = loadImage("res/img/ccwButton.png");
 	public static final BufferedImage backButtonImg = loadImage("res/img/backButton.png");
 	public static final BufferedImage helpButtonImg = loadImage("res/img/helpButton.png");
 	public static final BufferedImage undoButtonImg = loadImage("res/img/undoButton.png");
 	public static final BufferedImage defaultButtonImg = loadImage("res/img/defaultButton.png");
-	public static final BufferedImage gameBG = loadImage("res/img/gameBG.png");
-	public static final BufferedImage cloudBG = loadImage("res/img/gameBG_cloud.png");
+	public static final BufferedImage sleepyTileImg = loadImage("res/img/sleepyTile.png");
 	public static final BufferedImage correctImg = loadImage("res/img/correct.png");
 	
 	public static BufferedImage loadImage(String directory){
@@ -50,6 +51,12 @@ public class DrawingUtility {
 	public static BufferedImage getClickableImg(BufferedImage spriteSheet, int state){
 		if(state < 3)
 			return spriteSheet.getSubimage(spriteSheet.getWidth() * state / 3, 0, spriteSheet.getWidth() / 3, spriteSheet.getHeight());
+		else return null;
+	}
+	
+	public static BufferedImage getFrame(BufferedImage spriteSheet, int frame, int frameCount){
+		if(frame < frameCount)
+			return spriteSheet.getSubimage(spriteSheet.getWidth() * frame / frameCount, 0, spriteSheet.getWidth() / frameCount, spriteSheet.getHeight());
 		else return null;
 	}
 	

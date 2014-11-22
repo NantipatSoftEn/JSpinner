@@ -23,7 +23,7 @@ public class GameLogic{
 //		updateList.addAll(WinPanel.winElements);
 	}
 	
-	public void update(){
+	public synchronized void update(){
 		for(IUpdatable logic : updateList){
 			logic.update();
 		}

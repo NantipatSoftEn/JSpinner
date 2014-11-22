@@ -2,7 +2,10 @@ package logic;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 
+import ui.DrawingUtility;
 import lib.Utility;
 
 public class FreezeTile extends Tile{
@@ -54,7 +57,15 @@ public class FreezeTile extends Tile{
 	public void draw(Graphics g) {
 		super.draw(g);
 		Graphics2D g2 = (Graphics2D) g;
-		drawNumber("F " + isLocked, tileRect, g2);
+		if(!isMoving){
+			BufferedImage frame;
+			if(isLocked)
+				frame = DrawingUtility.getFrame(DrawingUtility.sleepyTileImg, 3 + currentLock, 6);
+			else
+				frame = DrawingUtility.getFrame(DrawingUtility.sleepyTileImg, currentLock, 6);
+			g2.drawImage((Image)frame, drawX, drawY, board.getTileSize(), board.getTileSize(), null);
+		}
+		drawNumber("", tileRect, g2);
 	}
 
 	@Override

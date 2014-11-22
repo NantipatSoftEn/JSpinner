@@ -39,14 +39,21 @@ public class Game{
 		window.setFrame();
 		window.pack();
 		
+		GameThreadMonitor monitor = new GameThreadMonitor(gameLogic, gameScreen);
+		GameScreenThread gameScreenThread = new GameScreenThread(gameScreen, monitor);
+		GameLogicThread gameLogicThread = new GameLogicThread(gameLogic, monitor);
+		
+		(new Thread(gameLogicThread)).start();
+		(new Thread(gameScreenThread)).start();
+		
 		while(ScreenState.presentScreen == ScreenState.GAME){
 			try {
 				Thread.sleep(20);
 			} catch(InterruptedException e) {
 			}
-			gameScreen.repaint();
-			gameLogic.update();
-			InputUtility.postUpdate();
+//			gameScreen.repaint();
+//			gameLogic.update();
+//			InputUtility.postUpdate();
 		}	
 	}
 	

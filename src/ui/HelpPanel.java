@@ -74,12 +74,14 @@ public class HelpPanel implements IRenderable, IUpdatable {
 	public void update() {
 		if(isVisible && InputUtility.isPicking()){
 			if(nextButton.contains((Point2D)InputUtility.getPickedPoint())){
-				if(currentFrame < PAGES - 1)
-					currentFrame++;
+				currentFrame++;
+				if(currentFrame >= PAGES)
+					currentFrame = 0;
 			}
 			if(prevButton.contains((Point2D)InputUtility.getPickedPoint())){
-				if(currentFrame > 0)
-					currentFrame--;
+				currentFrame--;
+				if(currentFrame < 0)
+					currentFrame = PAGES - 1;
 			}
 			if(closeButton.contains((Point2D)InputUtility.getPickedPoint())){
 				setVisible(false);

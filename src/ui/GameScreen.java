@@ -67,7 +67,7 @@ public class GameScreen extends JPanel{
 	}
 	
 	@Override
-	protected void paintComponent(Graphics g) {
+	protected synchronized void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
 		Graphics2D g2 = (Graphics2D) g;
@@ -86,12 +86,4 @@ public class GameScreen extends JPanel{
 			renderList.get(i).draw(g);
 		}
 	}
-	
-//	//for thread
-//	private void run() {
-//		GameScreen gameScreen = new GameScreen(board);
-//		while(true){
-//			gameScreen.repaint();
-//		}
-//	}
 }

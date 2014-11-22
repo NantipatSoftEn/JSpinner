@@ -30,6 +30,10 @@ public class GameWindow extends JFrame {
 	
 	public GameWindow(){
 		super("JSpinner");
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e1) {
+		}
 		this.setLocationByPlatform(true);
 		Container pane = this.getContentPane();
 		addListener(pane);

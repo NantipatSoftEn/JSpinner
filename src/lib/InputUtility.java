@@ -4,6 +4,7 @@ import java.awt.Point;
 
 public class InputUtility {
 	private static boolean picking;
+	private static boolean mouseDown;
 	private static Point pickedPoint;
 	private static boolean keyPressed[] = new boolean[256];
 	private static boolean keyTriggered[] = new boolean[256];
@@ -14,23 +15,31 @@ public class InputUtility {
 		pickedPoint = new Point(NULL_POINT, NULL_POINT);
 	}
 	
-	public static void setPicking (boolean fucker){
-		picking=fucker;
+	public static synchronized void setPicking (boolean in){
+		picking=in;
 	}
 	
-	public static void setPickedPoint (int x ,int y){
+	public static synchronized void setPickedPoint (int x ,int y){
 		pickedPoint = new Point (x,y);
 	}
 	
-	public static boolean isPicking (){
+	public static void setMouseDown(boolean mouseDown) {
+		InputUtility.mouseDown = mouseDown;
+	}
+	
+	public static boolean isMouseDown() {
+		return mouseDown;
+	}
+	
+	public static synchronized boolean isPicking (){
 		return picking;
 	}
 	
-	public static Point getPickedPoint (){
+	public static synchronized Point getPickedPoint (){
 		return pickedPoint;
 	}
 	
-	public static void setKeyPressed(int key, boolean pressed) {
+	public static synchronized void setKeyPressed(int key, boolean pressed) {
 		try{
 			InputUtility.keyPressed[key] = pressed;
 		} catch (ArrayIndexOutOfBoundsException e) {
@@ -38,7 +47,7 @@ public class InputUtility {
 		}
 	}
 	
-	public static boolean getKeyPressed(int key) {
+	public static synchronized boolean getKeyPressed(int key) {
 		try{
 			return keyPressed[key];
 		} catch (ArrayIndexOutOfBoundsException e) {
@@ -46,7 +55,7 @@ public class InputUtility {
 		}	
 	}
 	
-	public static void setKeyTriggered(int key, boolean triggered) {
+	public static synchronized void setKeyTriggered(int key, boolean triggered) {
 		try{
 			if(!keyTriggered[key])
 				InputUtility.keyTriggered[key] = triggered;
@@ -55,7 +64,7 @@ public class InputUtility {
 			
 	}
 	
-	public static boolean getKeyTriggered(int key) {
+	public static synchronized boolean getKeyTriggered(int key) {
 		try{
 			return keyTriggered[key];
 		} catch (ArrayIndexOutOfBoundsException e) {
@@ -63,15 +72,15 @@ public class InputUtility {
 		}
 	}
 	
-	public static void setMouseReleased(boolean mouseReleased) {
+	public static synchronized void setMouseReleased(boolean mouseReleased) {
 		InputUtility.mouseReleased = mouseReleased;
 	}
 	
-	public static boolean isMouseReleased() {
+	public static synchronized boolean isMouseReleased() {
 		return mouseReleased;
 	}
 	
-	public static void postUpdate(){
+	public static synchronized void postUpdate(){
 		picking = false;
 		keyTriggered = new boolean[256];
 		mouseReleased = false;
