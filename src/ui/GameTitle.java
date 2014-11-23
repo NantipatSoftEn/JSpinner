@@ -1,5 +1,6 @@
 package ui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -8,6 +9,7 @@ import java.awt.RenderingHints;
 import java.awt.RenderingHints.Key;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,11 +17,11 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import ui.gamebutton.BackButton;
 import ui.gamebutton.*;
 import control.GameWindow;
 import control.ScreenState;
 import lib.Config;
+import lib.DrawingUtility;
 import lib.InputUtility;
 import logic.IUpdatable;
 
@@ -72,12 +74,13 @@ public class GameTitle extends JPanel {
 		GameWindow.gameBackground.draw(g);
 		
 		//DrawLogo
-		Font font = new Font("Tahoma", Font.BOLD, 70);
-		DrawingUtility.drawStringInBox("JSpinner", font, 0, 0, Config.screenWidth, Config.screenHeight * 2 / 3, DrawingUtility.TEXT_CENTER, g2);
+		BufferedImage logo = DrawingUtility.logoImg;
+		g2.drawImage(logo, null, (Config.screenWidth - logo.getWidth()) / 2, Config.screenHeight / 2 - logo.getHeight());
 
 		//should be a clickable button
-		font = new Font("Tahoma", Font.BOLD, 30);
-		DrawingUtility.drawStringInBox("Press spacebar to start", font, 0, Config.screenHeight * 2 / 3, Config.screenWidth, Config.screenHeight * 5 / 6, DrawingUtility.TEXT_TOP, g2);
+		Font font = new Font("Tahoma", Font.BOLD, 20);
+		g2.setColor(Color.DARK_GRAY);
+		DrawingUtility.drawStringInBox("or press spacebar to start", font, 0, Config.screenHeight * 2 / 3 + 5, Config.screenWidth, Config.screenHeight * 5 / 6, DrawingUtility.TEXT_TOP, g2);
 	
 		for(int i = 0; i < renderList.size(); i++){
 			renderList.get(i).draw(g);

@@ -47,6 +47,7 @@ public class Board implements IUpdatable {
 		initiateBoard();
 		adjustCenter();
 	}
+	
 	public Board (Board in){
 		this.directory = in.directory;
 		String tileInfo;
@@ -78,7 +79,10 @@ public class Board implements IUpdatable {
 //			in = new Scanner(new File(Board.class.getClassLoader().getResource(directory).toURI()));
 //			in = new Scanner(new File(directory));
 			try{
-				in = new Scanner(getClass().getResourceAsStream(directory));
+				if(directory.startsWith("/res"))
+					in = new Scanner(getClass().getResourceAsStream(directory));
+				else
+					in = new Scanner(new File(directory));
 			} catch (NullPointerException e){
 				throw new IOException();
 			}
@@ -103,8 +107,8 @@ public class Board implements IUpdatable {
 					
 					if (tileInfo.substring(0, 1).equalsIgnoreCase("S"))
 						board[j][i] = new SimpleTile(k++, this, j, i);
-					else if (tileInfo.substring(0, 1).equalsIgnoreCase("F"))
-						board[j][i] = new FreezeTile(k++, this, j, i);
+					else if (tileInfo.substring(0, 1).equalsIgnoreCase("Z"))
+						board[j][i] = new SleepyTile(k++, this, j, i);
 					else if (tileInfo.substring(0, 1).equalsIgnoreCase("-"))
 						board[j][i] = new SimpleTile(Tile.NOT_A_TILE, this, j, i);
 					else{
@@ -323,7 +327,7 @@ public class Board implements IUpdatable {
 			flip(latest.x, latest.y, latest.size, latest.dir * -1, false);
 			player.decreaseMove();
 		} catch (ArrayIndexOutOfBoundsException e) {
-			JOptionPane.showMessageDialog(null, "not Undoable!");
+			JOptionPane.showMessageDialog(null, "No moves left to undo!");
 		}
 	}
 	
@@ -350,7 +354,7 @@ public class Board implements IUpdatable {
 					if (!board[i][j].isATile()) {
 						return false;
 					}
-					if(playing && ((board[i][j] instanceof FreezeTile) && ((FreezeTile) board[i][j]).isLocked())){
+					if(playing && ((board[i][j] instanceof SleepyTile) && ((SleepyTile) board[i][j]).isLocked())){
 						return false;
 					}
 				}

@@ -7,6 +7,7 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
 import lib.Config;
+import lib.DrawingUtility;
 
 public class GameBackground implements IRenderable, Runnable {
 	

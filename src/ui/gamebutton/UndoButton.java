@@ -5,9 +5,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import ui.Clickable;
-import ui.DrawingUtility;
 import ui.IRenderable;
 import lib.Config;
+import lib.DrawingUtility;
 import lib.InputUtility;
 import logic.Board;
 

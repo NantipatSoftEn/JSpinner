@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lib.Config;
+import lib.DrawingUtility;
 import lib.InputUtility;
 import logic.Board;
 import logic.IUpdatable;

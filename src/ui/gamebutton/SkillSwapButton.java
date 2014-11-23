@@ -6,9 +6,9 @@ import java.awt.Graphics;
 import javax.swing.JOptionPane;
 
 import ui.Clickable;
-import ui.DrawingUtility;
 import ui.IRenderable;
 import lib.Config;
+import lib.DrawingUtility;
 import lib.InputUtility;
 import logic.Board;
 

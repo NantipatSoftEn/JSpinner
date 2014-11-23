@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ui.Clickable;
-import ui.DrawingUtility;
 import ui.IRenderable;
 import lib.Config;
+import lib.DrawingUtility;
 import logic.Board;
 import logic.PlayerStatus;
 

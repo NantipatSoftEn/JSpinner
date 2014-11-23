@@ -9,19 +9,19 @@ import javax.swing.JOptionPane;
 import control.Game;
 import control.ScreenState;
 import ui.Clickable;
-import ui.DrawingUtility;
 import ui.IRenderable;
 import lib.Config;
+import lib.DrawingUtility;
 import lib.InputUtility;
 import logic.Board;
 
 public class PlayButton extends Clickable implements IRenderable {
 	public PlayButton(){
 		type = Clickable.CIRCLE;
-		width = 50;
-		height = 50;
+		width = 100;
+		height = 100;
 		x = (Config.screenWidth - width) / 2;
-		y = (Config.screenHeight - height) / 2;
+		y = (Config.screenHeight) / 2;
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class PlayButton extends Clickable implements IRenderable {
 
 	@Override
 	public void draw(Graphics g) {
-		drawButton(g, DrawingUtility.defaultButtonImg);
+		drawButton(g, DrawingUtility.playButtonImg);
 	}
 
 	@Override

@@ -5,22 +5,22 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
-import ui.DrawingUtility;
+import lib.DrawingUtility;
 import lib.Utility;
 
-public class FreezeTile extends Tile{
+public class SleepyTile extends Tile{
 
 	private boolean isLocked;
 	private int currentLock;
 	private static int lockCount = 3;
 	
-	public FreezeTile() {
+	public SleepyTile() {
 		super();
 		isLocked = Utility.random(0, 2) > 0 ? true : false;
 		currentLock = Utility.random(0, 4);
 	}
 	
-	public FreezeTile(int number, Board belongsTo, int correctX, int correctY) {
+	public SleepyTile(int number, Board belongsTo, int correctX, int correctY) {
 		super(number, belongsTo, correctX, correctY);
 		isLocked = Utility.random(0, 2) > 0 ? true : false;
 		currentLock = Utility.random(0, 4);

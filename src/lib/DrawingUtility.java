@@ -1,4 +1,4 @@
-package ui;
+package lib;
 
 import java.awt.*;
 import java.awt.geom.*;
@@ -30,11 +30,14 @@ public class DrawingUtility {
 	
 	public static final BufferedImage gameBG = loadImage("res/img/gameBG.png");
 	public static final BufferedImage cloudBG = loadImage("res/img/gameBG_cloud.png");
+	public static final BufferedImage logoImg = loadImage("res/img/logo.png");
 	public static final BufferedImage cwButtonImg = loadImage("res/img/cwButton.png");
 	public static final BufferedImage ccwButtonImg = loadImage("res/img/ccwButton.png");
 	public static final BufferedImage backButtonImg = loadImage("res/img/backButton.png");
 	public static final BufferedImage helpButtonImg = loadImage("res/img/helpButton.png");
 	public static final BufferedImage undoButtonImg = loadImage("res/img/undoButton.png");
+	public static final BufferedImage playButtonImg = loadImage("res/img/playButton.png");
+	public static final BufferedImage settingsButtonImg = loadImage("res/img/settingsButton.png");
 	public static final BufferedImage defaultButtonImg = loadImage("res/img/defaultButton.png");
 	public static final BufferedImage sleepyTileImg = loadImage("res/img/sleepyTile.png");
 	public static final BufferedImage correctImg = loadImage("res/img/correct.png");
@@ -46,6 +49,21 @@ public class DrawingUtility {
 			JOptionPane.showMessageDialog(null, "Image not found!", "Error", JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
+	}
+	
+	public static Color generateRainbow(int number, int total){
+		int gr = Math.abs(128 - number * 255 / total);
+		int re = 255 - number * 255 / total;
+		int bl = number * 255 / total;
+		try{
+			return new Color(re, gr, bl);
+		} catch (IllegalArgumentException e){
+			return Color.BLACK;
+		}
+	}
+	
+	public static Font getDefaultFont(int size){
+		return new Font("Tahoma", Font.BOLD, size);
 	}
 	
 	public static BufferedImage getClickableImg(BufferedImage spriteSheet, int state){
@@ -145,4 +163,7 @@ public class DrawingUtility {
 		context.setFont(tmpFont);	//return to original font
 	}
 	
+	public static void drawStringInBox(String s, int size, int xRef, int yRef, int width, int height, int aligned, Graphics context){
+		drawStringInBox(s, DrawingUtility.getDefaultFont(size), xRef, yRef, width, height, aligned, context);
+	}
 }

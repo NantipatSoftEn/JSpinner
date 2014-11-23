@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import ui.gamebutton.*;
 import ui.winpanel.*;
+import lib.DrawingUtility;
 import lib.InputUtility;
 import logic.*;
 
@@ -60,7 +61,8 @@ public abstract class Clickable implements IRenderable, IUpdatable{
 //		System.out.println(isMouseOn());
 		if(isMouseOn()){
 			mouseOnAction();
-			if(InputUtility.isPicking()){
+			//TODO should i use mousepicking or mousereleased?
+			if(InputUtility.isMouseReleased()){
 				onClickAction();
 			}
 		}
@@ -82,7 +84,7 @@ public abstract class Clickable implements IRenderable, IUpdatable{
 		if(!isMouseOn())
 			g2.drawImage(DrawingUtility.getClickableImg(buttonSprite, DrawingUtility.STATE_NORMAL), null, x, y);
 		else
-			if(InputUtility.isPicking())
+			if(InputUtility.isMouseDown())
 				g2.drawImage(DrawingUtility.getClickableImg(buttonSprite, DrawingUtility.STATE_CLICK), null, x, y);
 			else	
 				g2.drawImage(DrawingUtility.getClickableImg(buttonSprite, DrawingUtility.STATE_HOVER), null, x, y);

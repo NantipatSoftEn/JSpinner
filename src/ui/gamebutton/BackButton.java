@@ -9,9 +9,10 @@ import javax.swing.JOptionPane;
 import control.Game;
 import control.ScreenState;
 import ui.Clickable;
-import ui.DrawingUtility;
+import ui.HelpPanel;
 import ui.IRenderable;
 import lib.Config;
+import lib.DrawingUtility;
 import lib.InputUtility;
 import logic.Board;
 
@@ -41,5 +42,6 @@ public class BackButton extends Clickable implements IRenderable {
 			ScreenState.presentScreen = ScreenState.TITLE;
 		if(ScreenState.presentScreen == ScreenState.GAME)
 			ScreenState.presentScreen = ScreenState.LEVEL_SELECT;
+		HelpPanel.setVisible(false);
 	}
 }

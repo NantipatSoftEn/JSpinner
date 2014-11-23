@@ -6,9 +6,9 @@ import java.awt.Graphics;
 
 import javax.swing.JOptionPane;
 
+import lib.DrawingUtility;
 import logic.Board;
 import ui.Clickable;
-import ui.DrawingUtility;
 
 public class NextLevelButton extends Clickable{
 	

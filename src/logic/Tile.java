@@ -13,9 +13,9 @@ import java.util.Date;
 import javax.rmi.CORBA.Util;
 import javax.swing.text.Utilities;
 
-import ui.DrawingUtility;
 import ui.IRenderable;
 import lib.Config;
+import lib.DrawingUtility;
 import lib.Utility;
 
 public abstract class Tile implements IRenderable {
@@ -174,10 +174,10 @@ public abstract class Tile implements IRenderable {
 			g.fillRect(drawX-5, drawY-5, size+10, size+10);
 		}
 		
-		int gr = Math.abs(128 - number * 255 / (board.getBoardWidth() * board.getBoardHeight()));
-		int re = 255 - number * 255 / (board.getBoardWidth() * board.getBoardHeight());
-		int bl = number * 255 / (board.getBoardWidth() * board.getBoardHeight());
-		g.setColor(new Color(re, gr, bl));
+//		int gr = Math.abs(128 - number * 255 / (board.getBoardWidth() * board.getBoardHeight()));
+//		int re = 255 - number * 255 / (board.getBoardWidth() * board.getBoardHeight());
+//		int bl = number * 255 / (board.getBoardWidth() * board.getBoardHeight());
+		g.setColor(DrawingUtility.generateRainbow(number, board.getBoardWidth() * board.getBoardHeight()));
 		
 		if(isMouseOn)
 			g.setColor(g.getColor().brighter());
@@ -207,7 +207,7 @@ public abstract class Tile implements IRenderable {
 		Font font = new Font("Tahoma", Font.BOLD, 20);
 		g2.setColor(Color.WHITE);
 		Rectangle2D textBound = tileRect.getBounds2D();
-		DrawingUtility.drawStringInBox(prefix + "" + number, font, (int)textBound.getMinX(), (int)textBound.getMinY(),
+		DrawingUtility.drawStringInBox(prefix + "" + number, 20, (int)textBound.getMinX(), (int)textBound.getMinY(),
 				(int)textBound.getWidth(), (int)textBound.getHeight(), DrawingUtility.TEXT_CENTER, g2);
 	}
 

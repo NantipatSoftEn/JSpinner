@@ -6,12 +6,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import lib.Config;
+import lib.DrawingUtility;
 import lib.InputUtility;
 import logic.Board;
 import logic.IUpdatable;
 import logic.Tile;
 import ui.Clickable;
-import ui.DrawingUtility;
 import ui.IRenderable;
 
 public class CounterClockWiseButton extends Clickable implements IRenderable,

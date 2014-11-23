@@ -7,10 +7,10 @@ import java.awt.Graphics2D;
 import javax.swing.JOptionPane;
 
 import ui.Clickable;
-import ui.DrawingUtility;
 import ui.HelpPanel;
 import ui.IRenderable;
 import lib.Config;
+import lib.DrawingUtility;
 import lib.InputUtility;
 import logic.Board;
 

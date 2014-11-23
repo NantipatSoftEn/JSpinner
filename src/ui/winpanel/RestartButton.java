@@ -4,9 +4,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 
+import lib.DrawingUtility;
 import logic.Board;
 import ui.Clickable;
-import ui.DrawingUtility;
 
 public class RestartButton extends Clickable{
 	

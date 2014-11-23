@@ -4,7 +4,6 @@ import java.awt.*;
 
 import javax.swing.*;
 
-import ui.DrawingUtility;
 import ui.IRenderable;
 import lib.*;
 

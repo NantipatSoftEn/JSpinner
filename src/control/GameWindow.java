@@ -19,6 +19,7 @@ import ui.GameTitle;
 import ui.LevelSelectScreen;
 import lib.Config;
 import lib.InputUtility;
+import lib.Utility;
 import logic.LevelFormatException;
 
 public class GameWindow extends JFrame {
@@ -60,12 +61,15 @@ public class GameWindow extends JFrame {
 			//	BUG: packing doesn't get the right size
 			else if(ScreenState.presentScreen == ScreenState.GAME){
 				try {
-					game = new Game(this, "/res/levels/testFreeze.txt");
+//					game = new Game(this, "/res/levels/testFreeze.txt");
+					game = new Game(this, ScreenState.nextLevel);
 					this.remove((JPanel) (game.getGameScreen()));
 				} catch (LevelFormatException e) {
 					JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+					ScreenState.presentScreen = ScreenState.LEVEL_SELECT;
 				} catch (IOException e){
 					JOptionPane.showMessageDialog(null, "Level file not found.", "Error", JOptionPane.ERROR_MESSAGE);
+					ScreenState.presentScreen = ScreenState.LEVEL_SELECT;
 				}
 			}
 			
@@ -100,6 +104,7 @@ public class GameWindow extends JFrame {
 			public void mousePressed(MouseEvent e) {
 				// TODO Auto-generated method stub
 				InputUtility.setPicking(true);
+				InputUtility.setMouseDown(true);
 		//		InputUtility.setPickedPoint(e.getX(), e.getY());
 			}
 		
@@ -107,6 +112,7 @@ public class GameWindow extends JFrame {
 			public void mouseReleased(MouseEvent e) {
 				// TODO Auto-generated method stub
 				InputUtility.setPicking(false);
+				InputUtility.setMouseDown(false);
 				InputUtility.setMouseReleased(true);
 		//		InputUtility.setPickedPoint(InputUtility.NULL_POINT, InputUtility.NULL_POINT);
 			}
