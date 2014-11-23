@@ -38,6 +38,8 @@ public class DrawingUtility {
 	public static final BufferedImage undoButtonImg = loadImage("res/img/undoButton.png");
 	public static final BufferedImage playButtonImg = loadImage("res/img/playButton.png");
 	public static final BufferedImage settingsButtonImg = loadImage("res/img/settingsButton.png");
+	public static final BufferedImage newGameButtonImg = loadImage("res/img/newGameButton.png");
+	public static final BufferedImage openButtonImg = loadImage("res/img/openButton.png");
 	public static final BufferedImage defaultButtonImg = loadImage("res/img/defaultButton.png");
 	public static final BufferedImage sleepyTileImg = loadImage("res/img/sleepyTile.png");
 	public static final BufferedImage correctImg = loadImage("res/img/correct.png");
@@ -45,8 +47,8 @@ public class DrawingUtility {
 	public static BufferedImage loadImage(String directory){
 		try {
 			return ImageIO.read(DrawingUtility.class.getClassLoader().getResource(directory));
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Image not found!", "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Resource image not found!", "Error", JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 	}

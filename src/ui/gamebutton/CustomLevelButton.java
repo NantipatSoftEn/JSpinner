@@ -34,7 +34,7 @@ public class CustomLevelButton extends Clickable{
 
 	@Override
 	public void draw(Graphics g) {
-		drawButton(g, DrawingUtility.defaultButtonImg);
+		drawButton(g, DrawingUtility.openButtonImg);
 	}
 
 	@Override
@@ -46,7 +46,9 @@ public class CustomLevelButton extends Clickable{
 	    int returnVal = chooser.showOpenDialog(null);
 	    if(returnVal == JFileChooser.APPROVE_OPTION) {
 	    	ScreenState.nextLevel = chooser.getSelectedFile().getAbsolutePath();
+	    	ScreenState.presentScreen = ScreenState.GAME;
+	    } else {
+	    	ScreenState.presentScreen = ScreenState.LEVEL_SELECT;
 	    }
-		ScreenState.presentScreen = ScreenState.GAME;
 	}
 }

@@ -28,7 +28,7 @@ public class ShuffleButton extends Clickable implements IRenderable {
 
 	@Override
 	public void draw(Graphics g) {
-		drawButton(g, DrawingUtility.defaultButtonImg);
+		drawButton(g, DrawingUtility.newGameButtonImg);
 	}
 	
 	@Override
