@@ -35,7 +35,7 @@ public class LevelSelectScreen extends JPanel {
 	private int size = 100;
 	private int g = 10; // gutter
 	private int startX = Config.screenWidth / 2 - (bpr * size + (bpr - 1) * g) / 2;
-	private int startY = 100;
+	private int startY = Config.screenHeight / 2 -200;
 	private int catGutter = 140;
 	
 	public LevelSelectScreen(GameWindow window) {

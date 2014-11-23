@@ -41,7 +41,8 @@ public class BackButton extends Clickable implements IRenderable {
 		if(ScreenState.presentScreen == ScreenState.LEVEL_SELECT)
 			ScreenState.presentScreen = ScreenState.TITLE;
 		if(ScreenState.presentScreen == ScreenState.GAME)
-			ScreenState.presentScreen = ScreenState.LEVEL_SELECT;
+			if(JOptionPane.showConfirmDialog(null, "Are you sure you want to go back?\nGame progress will not be saved.", "Confirm", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
+				ScreenState.presentScreen = ScreenState.LEVEL_SELECT;
 		HelpPanel.setVisible(false);
 	}
 }
