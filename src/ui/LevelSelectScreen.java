@@ -69,7 +69,7 @@ public class LevelSelectScreen extends JPanel {
 			
 			//update
 			if(InputUtility.getKeyTriggered(KeyEvent.VK_SPACE)){
-				ScreenState.nextLevel = "/res/levels/testFreeze.txt";
+				ScreenState.nextLevel = "/res/levels/testAngry.txt";
 				ScreenState.presentScreen = ScreenState.GAME;
 			}
 			InputUtility.postUpdate();

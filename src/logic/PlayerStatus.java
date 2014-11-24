@@ -10,17 +10,20 @@ import lib.*;
 public class PlayerStatus implements IRenderable{
 	private static int moved = 0;
 	private Board board;
+	private static boolean lockMove = false;
 	
 	public PlayerStatus(Board playing){
 		this.board = playing;
 	}
 	
 	public static void move() {
-		moved++;
+		if(!lockMove)
+			moved++;
 	}
 	
 	public static void decreaseMove() {
-		moved--;
+		if(!lockMove)
+			moved--;
 	}
 	
 	public static void resetMove(){
@@ -29,6 +32,10 @@ public class PlayerStatus implements IRenderable{
 	
 	public static int getMoved(){
 		return moved;
+	}
+	
+	public static void setLockMove(boolean lockMove) {
+		PlayerStatus.lockMove = lockMove;
 	}
 	
 	@Override

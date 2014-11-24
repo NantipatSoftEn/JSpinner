@@ -45,6 +45,7 @@ public class ClockWiseButton extends Clickable implements IRenderable,
 		if(isVisible){
 			board.flip(board.getFlipX(), board.getFlipY(), board.getFlipSize(), Board.CW, true);
 			board.clearSelected();
+			board.setRepeatMoveEnebled(true);
 		}
 	}
 	

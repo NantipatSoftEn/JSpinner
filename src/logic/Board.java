@@ -39,6 +39,9 @@ public class Board implements IUpdatable {
 	private boolean isCheated = false;
 	private String directory;
 	private int currentFrame = 0;
+	private boolean effectPerFormed = true;
+	private int animatedShuffle = 0;
+	private boolean repeatMoveEnebled = true;
 
 	public Board(int width, int height) {
 		board = new Tile[width][height];
@@ -109,6 +112,8 @@ public class Board implements IUpdatable {
 						board[j][i] = new SimpleTile(k++, this, j, i);
 					else if (tileInfo.substring(0, 1).equalsIgnoreCase("Z"))
 						board[j][i] = new SleepyTile(k++, this, j, i);
+					else if (tileInfo.substring(0, 1).equalsIgnoreCase("A"))
+						board[j][i] = new AngryTile(k++, this, j, i);
 					else if (tileInfo.substring(0, 1).equalsIgnoreCase("-"))
 						board[j][i] = new SimpleTile(Tile.NOT_A_TILE, this, j, i);
 					else{
@@ -252,7 +257,11 @@ public class Board implements IUpdatable {
 		else
 			return null;
 	}
-
+	
+	public void setRepeatMoveEnebled(boolean repeatMoveEnebled) {
+		this.repeatMoveEnebled = repeatMoveEnebled;
+	}
+	
 	public void clearSelected() {
 		selected = 0;
 		for (int j = 0; j < board[0].length; j++) {
@@ -307,12 +316,11 @@ public class Board implements IUpdatable {
 					}
 				}
 				
-				for (int j = 0; j < board[0].length; j++) {
-					for (int i = 0; i < board.length; i++) {
-						board[i][j].performEffect();
-					}
-
-				}
+//				for (int j = 0; j < board[0].length; j++) {
+//					for (int i = 0; i < board.length; i++) {
+//						board[i][j].performEffect();
+//					}
+//				}
 				
 			} else {
 				setBoard();
@@ -327,6 +335,11 @@ public class Board implements IUpdatable {
 			move.remove(i);
 			flip(latest.x, latest.y, latest.size, latest.dir * -1, false);
 			player.decreaseMove();
+			for (int j = 0; j < board[0].length; j++) {
+				for (int k = 0; k < board.length; k++) {
+					board[k][j].undoEffect();
+				}
+			}
 		} catch (ArrayIndexOutOfBoundsException e) {
 			JOptionPane.showMessageDialog(null, "No moves left to undo!");
 		}
@@ -367,6 +380,7 @@ public class Board implements IUpdatable {
 	}
 
 	public void shuffle(int times) {
+//		boolean isReset = true;
 		player.resetMove();
 		move = new ArrayList<Move>();
 		for (int i = 0; i < times; i++) {
@@ -399,6 +413,43 @@ public class Board implements IUpdatable {
 			flip(x, y, size, rotation, false);
 
 		}
+	}
+	
+	public void animatedShuffle(int times){
+		animatedShuffle = times;
+		repeatMoveEnebled = false;
+		player.setLockMove(true);
+	}
+	
+	public void randomMove(){
+		move = new ArrayList<Move>();
+		int x, y, dir, size;
+		do{
+			x = Utility.random(0, board.length);
+			y = Utility.random(0, board[0].length);
+			dir = Utility.random(0, 4);
+			// 0 for NE
+			// 1 for SE
+			// 2 for SW
+			// 3 for NW
+			if (dir == 0) {
+				size = Utility.random(0, Math.min(board[0].length - x, y));
+				y -= size;
+			} else if (dir == 1) {
+				size = Utility.random(0,
+						Math.min(board[0].length - x, board.length - y));
+			} else if (dir == 2) {
+				size = Utility.random(0, Math.min(x, board.length - y));
+				x -= size;
+			} else if (dir == 3) {
+				size = Utility.random(0, Math.min(x, y));
+				x -= size;
+				y -= size;
+			} else
+				size = 0;
+		} while(!isValidMove(x, y, x + size, y + size, false));
+		int rotation = Utility.random(0, 2) == 0 ? CW : CCW;
+		flip(x, y, size, rotation, true);
 	}
 
 	public String toString() {
@@ -434,26 +485,42 @@ public class Board implements IUpdatable {
 						cheat();
 								
 		//update location (if not playing animation)
-		if(isPlaying && !HelpPanel.isVisible()){		
+		
+		if(isPlaying && !HelpPanel.isVisible()){
 			if(currentFrame >= Config.animationFrameCount){
-
 				setBoard();
+				if(!effectPerFormed && animatedShuffle == 0){
+					for (int j = 0; j < board[0].length; j++) {
+						for (int i = 0; i < board.length; i++) {
+							board[i][j].performEffect();
+						}
+					}
+					effectPerFormed = true;
+				}
+				if(animatedShuffle > 0){
+					randomMove();
+					animatedShuffle--;
+					move.clear();
+				}else{
+					player.setLockMove(false);
+				}
 			} else {
+				effectPerFormed = false;
 				currentFrame++;
 			}
 
 			boolean same = selected == 2
 					&& forFlip[0].getX() == forFlip[1].getX()
 					&& forFlip[0].getY() == forFlip[1].getY();
-			if (move.size() > 0 && selected == 0) {
+			if (move.size() > 0 && selected == 0 && animatedShuffle == 0) {
 				Move latest = move.get(move.size() - 1);
 
-				if (InputUtility.getKeyTriggered(KeyEvent.VK_LEFT)) {
+				if (InputUtility.getKeyTriggered(KeyEvent.VK_LEFT) && repeatMoveEnebled) {
 					setBoard();
 					flip(latest.x, latest.y, latest.size, Board.CCW, true);
 				}
 
-				if (InputUtility.getKeyTriggered(KeyEvent.VK_RIGHT)) {
+				if (InputUtility.getKeyTriggered(KeyEvent.VK_RIGHT) && repeatMoveEnebled) {
 					setBoard();
 					flip(latest.x, latest.y, latest.size, Board.CW, true);
 				}
@@ -574,8 +641,6 @@ public class Board implements IUpdatable {
 		isPlaying = false;
 		isCheated = true;
 	}
-
-
 }
 
 class Move {

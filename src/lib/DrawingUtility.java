@@ -42,6 +42,7 @@ public class DrawingUtility {
 	public static final BufferedImage openButtonImg = loadImage("res/img/openButton.png");
 	public static final BufferedImage defaultButtonImg = loadImage("res/img/defaultButton.png");
 	public static final BufferedImage sleepyTileImg = loadImage("res/img/sleepyTile.png");
+	public static final BufferedImage angryTileImg = loadImage("res/img/angryTile.png");
 	public static final BufferedImage correctImg = loadImage("res/img/correct.png");
 	
 	public static BufferedImage loadImage(String directory){

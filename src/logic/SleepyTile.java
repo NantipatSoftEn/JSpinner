@@ -50,7 +50,7 @@ public class SleepyTile extends Tile{
 	
 	@Override
 	public String toString() {
-		return "[F" + getNumber() + "]";
+		return "[Z" + getNumber() + "]";
 	}
 
 	@Override
