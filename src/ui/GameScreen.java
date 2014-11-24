@@ -43,6 +43,7 @@ public class GameScreen extends JPanel{
 		renderList.addAll(WinPanel.winElements);
 		renderList.addAll(Clickable.buttons);
 		renderList.add(HelpPanel.helpPanel);
+		renderList.add(GameAnimation.fightAnim);
 		
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);

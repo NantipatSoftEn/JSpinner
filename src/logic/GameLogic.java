@@ -8,6 +8,7 @@ import lib.InputUtility;
 import control.Game;
 import control.ScreenState;
 import ui.Clickable;
+import ui.GameAnimation;
 import ui.HelpPanel;
 import ui.gamebutton.*;
 import ui.winpanel.WinPanel;
@@ -20,6 +21,8 @@ public class GameLogic{
 		updateList.add(b);
 		updateList.addAll(Clickable.buttons);
 		updateList.add(HelpPanel.helpPanel);
+		updateList.add(GameAnimation.fightAnim);
+		
 //		updateList.addAll(WinPanel.winElements);
 	}
 	

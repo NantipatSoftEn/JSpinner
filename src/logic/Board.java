@@ -16,6 +16,7 @@ import javax.rmi.CORBA.Util;
 import javax.swing.JOptionPane;
 
 import ui.Clickable;
+import ui.GameAnimation;
 import ui.GameScreen;
 import ui.HelpPanel;
 import ui.IRenderable;

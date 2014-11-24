@@ -44,6 +44,7 @@ public class DrawingUtility {
 	public static final BufferedImage sleepyTileImg = loadImage("res/img/sleepyTile.png");
 	public static final BufferedImage angryTileImg = loadImage("res/img/angryTile.png");
 	public static final BufferedImage correctImg = loadImage("res/img/correct.png");
+	public static final BufferedImage fightSprite = loadImage("res/img/boomSprite.png");
 	
 	public static BufferedImage loadImage(String directory){
 		try {

@@ -5,6 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
+import ui.GameAnimation;
+import lib.Config;
 import lib.DrawingUtility;
 import lib.Utility;
 
@@ -35,6 +37,21 @@ public class AngryTile extends Tile{
 			angriness = 0;
 		}
 		if(angriness >= MAX_ANGRINESS){
+			int cx = 0, cy = 0;
+			if(currentX < board.getBoardWidth() - 1 && board.getTileAt(currentX + 1, currentY) instanceof AngryTile){
+				cx = this.drawX + board.getTileSize() + Config.tileGutter / 2;
+				cy = this.drawY + board.getTileSize() / 2;
+			}else if(currentX > 0 && board.getTileAt(currentX - 1, currentY) instanceof AngryTile){
+				cx = this.drawX - Config.tileGutter / 2;
+				cy = this.drawY + board.getTileSize() / 2;
+			}else if(currentY < board.getBoardHeight() - 1 && board.getTileAt(currentX, currentY + 1) instanceof AngryTile){
+				cx = this.drawX + board.getTileSize() / 2;
+				cy = this.drawY + board.getTileSize() + Config.tileGutter / 2;
+			}else if(currentY > 0 && board.getTileAt(currentX, currentY - 1) instanceof AngryTile){
+				cx = this.drawX + board.getTileSize() / 2;
+				cy = this.drawY - Config.tileGutter / 2;
+			}
+			GameAnimation.fightAnim.playAt(cx, cy);
 			board.animatedShuffle(ANGRY_SHUFFLE);
 			angriness = 0;
 			//TODO set cannot undo??
@@ -43,12 +60,6 @@ public class AngryTile extends Tile{
 	
 	@Override
 	public void undoEffect() {
-//		currentLock--;
-//		if(currentLock < 0){
-//			isLocked = !isLocked;
-//			currentLock = 2;
-//		}
-		//TODO HOW DO I UNDO THIS ???
 	}
 	
 	@Override
