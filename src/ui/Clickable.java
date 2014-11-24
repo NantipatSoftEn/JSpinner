@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import ui.gamebutton.*;
 import ui.winpanel.*;
+import lib.AudioUtility;
 import lib.DrawingUtility;
 import lib.InputUtility;
 import logic.*;
@@ -18,6 +19,7 @@ public abstract class Clickable implements IRenderable, IUpdatable{
 	protected int width, height;
 	protected int type;
 	protected boolean isVisible = true;
+	protected boolean isMuted = false;
 	public static int RECTANGLE = 0;
 	public static int CIRCLE = 1;
 	public static List<Clickable> buttons = new ArrayList<Clickable>();
@@ -63,6 +65,8 @@ public abstract class Clickable implements IRenderable, IUpdatable{
 			mouseOnAction();
 			//TODO should i use mousepicking or mousereleased?
 			if(InputUtility.isMouseReleased()){
+				if(!isMuted)
+					AudioUtility.clickSound.play();
 				onClickAction();
 			}
 		}
@@ -88,5 +92,9 @@ public abstract class Clickable implements IRenderable, IUpdatable{
 				g2.drawImage(DrawingUtility.getClickableImg(buttonSprite, DrawingUtility.STATE_CLICK), null, x, y);
 			else	
 				g2.drawImage(DrawingUtility.getClickableImg(buttonSprite, DrawingUtility.STATE_HOVER), null, x, y);
+	}
+	
+	protected void mute(){
+		isMuted = true;
 	}
 }

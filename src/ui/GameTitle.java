@@ -1,5 +1,6 @@
 package ui;
 
+import java.applet.AudioClip;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -20,6 +21,7 @@ import javax.swing.JPanel;
 import ui.gamebutton.*;
 import control.GameWindow;
 import control.ScreenState;
+import lib.AudioUtility;
 import lib.Config;
 import lib.DrawingUtility;
 import lib.InputUtility;
@@ -58,6 +60,7 @@ public class GameTitle extends JPanel {
 			
 			//update
 			if(InputUtility.getKeyTriggered(KeyEvent.VK_SPACE)){
+				AudioUtility.clickSound.play();
 				ScreenState.presentScreen = ScreenState.LEVEL_SELECT;
 			}
 			InputUtility.postUpdate();

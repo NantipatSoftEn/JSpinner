@@ -1,11 +1,13 @@
 package ui;
 
+import java.applet.AudioClip;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
+import lib.AudioUtility;
 import lib.Config;
 import lib.DrawingUtility;
 
@@ -27,7 +29,7 @@ public class GameBackground implements IRenderable, Runnable {
 	
 	@Override
 	public void run() {
-		//STILL LAG.... DIDN'T USE
+		AudioUtility.bgm.loop();
 		while(true){
 //			at.rotate(theta, gb.getWidth() / 2, gb.getHeight() / 2);
 //			ato = new AffineTransformOp(at, AffineTransformOp.TYPE_BICUBIC);

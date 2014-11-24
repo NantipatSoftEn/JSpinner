@@ -8,6 +8,7 @@ import java.util.List;
 
 import ui.Clickable;
 import ui.IRenderable;
+import lib.AudioUtility;
 import lib.Config;
 import lib.DrawingUtility;
 import logic.Board;
@@ -32,8 +33,10 @@ public class WinPanel implements IRenderable {
 	}
 	
 	public static void setVisible(boolean isVisible) {
-		if(!isVisible)
+		if(!isVisible){
 			currentFrame = frameCount;
+			AudioUtility.solvedSound.play();
+		}
 		WinPanel.isVisible = isVisible;
 	}
 	

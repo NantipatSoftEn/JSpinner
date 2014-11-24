@@ -25,6 +25,7 @@ public class CounterClockWiseButton extends Clickable implements IRenderable,
 		y = 100;
 		width = 60;
 		height = 60;
+		mute();
 	}
 
 	@Override
