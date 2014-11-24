@@ -7,18 +7,20 @@ import javax.swing.JOptionPane;
 
 import ui.Clickable;
 import ui.IRenderable;
+import lib.AudioUtility;
 import lib.Config;
 import lib.DrawingUtility;
 import lib.InputUtility;
 import logic.Board;
 
-public class SkillUndoButton extends Clickable implements IRenderable {
-	public SkillUndoButton(){
+public class ToggleSoundButton extends Clickable implements IRenderable {
+	public ToggleSoundButton(){
 		type = Clickable.CIRCLE;
 		width = 50;
 		height = 50;
-		x = Config.screenWidth - 2 * width - 10;
+		x = width + 5;
 		y = Config.screenHeight - height - 5;
+		isMuted = true;
 	}
 
 	@Override
@@ -28,11 +30,18 @@ public class SkillUndoButton extends Clickable implements IRenderable {
 
 	@Override
 	public void draw(Graphics g) {
-		drawButton(g, DrawingUtility.defaultButtonImg);
+		if(AudioUtility.isMuted())
+			drawButton(g, DrawingUtility.soundOnButtonImg);
+		else
+			drawButton(g, DrawingUtility.soundOffButtonImg);
 	}
 
 	@Override
 	public void onClickAction() {
-		JOptionPane.showMessageDialog(null, "SKILL UNDO");
+		AudioUtility.setMuted(!AudioUtility.isMuted());
+		if(AudioUtility.isMuted())
+			AudioUtility.bgm.stop();
+		else
+			AudioUtility.bgm.loop();
 	}
 }

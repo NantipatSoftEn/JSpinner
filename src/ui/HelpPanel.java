@@ -86,14 +86,9 @@ public class HelpPanel implements IRenderable, IUpdatable {
 			}
 			if(closeButton.contains((Point2D)InputUtility.getPickedPoint())){
 				setVisible(false);
-				k = 0;
 			}
-			if(!this.contains((Point2D)InputUtility.getPickedPoint())){
-				k++;
-				if(k > 1){
-					setVisible(false);
-					k = 0;
-				}
+			else if(!this.contains((Point2D)InputUtility.getPickedPoint()) && !Clickable.helpButton.isMouseOn()){
+				setVisible(false);
 			}
 		}
 	}

@@ -26,6 +26,7 @@ public abstract class Clickable implements IRenderable, IUpdatable{
 	public static Board board;
 	public static ClockWiseButton cwButton = new ClockWiseButton();
 	public static CounterClockWiseButton ccwButton = new CounterClockWiseButton();
+	public static HelpButton helpButton = new HelpButton();
 	
 	static{
 		buttons.add(new ShuffleButton());
@@ -34,10 +35,9 @@ public abstract class Clickable implements IRenderable, IUpdatable{
 		buttons.add(ccwButton);
 		buttons.add(new RestartButton());
 		buttons.add(new NextLevelButton());
-		buttons.add(new HelpButton());
+		buttons.add(helpButton);
 		buttons.add(new BackButton());
-		buttons.add(new SkillSwapButton());
-		buttons.add(new SkillUndoButton());
+		buttons.add(new ToggleSoundButton());
 	}
 	
 	public Clickable(){	
@@ -66,7 +66,7 @@ public abstract class Clickable implements IRenderable, IUpdatable{
 			//TODO should i use mousepicking or mousereleased?
 			if(InputUtility.isMouseReleased()){
 				if(!isMuted)
-					AudioUtility.clickSound.play();
+					AudioUtility.playSound(AudioUtility.clickSound);
 				onClickAction();
 			}
 		}

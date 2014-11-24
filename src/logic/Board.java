@@ -307,7 +307,7 @@ public class Board implements IUpdatable {
 			}
 			
 			if(isPlaying){
-				AudioUtility.flipSound.play();
+				AudioUtility.playSound(AudioUtility.flipSound);
 				move.add(new Move(x, y, size, direction));
 	//			System.out.println("("+x+","+y+")"+" "+size+"--"+direction);
 				player.move();

@@ -35,7 +35,7 @@ public class WinPanel implements IRenderable {
 	public static void setVisible(boolean isVisible) {
 		if(!isVisible){
 			currentFrame = frameCount;
-			AudioUtility.solvedSound.play();
+			AudioUtility.playSound(AudioUtility.solvedSound);
 		}
 		WinPanel.isVisible = isVisible;
 	}

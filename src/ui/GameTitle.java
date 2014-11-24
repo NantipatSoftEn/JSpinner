@@ -60,7 +60,7 @@ public class GameTitle extends JPanel {
 			
 			//update
 			if(InputUtility.getKeyTriggered(KeyEvent.VK_SPACE)){
-				AudioUtility.clickSound.play();
+				AudioUtility.playSound(AudioUtility.clickSound);
 				ScreenState.presentScreen = ScreenState.LEVEL_SELECT;
 			}
 			InputUtility.postUpdate();

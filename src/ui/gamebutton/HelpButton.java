@@ -19,7 +19,7 @@ public class HelpButton extends Clickable implements IRenderable {
 		type = Clickable.CIRCLE;
 		width = 50;
 		height = 50;
-		x = width + 5;
+		x = Config.screenWidth - width - 5;
 		y = Config.screenHeight - 55;
 	}
 
@@ -35,6 +35,6 @@ public class HelpButton extends Clickable implements IRenderable {
 
 	@Override
 	public void onClickAction() {
-		HelpPanel.helpPanel.setVisible(true);
+		HelpPanel.helpPanel.setVisible(!HelpPanel.helpPanel.isVisible());
 	}
 }
