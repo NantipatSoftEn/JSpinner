@@ -253,10 +253,11 @@ public class Board implements IUpdatable {
 	}
 
 	public Move getLatestMove() {
-		if (move.size() > 0)
+		try{
 			return move.get(move.size() - 1);
-		else
+		} catch(IndexOutOfBoundsException e){
 			return null;
+		}
 	}
 	
 	public void setRepeatMoveEnebled(boolean repeatMoveEnebled) {

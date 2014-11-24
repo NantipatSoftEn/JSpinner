@@ -18,7 +18,7 @@ public class GameLogicThread implements Runnable {
 		while(ScreenState.presentScreen == ScreenState.GAME){
 			monitor.updateLogic();
 			try{
-				Thread.sleep(15);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 			}
 		}

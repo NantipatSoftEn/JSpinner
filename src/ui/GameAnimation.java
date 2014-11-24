@@ -32,7 +32,7 @@ public class GameAnimation implements IRenderable, IUpdatable {
 	public void update() {
 		if(isVisible){
 			currentFrame++;
-			if(currentFrame >= frameCount * 2){
+			if(currentFrame >= frameCount * 4){
 				isVisible = false;
 			}
 		}
@@ -49,8 +49,8 @@ public class GameAnimation implements IRenderable, IUpdatable {
 			Graphics2D g2 = (Graphics2D) g;
 			int x = cx - animationSprite.getWidth() / frameCount / 2;
 			int y = cy - animationSprite.getHeight() / 2;
-			System.out.println(currentFrame + "/" + frameCount);
-			g2.drawImage(DrawingUtility.getFrame(animationSprite, currentFrame/2, frameCount), null, x, y);
+//			System.out.println(currentFrame + "/" + frameCount);
+			g2.drawImage(DrawingUtility.getFrame(animationSprite, currentFrame/4, frameCount), null, x, y);
 		}
 	}
 
