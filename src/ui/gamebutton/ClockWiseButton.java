@@ -21,10 +21,7 @@ public class ClockWiseButton extends Clickable implements IRenderable,
 	
 	public ClockWiseButton(){
 		type = Clickable.CIRCLE;
-		x = Config.screenWidth / 2;
-		y = 100;
-		width = 60;
-		height = 60;
+		updatePosition();
 		mute();
 	}
 
@@ -38,6 +35,14 @@ public class ClockWiseButton extends Clickable implements IRenderable,
 		if(isVisible){
 			drawButton(g, DrawingUtility.cwButtonImg);
 		}
+	}
+	
+	@Override
+	public void updatePosition() {
+		x = Config.screenWidth / 2;
+		y = 100;
+		width = 60;
+		height = 60;
 	}
 	
 	@Override

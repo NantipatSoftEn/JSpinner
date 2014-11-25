@@ -6,16 +6,16 @@ import java.awt.Graphics2D;
 
 import javax.swing.JOptionPane;
 
-import ui.Clickable;
-import ui.HelpPanel;
-import ui.IRenderable;
+import control.Game;
+import control.ScreenState;
+import ui.*;
 import util.Config;
 import util.DrawingUtility;
 import util.InputUtility;
 import logic.Board;
 
-public class HelpButton extends Clickable implements IRenderable {
-	public HelpButton(){
+public class AboutButton extends Clickable {
+	public AboutButton(){
 		type = Clickable.CIRCLE;
 		updatePosition();
 	}
@@ -27,9 +27,9 @@ public class HelpButton extends Clickable implements IRenderable {
 
 	@Override
 	public void draw(Graphics g) {
-		drawButton(g, DrawingUtility.helpButtonImg);
+		drawButton(g, DrawingUtility.aboutButtonImg);
 	}
-	
+
 	@Override
 	public void updatePosition() {
 		width = 50;
@@ -37,9 +37,13 @@ public class HelpButton extends Clickable implements IRenderable {
 		x = Config.screenWidth - width - 5;
 		y = Config.screenHeight - 55;
 	}
-
+	
 	@Override
 	public void onClickAction() {
-		HelpPanel.helpPanel.setVisible(!HelpPanel.helpPanel.isVisible());
+		JOptionPane.showMessageDialog(null, "JSpinner: a game by\n"
+								+ "Thanawit Prasongpongchai 5631045321\n"
+								+ "Phatrasek Jirabovonvisut 5630469621\n"
+								+ "for course 2110215 PROG METH (2014/1)\n"
+								+ "Computer Engineering Chulalongkorn University", "About", JOptionPane.INFORMATION_MESSAGE);
 	}
 }

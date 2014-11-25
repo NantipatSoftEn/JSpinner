@@ -15,10 +15,7 @@ public class NextLevelButton extends Clickable{
 	
 	public NextLevelButton(){
 		type = Clickable.RECTANGLE;
-		width = 200;
-		height = 40;
-		x = WinPanel.x + WinPanel.width / 2 + 10;
-		y = WinPanel.y + WinPanel.height / 2 + 30;
+		updatePosition();
 	}
 
 	@Override
@@ -41,9 +38,18 @@ public class NextLevelButton extends Clickable{
 	}
 	
 	@Override
+	public void updatePosition() {
+		width = 200;
+		height = 40;
+		x = WinPanel.x + WinPanel.width / 2 + 10;
+		y = WinPanel.y + WinPanel.height / 2 + 30;
+	}
+	
+	@Override
 	public void onClickAction() {
 		if(WinPanel.isVisible() && ScreenState.isAdventure){
 			ScreenState.presentScreen = ScreenState.NEXT_LEVEL;
+			WinPanel.setVisible(false);
 		}
 	}
 }

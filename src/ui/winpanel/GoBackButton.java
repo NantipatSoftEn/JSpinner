@@ -13,10 +13,7 @@ public class GoBackButton extends Clickable{
 	
 	public GoBackButton(){
 		type = Clickable.RECTANGLE;
-		width = 200;
-		height = 40;
-		x = WinPanel.x + WinPanel.width / 2 - width - 10;
-		y = WinPanel.y + WinPanel.height / 2 + 30;
+		updatePosition();
 	}
 
 	@Override
@@ -36,6 +33,14 @@ public class GoBackButton extends Clickable{
 			Font font = new Font("Tahoma", Font.PLAIN, 20);
 			DrawingUtility.drawStringInBox("<< LEVEL SELECT", font, x, y, width, height-5, DrawingUtility.TEXT_CENTER, g);
 		}
+	}
+	
+	@Override
+	public void updatePosition() {
+		width = 200;
+		height = 40;
+		x = WinPanel.x + WinPanel.width / 2 - width - 10;
+		y = WinPanel.y + WinPanel.height / 2 + 30;
 	}
 	
 	@Override

@@ -21,10 +21,7 @@ public class CounterClockWiseButton extends Clickable implements IRenderable,
 	
 	public CounterClockWiseButton(){
 		type = Clickable.CIRCLE;
-		x = Config.screenWidth / 2 - 100;
-		y = 100;
-		width = 60;
-		height = 60;
+		updatePosition();
 		mute();
 	}
 
@@ -38,6 +35,14 @@ public class CounterClockWiseButton extends Clickable implements IRenderable,
 		if(isVisible){
 			drawButton(g, DrawingUtility.ccwButtonImg);
 		}
+	}
+	
+	@Override
+	public void updatePosition() {
+		x = Config.screenWidth / 2 - 100;
+		y = 100;
+		width = 60;
+		height = 60;
 	}
 	
 	@Override

@@ -21,10 +21,7 @@ public class CustomLevelButton extends Clickable{
 	
 	public CustomLevelButton(){
 		type = Clickable.CIRCLE;
-		width = 50;
-		height = 50;
-		x = Config.screenWidth - width - 5;
-		y = Config.screenHeight - height - 5;
+		updatePosition();
 	}
 
 	@Override
@@ -35,6 +32,14 @@ public class CustomLevelButton extends Clickable{
 	@Override
 	public void draw(Graphics g) {
 		drawButton(g, DrawingUtility.openButtonImg);
+	}
+	
+	@Override
+	public void updatePosition() {
+		width = 50;
+		height = 50;
+		x = Config.screenWidth - width - 5;
+		y = Config.screenHeight - height - 5;
 	}
 
 	@Override

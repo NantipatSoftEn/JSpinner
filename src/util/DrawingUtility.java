@@ -42,6 +42,7 @@ public class DrawingUtility {
 	public static final BufferedImage openButtonImg = loadImage("res/img/openButton.png");
 	public static final BufferedImage soundOffButtonImg = loadImage("res/img/soundOffButton.png");
 	public static final BufferedImage soundOnButtonImg = loadImage("res/img/soundOnButton.png");
+	public static final BufferedImage aboutButtonImg = loadImage("res/img/aboutButton.png");
 	public static final BufferedImage defaultButtonImg = loadImage("res/img/defaultButton.png");
 	public static final BufferedImage sleepyTileImg = loadImage("res/img/sleepyTile.png");
 	public static final BufferedImage angryTileImg = loadImage("res/img/angryTile.png");

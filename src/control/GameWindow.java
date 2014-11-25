@@ -48,7 +48,11 @@ public class GameWindow extends JFrame {
 		ScreenState.presentScreen = ScreenState.TITLE;
 		
 		while(true){
-			if(ScreenState.presentScreen == ScreenState.TITLE){
+			if(ScreenState.presentScreen == ScreenState.REFRESH_TITLE){
+				ScreenState.presentScreen = ScreenState.TITLE;
+			}
+			
+			else if(ScreenState.presentScreen == ScreenState.TITLE){
 				gameTitle = new GameTitle(this);
 				this.remove(gameTitle);
 			}
@@ -59,8 +63,8 @@ public class GameWindow extends JFrame {
 			}
 			
 			else if(ScreenState.presentScreen == ScreenState.NEXT_LEVEL){
-				ScreenState.nextLevel = getNextLevelDirectory();
 				ScreenState.presentScreen = ScreenState.GAME;
+				ScreenState.nextLevel = getNextLevelDirectory();
 			}
 			
 			//	BUG: packing doesn't get the right size
@@ -78,9 +82,7 @@ public class GameWindow extends JFrame {
 				}
 			}
 			
-			else{
-				JOptionPane.showMessageDialog(null, "Error! some error in screen loop");
-			}
+			
 		}
 	}
 	
@@ -170,12 +172,16 @@ public class GameWindow extends JFrame {
 		String lvdir = ScreenState.nextLevel;
 		int currentLevel;
 		try{
-			currentLevel =+ Integer.parseInt(lvdir.substring(lvdir.lastIndexOf("lvl") + 3, lvdir.lastIndexOf("lvl") + 4));
+			currentLevel =+ Integer.parseInt(lvdir.substring(lvdir.lastIndexOf("lvl") + 3, lvdir.lastIndexOf(".txt")));
 		} catch (NumberFormatException e){
 			currentLevel = 0;
 		}
 		if(currentLevel < 12)
 			currentLevel++;
+		else{
+			JOptionPane.showMessageDialog(null, "Congratulations! You have finished the final level.");
+			ScreenState.presentScreen = ScreenState.TITLE;
+		}
 		System.out.println("next level: " + lvdir.substring(0, lvdir.lastIndexOf("lvl") + 3) + currentLevel + ".txt");
 		return lvdir.substring(0, lvdir.lastIndexOf("lvl") + 3) + currentLevel + ".txt";
 	}

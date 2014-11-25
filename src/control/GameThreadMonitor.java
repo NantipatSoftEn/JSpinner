@@ -30,7 +30,6 @@ public class GameThreadMonitor {
 	}
 
 	public synchronized void updateLogic(){
-		System.out.println(InputUtility.getKeyPressed(KeyEvent.VK_RIGHT) + ", " + InputUtility.getKeyTriggered(KeyEvent.VK_RIGHT));
 		logic.update();
 		finishUpdate = true;
 		notifyAll();

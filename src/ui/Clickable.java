@@ -71,6 +71,7 @@ public abstract class Clickable implements IRenderable, IUpdatable{
 				onClickAction();
 			}
 		}
+		updatePosition();
 	}
 	
 	public void onClickAction(){
@@ -83,6 +84,7 @@ public abstract class Clickable implements IRenderable, IUpdatable{
 	
 	public abstract int getZ();
 	public abstract void draw(Graphics g);
+	public abstract void updatePosition();
 	
 	protected void drawButton(Graphics g, BufferedImage buttonSprite){
 		Graphics2D g2 = (Graphics2D) g;

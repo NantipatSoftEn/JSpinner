@@ -52,6 +52,10 @@ public class LevelButton extends Clickable{
 	}
 
 	@Override
+	public void updatePosition() {	
+	}
+	
+	@Override
 	public void onClickAction() {
 		ScreenState.nextLevel = levelDirectory;
 		ScreenState.presentScreen = ScreenState.GAME;

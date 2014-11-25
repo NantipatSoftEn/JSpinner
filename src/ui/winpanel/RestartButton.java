@@ -13,10 +13,7 @@ public class RestartButton extends Clickable{
 	
 	public RestartButton(){
 		type = Clickable.RECTANGLE;
-		width = 200;
-		height = 40;
-		x = WinPanel.x + WinPanel.width / 2 - width - 10;
-		y = WinPanel.y + WinPanel.height / 2 + 30;
+		updatePosition();
 	}
 
 	@Override
@@ -26,13 +23,6 @@ public class RestartButton extends Clickable{
 
 	@Override
 	public void draw(Graphics g) {
-		if(ScreenState.isAdventure){
-			x = WinPanel.x + WinPanel.width / 2 - width - 10;
-			y = WinPanel.y + WinPanel.height / 2 + 30;
-		}else{
-			x = WinPanel.x + WinPanel.width / 2 + 10;
-			y = WinPanel.y + WinPanel.height / 2 + 30;
-		}
 		if(WinPanel.isVisible()){
 			g.setColor(Color.LIGHT_GRAY);
 			if(isMouseOn()){
@@ -42,6 +32,19 @@ public class RestartButton extends Clickable{
 			g.setColor(Color.BLACK);
 			Font font = new Font("Tahoma", Font.PLAIN, 20);
 			DrawingUtility.drawStringInBox("PLAY AGAIN", font, x, y, width, height-5, DrawingUtility.TEXT_CENTER, g);
+		}
+	}
+	
+	@Override
+	public void updatePosition() {
+		width = 200;
+		height = 40;
+		if(ScreenState.isAdventure){
+			x = WinPanel.x + WinPanel.width / 2 - width - 10;
+			y = WinPanel.y + WinPanel.height / 2 + 30;
+		}else{
+			x = WinPanel.x + WinPanel.width / 2 + 10;
+			y = WinPanel.y + WinPanel.height / 2 + 30;
 		}
 	}
 	

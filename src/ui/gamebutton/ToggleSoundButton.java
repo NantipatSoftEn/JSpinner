@@ -16,10 +16,7 @@ import logic.Board;
 public class ToggleSoundButton extends Clickable implements IRenderable {
 	public ToggleSoundButton(){
 		type = Clickable.CIRCLE;
-		width = 50;
-		height = 50;
-		x = width + 5;
-		y = Config.screenHeight - height - 5;
+		updatePosition();
 		isMuted = true;
 	}
 
@@ -35,7 +32,15 @@ public class ToggleSoundButton extends Clickable implements IRenderable {
 		else
 			drawButton(g, DrawingUtility.soundOffButtonImg);
 	}
-
+	
+	@Override
+	public void updatePosition() {
+		width = 50;
+		height = 50;
+		x = width + 5;
+		y = Config.screenHeight - height - 5;
+	}
+	
 	@Override
 	public void onClickAction() {
 		AudioUtility.setMuted(!AudioUtility.isMuted());

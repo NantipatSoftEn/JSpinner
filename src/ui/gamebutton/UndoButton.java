@@ -15,10 +15,7 @@ public class UndoButton extends Clickable implements IRenderable {
 	
 	public UndoButton(){
 		type = Clickable.CIRCLE;
-		width = 50;
-		height = 50;
-		x = Config.screenWidth - 105;
-		y = 5;
+		updatePosition();
 	}
 
 	@Override
@@ -29,6 +26,14 @@ public class UndoButton extends Clickable implements IRenderable {
 	@Override
 	public void draw(Graphics g) {
 		drawButton(g, DrawingUtility.undoButtonImg);
+	}
+	
+	@Override
+	public void updatePosition() {
+		width = 50;
+		height = 50;
+		x = Config.screenWidth - 105;
+		y = 5;
 	}
 	
 	@Override

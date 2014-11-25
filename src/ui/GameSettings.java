@@ -1,69 +1,98 @@
 package ui;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import control.ScreenState;
 import util.Config;
 
 public class GameSettings extends JFrame{
 
-	JSpinner screenHeightSpinner = new JSpinner(new SpinnerNumberModel(Config.screenHeight, 600, 1000, 10));
-	JSpinner screenWidthSpinner = new JSpinner(new SpinnerNumberModel(Config.screenWidth, 600, 2000, 10));
-	JSpinner topBarSpinner = new JSpinner(new SpinnerNumberModel(Config.topBarHeight, 40, 100, 10));
-	JSpinner animFrameSpinner = new JSpinner(new SpinnerNumberModel(Config.animationFrameCount, 5, 20, 1));
+	private JSpinner screenHeightSpinner = new JSpinner(new SpinnerNumberModel(Config.screenHeight, 600, 1500, 10));
+	private JSpinner screenWidthSpinner = new JSpinner(new SpinnerNumberModel(Config.screenWidth, 600, 2000, 10));
+	private JSpinner animFrameSpinner = new JSpinner(new SpinnerNumberModel(Config.animationFrameCount, 5, 20, 1));
 	
-	public GameSettings(){
+	public static GameSettings settingsFrame = new GameSettings();
+	
+	private GameSettings(){
 		setTitle("Settings");
 		Container cp = getContentPane();
 				
 		cp.setLayout(new BorderLayout());
 		
-		JPanel optionPane = new JPanel(new GridLayout(4, 2));
+		JPanel optionPane = new JPanel(new GridLayout(3, 1));
 		
-		optionPane.add(new JLabel("Screen Height     "));
-		optionPane.add(screenHeightSpinner);
-		
-		optionPane.add(new JLabel("Screen Width     "));
-		optionPane.add(screenWidthSpinner);
-
-		JLabel tbh = new JLabel("Top Bar Height      ");
-		tbh.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-		optionPane.add(new JLabel("Top Bar Height      "));
-		optionPane.add(topBarSpinner);
-
-		optionPane.add(new JLabel("Animation Frame Count      "));
-		optionPane.add(animFrameSpinner);
-		
-		cp.add(optionPane, BorderLayout.CENTER);
-		
+		screenWidthSpinner = addSpinnerWithLabelTo(optionPane, "Screen Width     ", Config.screenWidth, 600, 2000, 10);
+		screenHeightSpinner = addSpinnerWithLabelTo(optionPane, "Screen Height     ", Config.screenHeight, 600, 5000, 10);
+		animFrameSpinner = addSpinnerWithLabelTo(optionPane, "Animation Frame Count      ", Config.animationFrameCount, 5, 20, 1);		
 		
 		JPanel actionPane = new JPanel(new FlowLayout());
 		
-		JButton resetHighScore = new JButton("Reset High Score");
-		actionPane.add(resetHighScore);
+		addButtonTo(actionPane, "Reset High Score", new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				JOptionPane.showMessageDialog(null, "Reset High Score");
+			}
+		});
 		
-		JButton applyButton = new JButton("Apply");
-		actionPane.add(applyButton);
+		addButtonTo(actionPane, "OK", new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(isValidOption()){
+					Config.screenWidth = (Integer)(screenWidthSpinner.getValue());
+					Config.screenHeight = (Integer)(screenHeightSpinner.getValue());
+					Config.animationFrameCount = (Integer)(animFrameSpinner.getValue());
+					settingsFrame.setVisible(false);
+					ScreenState.presentScreen = ScreenState.REFRESH_TITLE;
+				}
+			}	
+		});
 		
-		JButton cancelButton = new JButton("Cancel");
-		actionPane.add(cancelButton);
+		addButtonTo(actionPane, "Cancel", new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				settingsFrame.setVisible(false);
+			}
+		});
 		
+		cp.add(optionPane, BorderLayout.CENTER);
 		cp.add(actionPane, BorderLayout.SOUTH);
-		
-//		if(isValidChoice())
-		
+				
+		setPreferredSize(new Dimension(300, 300));
 		setLocationByPlatform(true);
-		setVisible(true);
 		pack();
 	}
 	
-	private boolean isValidChoice(){
+	private boolean isValidOption(){
 		boolean cond1 = (Integer)(screenHeightSpinner.getValue()) < (Integer)(screenWidthSpinner.getValue());
 		return cond1;
 	}
 	
+	private JSpinner addSpinnerWithLabelTo(Container pane, String label, int spinnerVal, int spinnerMin, int spinnerMax, int spinnerStep){
+		JPanel panel = new JPanel(new FlowLayout());
+		panel.add(new JLabel(label));
+		JSpinner spinner = new JSpinner(new SpinnerNumberModel(spinnerVal, spinnerMin, spinnerMax, spinnerStep));
+		panel.add(spinner);
+		panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+		pane.add(panel);
+		return spinner;
+	}
+	
+	private JButton addButtonTo(Container pane, String label, ActionListener al){
+		JButton button = new JButton(label);
+		button.addActionListener(al);
+		pane.add(button);
+		return button;
+	}
+	
 	public static void main(String[] args) {
-		new GameSettings();
+		settingsFrame.setVisible(true);
+		settingsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 }

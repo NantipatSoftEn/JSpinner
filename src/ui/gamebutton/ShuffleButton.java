@@ -15,10 +15,7 @@ import logic.Board;
 public class ShuffleButton extends Clickable implements IRenderable {
 	public ShuffleButton(){
 		type = Clickable.CIRCLE;
-		width = 50;
-		height = 50;
-		x = Config.screenWidth - width - 5;
-		y = 5;
+		updatePosition();
 	}
 
 	@Override
@@ -29,6 +26,14 @@ public class ShuffleButton extends Clickable implements IRenderable {
 	@Override
 	public void draw(Graphics g) {
 		drawButton(g, DrawingUtility.newGameButtonImg);
+	}
+	
+	@Override
+	public void updatePosition() {
+		width = 50;
+		height = 50;
+		x = Config.screenWidth - width - 5;
+		y = 5;
 	}
 	
 	@Override

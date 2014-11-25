@@ -42,11 +42,9 @@ public class GameTitle extends JPanel {
 		setPreferredSize(new Dimension(Config.screenWidth, Config.screenHeight));
 		window.pack();
 
-		renderList.add(new PlayButton());
-		updateList.add(new PlayButton());
-
-		renderList.add(new SettingsButton());
-		updateList.add(new SettingsButton());
+		addBoth(new PlayButton());
+		addBoth(new SettingsButton());
+		addBoth(new AboutButton());
 		
 		while(ScreenState.presentScreen == ScreenState.TITLE){
 			
@@ -93,6 +91,13 @@ public class GameTitle extends JPanel {
 	public void update(){
 		for(int i = 0; i < updateList.size(); i++){
 			updateList.get(i).update();
+		}
+	}
+	
+	private void addBoth(IRenderable a){
+		if(a instanceof IUpdatable){
+			renderList.add(a);
+			updateList.add((IUpdatable)a);
 		}
 	}
 }

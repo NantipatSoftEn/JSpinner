@@ -1,3 +1,4 @@
+
 package ui.gamebutton;
 
 import java.awt.Color;
@@ -19,10 +20,7 @@ import logic.Board;
 public class BackButton extends Clickable implements IRenderable {
 	public BackButton(){
 		type = Clickable.CIRCLE;
-		x = 5;
-		y = Config.screenHeight - 55;
-		width = 50;
-		height = 50;
+		updatePosition();
 	}
 
 	@Override
@@ -35,6 +33,14 @@ public class BackButton extends Clickable implements IRenderable {
 		drawButton(g, DrawingUtility.backButtonImg);
 	}
 
+	@Override
+	public void updatePosition() {
+		x = 5;
+		y = Config.screenHeight - 55;
+		width = 50;
+		height = 50;
+	}
+	
 	@Override
 	public void onClickAction() {
 //		JOptionPane.showMessageDialog(null, "BACK");

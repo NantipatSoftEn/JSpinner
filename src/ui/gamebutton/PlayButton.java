@@ -35,6 +35,10 @@ public class PlayButton extends Clickable implements IRenderable {
 	}
 
 	@Override
+	public void updatePosition() {	
+	}
+
+	@Override
 	public void onClickAction() {
 		ScreenState.presentScreen = ScreenState.LEVEL_SELECT;
 //		ScreenState.presentScreen = ScreenState.GAME;
