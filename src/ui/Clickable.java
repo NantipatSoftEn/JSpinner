@@ -35,6 +35,7 @@ public abstract class Clickable implements IRenderable, IUpdatable{
 		buttons.add(ccwButton);
 		buttons.add(new RestartButton());
 		buttons.add(new NextLevelButton());
+		buttons.add(new GoBackButton());
 		buttons.add(helpButton);
 		buttons.add(new BackButton());
 		buttons.add(new ToggleSoundButton());

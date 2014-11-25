@@ -30,6 +30,7 @@ public class WinPanel implements IRenderable {
 		
 		winElements.add(this);
 		winElements.add(new RestartButton());
+		winElements.add(new GoBackButton());
 	}
 	
 	public static void setVisible(boolean isVisible) {

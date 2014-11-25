@@ -47,6 +47,7 @@ public class CustomLevelButton extends Clickable{
 	    if(returnVal == JFileChooser.APPROVE_OPTION) {
 	    	ScreenState.nextLevel = chooser.getSelectedFile().getAbsolutePath();
 	    	ScreenState.presentScreen = ScreenState.GAME;
+	    	ScreenState.isAdventure = false;
 	    } else {
 	    	ScreenState.presentScreen = ScreenState.LEVEL_SELECT;
 	    }

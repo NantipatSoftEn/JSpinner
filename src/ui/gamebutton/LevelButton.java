@@ -16,10 +16,11 @@ import lib.InputUtility;
 import logic.Board;
 
 public class LevelButton extends Clickable{
-	Color color;
-	String text, levelDirectory;
+	private Color color;
+	private String text, levelDirectory;
+	private boolean isAdventure;
 	
-	public LevelButton(int x, int y, int size, Color color, String text, String levelDirectory){
+	public LevelButton(int x, int y, int size, Color color, String text, String levelDirectory, boolean isClassicGame){
 		type = Clickable.RECTANGLE;
 		this.x = x;
 		this.y = y;
@@ -28,6 +29,7 @@ public class LevelButton extends Clickable{
 		this.color = color;
 		this.text = text;
 		this.levelDirectory = levelDirectory;
+		this.isAdventure = isClassicGame;
 	}
 
 	@Override
@@ -53,5 +55,6 @@ public class LevelButton extends Clickable{
 	public void onClickAction() {
 		ScreenState.nextLevel = levelDirectory;
 		ScreenState.presentScreen = ScreenState.GAME;
+		ScreenState.isAdventure = this.isAdventure;
 	}
 }

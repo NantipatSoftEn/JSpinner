@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 
+import control.ScreenState;
 import lib.DrawingUtility;
 import logic.Board;
 import ui.Clickable;
@@ -25,6 +26,13 @@ public class RestartButton extends Clickable{
 
 	@Override
 	public void draw(Graphics g) {
+		if(ScreenState.isAdventure){
+			x = WinPanel.x + WinPanel.width / 2 - width - 10;
+			y = WinPanel.y + WinPanel.height / 2 + 30;
+		}else{
+			x = WinPanel.x + WinPanel.width / 2 + 10;
+			y = WinPanel.y + WinPanel.height / 2 + 30;
+		}
 		if(WinPanel.isVisible()){
 			g.setColor(Color.LIGHT_GRAY);
 			if(isMouseOn()){

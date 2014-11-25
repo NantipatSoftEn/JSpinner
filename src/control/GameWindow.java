@@ -58,6 +58,11 @@ public class GameWindow extends JFrame {
 				this.remove(levelSelect);
 			}
 			
+			if(ScreenState.presentScreen == ScreenState.NEXT_LEVEL){
+				ScreenState.nextLevel = getNextLevelDirectory();
+				ScreenState.presentScreen = ScreenState.GAME;
+			}
+			
 			//	BUG: packing doesn't get the right size
 			else if(ScreenState.presentScreen == ScreenState.GAME){
 				try {
@@ -159,5 +164,19 @@ public class GameWindow extends JFrame {
 				InputUtility.setKeyPressed(e.getKeyCode(), true);
 			}
 		});
+	}
+	
+	private String getNextLevelDirectory(){
+		String lvdir = ScreenState.nextLevel;
+		int currentLevel;
+		try{
+			currentLevel =+ Integer.parseInt(lvdir.substring(lvdir.lastIndexOf("lvl") + 3, lvdir.lastIndexOf("lvl") + 4));
+		} catch (NumberFormatException e){
+			currentLevel = 0;
+		}
+		if(currentLevel < 12)
+			currentLevel++;
+		System.out.println("next level: " + lvdir.substring(0, lvdir.lastIndexOf("lvl") + 3) + currentLevel + ".txt");
+		return lvdir.substring(0, lvdir.lastIndexOf("lvl") + 3) + currentLevel + ".txt";
 	}
 }

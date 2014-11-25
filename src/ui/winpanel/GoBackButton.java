@@ -4,20 +4,18 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 
-import javax.swing.JOptionPane;
-
 import control.ScreenState;
 import lib.DrawingUtility;
 import logic.Board;
 import ui.Clickable;
 
-public class NextLevelButton extends Clickable{
+public class GoBackButton extends Clickable{
 	
-	public NextLevelButton(){
+	public GoBackButton(){
 		type = Clickable.RECTANGLE;
 		width = 200;
 		height = 40;
-		x = WinPanel.x + WinPanel.width / 2 + 10;
+		x = WinPanel.x + WinPanel.width / 2 - width - 10;
 		y = WinPanel.y + WinPanel.height / 2 + 30;
 	}
 
@@ -28,22 +26,22 @@ public class NextLevelButton extends Clickable{
 
 	@Override
 	public void draw(Graphics g) {
-		if(WinPanel.isVisible() && ScreenState.isAdventure){
-			g.setColor(DrawingUtility.CORRECT);
+		if(WinPanel.isVisible() && !ScreenState.isAdventure){
+			g.setColor(Color.ORANGE);
 			if(isMouseOn()){
-				g.setColor(DrawingUtility.CORRECT.brighter());
+				g.setColor(Color.ORANGE.brighter());
 			}
 			g.fillRect(x, y, width, height);
 			g.setColor(Color.BLACK);
 			Font font = new Font("Tahoma", Font.PLAIN, 20);
-			DrawingUtility.drawStringInBox("NEXT LEVEL >>", font, x, y, width, height-5, DrawingUtility.TEXT_CENTER, g);
+			DrawingUtility.drawStringInBox("<< LEVEL SELECT", font, x, y, width, height-5, DrawingUtility.TEXT_CENTER, g);
 		}
 	}
 	
 	@Override
 	public void onClickAction() {
-		if(WinPanel.isVisible() && ScreenState.isAdventure){
-			ScreenState.presentScreen = ScreenState.NEXT_LEVEL;
+		if(WinPanel.isVisible() && !ScreenState.isAdventure){ 
+			ScreenState.presentScreen = ScreenState.LEVEL_SELECT;
 		}
 	}
 }

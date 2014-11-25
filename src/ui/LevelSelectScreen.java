@@ -50,9 +50,9 @@ public class LevelSelectScreen extends JPanel {
 		
 		addBoth(new BackButton());
 		for(int i = 3; i <= 6; i++)
-			addBoth(new LevelButton(startX + (size + g) * (i - 3), startY, size, DrawingUtility.generateRainbow(i - 3, 3), i + "x" + i, "/res/levels/" + i + "x" + i + ".txt"));
+			addBoth(new LevelButton(startX + (size + g) * (i - 3), startY, size, DrawingUtility.generateRainbow(i - 3, 3), i + "x" + i, "/res/levels/" + i + "x" + i + ".txt", false));
 		for(int i = 1; i <= 12; i++){
-			addBoth(new LevelButton(startX + (size + g) * ((i - 1) % bpr), startY + catGutter + (size + g) * ((i - 1) / bpr), size, DrawingUtility.generateRainbow(i - 1, 12), "" + i, "/res/levels/lvl" + i + ".txt"));
+			addBoth(new LevelButton(startX + (size + g) * ((i - 1) % bpr), startY + catGutter + (size + g) * ((i - 1) / bpr), size, DrawingUtility.generateRainbow(i - 1, 12), "" + i, "/res/levels/lvl" + i + ".txt", true));
 		}
 		
 		addBoth(new CustomLevelButton());
