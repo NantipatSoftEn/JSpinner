@@ -53,12 +53,12 @@ public class GameWindow extends JFrame {
 				this.remove(gameTitle);
 			}
 			
-			if(ScreenState.presentScreen == ScreenState.LEVEL_SELECT){
+			else if(ScreenState.presentScreen == ScreenState.LEVEL_SELECT){
 				levelSelect = new LevelSelectScreen(this);
 				this.remove(levelSelect);
 			}
 			
-			if(ScreenState.presentScreen == ScreenState.NEXT_LEVEL){
+			else if(ScreenState.presentScreen == ScreenState.NEXT_LEVEL){
 				ScreenState.nextLevel = getNextLevelDirectory();
 				ScreenState.presentScreen = ScreenState.GAME;
 			}
