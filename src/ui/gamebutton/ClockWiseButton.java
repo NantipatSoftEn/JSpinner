@@ -5,14 +5,14 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import lib.Config;
-import lib.DrawingUtility;
-import lib.InputUtility;
 import logic.Board;
 import logic.IUpdatable;
 import logic.Tile;
 import ui.Clickable;
 import ui.IRenderable;
+import util.Config;
+import util.DrawingUtility;
+import util.InputUtility;
 
 public class ClockWiseButton extends Clickable implements IRenderable,
 		IUpdatable {

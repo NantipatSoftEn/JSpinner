@@ -1,4 +1,4 @@
-package lib;
+package util;
 
 import java.awt.Point;
 
@@ -16,7 +16,7 @@ public class InputUtility {
 	}
 	
 	public static synchronized void setPicking (boolean in){
-		picking=in;
+		picking = in;
 	}
 	
 	public static synchronized void setPickedPoint (int x ,int y){
@@ -57,11 +57,10 @@ public class InputUtility {
 	
 	public static synchronized void setKeyTriggered(int key, boolean triggered) {
 		try{
-			if(!keyTriggered[key])
+			if(!keyPressed[key])
 				InputUtility.keyTriggered[key] = triggered;
 		} catch (ArrayIndexOutOfBoundsException e) {
-		}	
-			
+		}			
 	}
 	
 	public static synchronized boolean getKeyTriggered(int key) {

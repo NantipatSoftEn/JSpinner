@@ -6,9 +6,9 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 import ui.GameAnimation;
-import lib.Config;
-import lib.DrawingUtility;
-import lib.Utility;
+import util.Config;
+import util.DrawingUtility;
+import util.Utility;
 
 public class AngryTile extends Tile{
 

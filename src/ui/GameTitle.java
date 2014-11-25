@@ -19,12 +19,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import ui.gamebutton.*;
+import util.AudioUtility;
+import util.Config;
+import util.DrawingUtility;
+import util.InputUtility;
 import control.GameWindow;
 import control.ScreenState;
-import lib.AudioUtility;
-import lib.Config;
-import lib.DrawingUtility;
-import lib.InputUtility;
 import logic.IUpdatable;
 
 public class GameTitle extends JPanel {

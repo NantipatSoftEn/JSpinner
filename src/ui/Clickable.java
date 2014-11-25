@@ -9,9 +9,9 @@ import java.util.ArrayList;
 
 import ui.gamebutton.*;
 import ui.winpanel.*;
-import lib.AudioUtility;
-import lib.DrawingUtility;
-import lib.InputUtility;
+import util.AudioUtility;
+import util.DrawingUtility;
+import util.InputUtility;
 import logic.*;
 
 public abstract class Clickable implements IRenderable, IUpdatable{

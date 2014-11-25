@@ -19,11 +19,11 @@ import javax.swing.JPanel;
 import ui.gamebutton.BackButton;
 import ui.gamebutton.CustomLevelButton;
 import ui.gamebutton.LevelButton;
+import util.Config;
+import util.DrawingUtility;
+import util.InputUtility;
 import control.GameWindow;
 import control.ScreenState;
-import lib.Config;
-import lib.DrawingUtility;
-import lib.InputUtility;
 import logic.IUpdatable;
 
 public class LevelSelectScreen extends JPanel {
@@ -69,7 +69,7 @@ public class LevelSelectScreen extends JPanel {
 			
 			//update
 			if(InputUtility.getKeyTriggered(KeyEvent.VK_SPACE)){
-				ScreenState.nextLevel = "/res/levels/testAngry.txt";
+				ScreenState.nextLevel = "/res/levels/testFreeze.txt";
 				ScreenState.presentScreen = ScreenState.GAME;
 			}
 			InputUtility.postUpdate();

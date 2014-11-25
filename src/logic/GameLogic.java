@@ -4,7 +4,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import lib.InputUtility;
 import control.Game;
 import control.ScreenState;
 import ui.Clickable;
@@ -12,6 +11,7 @@ import ui.GameAnimation;
 import ui.HelpPanel;
 import ui.gamebutton.*;
 import ui.winpanel.WinPanel;
+import util.InputUtility;
 
 public class GameLogic{
 	

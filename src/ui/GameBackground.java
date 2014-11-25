@@ -7,9 +7,9 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
-import lib.AudioUtility;
-import lib.Config;
-import lib.DrawingUtility;
+import util.AudioUtility;
+import util.Config;
+import util.DrawingUtility;
 
 public class GameBackground implements IRenderable, Runnable {
 	

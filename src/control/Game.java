@@ -7,12 +7,12 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import lib.InputUtility;
 import logic.Board;
 import logic.GameLogic;
 import logic.LevelFormatException;
 import ui.Clickable;
 import ui.GameScreen;
+import util.InputUtility;
 
 public class Game{
 	private Board board;

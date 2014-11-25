@@ -5,9 +5,9 @@ import java.awt.Font;
 import java.awt.Graphics;
 
 import control.ScreenState;
-import lib.DrawingUtility;
 import logic.Board;
 import ui.Clickable;
+import util.DrawingUtility;
 
 public class GoBackButton extends Clickable{
 	

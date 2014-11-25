@@ -21,7 +21,7 @@ import ui.GameScreen;
 import ui.HelpPanel;
 import ui.IRenderable;
 import ui.winpanel.WinPanel;
-import lib.*;
+import util.*;
 
 public class Board implements IUpdatable {
 	public static final int DEFAULT_SHUFFLE = 2000;

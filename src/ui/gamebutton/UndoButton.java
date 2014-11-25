@@ -6,9 +6,9 @@ import java.awt.Graphics2D;
 
 import ui.Clickable;
 import ui.IRenderable;
-import lib.Config;
-import lib.DrawingUtility;
-import lib.InputUtility;
+import util.Config;
+import util.DrawingUtility;
+import util.InputUtility;
 import logic.Board;
 
 public class UndoButton extends Clickable implements IRenderable {

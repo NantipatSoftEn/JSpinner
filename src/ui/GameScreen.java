@@ -15,7 +15,7 @@ import control.GameWindow;
 import control.ScreenState;
 import ui.gamebutton.*;
 import ui.winpanel.WinPanel;
-import lib.*;
+import util.*;
 import logic.*;
 
 public class GameScreen extends JPanel{

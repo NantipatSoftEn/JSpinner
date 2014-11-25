@@ -5,7 +5,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import ui.IRenderable;
-import lib.*;
+import util.*;
 
 public class PlayerStatus implements IRenderable{
 	private static int moved = 0;

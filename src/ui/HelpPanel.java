@@ -10,9 +10,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import lib.Config;
-import lib.DrawingUtility;
-import lib.InputUtility;
+import util.Config;
+import util.DrawingUtility;
+import util.InputUtility;
 import logic.Board;
 import logic.IUpdatable;
 import logic.PlayerStatus;

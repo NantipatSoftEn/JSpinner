@@ -14,9 +14,9 @@ import javax.rmi.CORBA.Util;
 import javax.swing.text.Utilities;
 
 import ui.IRenderable;
-import lib.Config;
-import lib.DrawingUtility;
-import lib.Utility;
+import util.Config;
+import util.DrawingUtility;
+import util.Utility;
 
 public abstract class Tile implements IRenderable {
 	public static final int NOT_A_TILE = -1; // may check if the tile is null.

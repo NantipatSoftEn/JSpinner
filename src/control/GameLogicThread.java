@@ -1,6 +1,6 @@
 package control;
 
-import lib.InputUtility;
+import util.InputUtility;
 import logic.GameLogic;
 
 public class GameLogicThread implements Runnable {

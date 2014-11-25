@@ -1,4 +1,4 @@
-package lib;
+package util;
 
 public class Config {
 	public static int screenWidth = 1000;

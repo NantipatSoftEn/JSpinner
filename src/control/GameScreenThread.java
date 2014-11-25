@@ -1,7 +1,7 @@
 package control;
 
 import ui.GameScreen;
-import lib.InputUtility;
+import util.InputUtility;
 import logic.GameLogic;
 
 public class GameScreenThread implements Runnable {

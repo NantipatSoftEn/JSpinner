@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import lib.DrawingUtility;
+import util.DrawingUtility;
 import logic.IUpdatable;
 
 public class GameAnimation implements IRenderable, IUpdatable {

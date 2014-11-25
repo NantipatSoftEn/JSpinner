@@ -8,9 +8,9 @@ import java.util.List;
 
 import ui.Clickable;
 import ui.IRenderable;
-import lib.AudioUtility;
-import lib.Config;
-import lib.DrawingUtility;
+import util.AudioUtility;
+import util.Config;
+import util.DrawingUtility;
 import logic.Board;
 import logic.PlayerStatus;
 

@@ -17,9 +17,9 @@ import javax.swing.JPanel;
 import ui.GameBackground;
 import ui.GameTitle;
 import ui.LevelSelectScreen;
-import lib.Config;
-import lib.InputUtility;
-import lib.Utility;
+import util.Config;
+import util.InputUtility;
+import util.Utility;
 import logic.LevelFormatException;
 
 public class GameWindow extends JFrame {

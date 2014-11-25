@@ -7,9 +7,9 @@ import java.awt.Graphics;
 import javax.swing.JOptionPane;
 
 import control.ScreenState;
-import lib.DrawingUtility;
 import logic.Board;
 import ui.Clickable;
+import util.DrawingUtility;
 
 public class NextLevelButton extends Clickable{
 	
