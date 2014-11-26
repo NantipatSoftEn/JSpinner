@@ -1,3 +1,9 @@
+/**
+ * JSpinner: 2110215 PROG METH PROJECT
+ * @author Thanawit Prasongpongchai 5631045321
+ * @author Phatrasek Jirabovonvisut 5630469621
+ */
+
 package ui;
 
 import java.awt.*;
@@ -39,7 +45,7 @@ public class GameSettings extends JFrame{
 			}
 		});
 		
-		addButtonTo(actionPane, "OK", new ActionListener() {
+		JButton okButton = addButtonTo(actionPane, "OK", new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -52,6 +58,7 @@ public class GameSettings extends JFrame{
 				}
 			}	
 		});
+		okButton.requestFocus();
 		
 		addButtonTo(actionPane, "Cancel", new ActionListener() {
 			
@@ -70,7 +77,7 @@ public class GameSettings extends JFrame{
 	}
 	
 	private boolean isValidOption(){
-		boolean cond1 = (Integer)(screenHeightSpinner.getValue()) < (Integer)(screenWidthSpinner.getValue());
+		boolean cond1 = (Integer)(screenHeightSpinner.getValue()) <= (Integer)(screenWidthSpinner.getValue());
 		return cond1;
 	}
 	
@@ -91,8 +98,8 @@ public class GameSettings extends JFrame{
 		return button;
 	}
 	
-	public static void main(String[] args) {
-		settingsFrame.setVisible(true);
-		settingsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
+//	public static void main(String[] args) {
+//		settingsFrame.setVisible(true);
+//		settingsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//	}
 }

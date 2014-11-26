@@ -1,3 +1,9 @@
+/**
+ * JSpinner: 2110215 PROG METH PROJECT
+ * @author Thanawit Prasongpongchai 5631045321
+ * @author Phatrasek Jirabovonvisut 5630469621
+ */
+
 package control;
 
 import java.awt.Color;
@@ -182,7 +188,6 @@ public class GameWindow extends JFrame {
 			JOptionPane.showMessageDialog(null, "Congratulations! You have finished the final level.");
 			ScreenState.presentScreen = ScreenState.TITLE;
 		}
-		System.out.println("next level: " + lvdir.substring(0, lvdir.lastIndexOf("lvl") + 3) + currentLevel + ".txt");
 		return lvdir.substring(0, lvdir.lastIndexOf("lvl") + 3) + currentLevel + ".txt";
 	}
 }

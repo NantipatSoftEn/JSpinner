@@ -1,3 +1,9 @@
+/**
+ * JSpinner: 2110215 PROG METH PROJECT
+ * @author Thanawit Prasongpongchai 5631045321
+ * @author Phatrasek Jirabovonvisut 5630469621
+ */
+
 package ui;
 
 import java.applet.AudioClip;
@@ -13,7 +19,6 @@ import util.DrawingUtility;
 
 public class GameBackground implements IRenderable, Runnable {
 	
-	private volatile double theta = 0.002;
 	private BufferedImage gb = DrawingUtility.gameBG;
 	private int x = (Config.screenWidth - gb.getWidth()) / 2;
 	private int y = (Config.screenHeight - gb.getHeight());
@@ -33,6 +38,8 @@ public class GameBackground implements IRenderable, Runnable {
 		while(true){
 //			at.rotate(theta, gb.getWidth() / 2, gb.getHeight() / 2);
 //			ato = new AffineTransformOp(at, AffineTransformOp.TYPE_BICUBIC);
+			x = (Config.screenWidth - gb.getWidth()) / 2;
+			y = (Config.screenHeight - gb.getHeight());
 			anim1X = ((anim1X + 1) % (cloudWidth * 3));
 			anim2X = ((anim2X + 1) % (cloudWidth * 3));
 			anim3X = ((anim3X + 1) % (cloudWidth * 3));
