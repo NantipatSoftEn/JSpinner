@@ -25,6 +25,7 @@ import javax.swing.JPanel;
 import ui.gamebutton.BackButton;
 import ui.gamebutton.CustomLevelButton;
 import ui.gamebutton.LevelButton;
+import ui.gamebutton.ToggleSoundButton;
 import util.Config;
 import util.DrawingUtility;
 import util.InputUtility;
@@ -62,6 +63,7 @@ public class LevelSelectScreen extends JPanel {
 		}
 		
 		addBoth(new CustomLevelButton());
+		addBoth(new ToggleSoundButton());
 		
 		while(ScreenState.presentScreen == ScreenState.LEVEL_SELECT){
 			repaint();
@@ -74,10 +76,10 @@ public class LevelSelectScreen extends JPanel {
 			update();
 			
 			//update
-			if(InputUtility.getKeyTriggered(KeyEvent.VK_SPACE)){
-				ScreenState.nextLevel = "/res/levels/testFreeze.txt";
-				ScreenState.presentScreen = ScreenState.GAME;
-			}
+//			if(InputUtility.getKeyTriggered(KeyEvent.VK_SPACE)){
+//				ScreenState.nextLevel = "/res/levels/testFreeze.txt";
+//				ScreenState.presentScreen = ScreenState.GAME;
+//			}
 			InputUtility.postUpdate();
 		}
 	}

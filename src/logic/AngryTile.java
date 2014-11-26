@@ -6,12 +6,14 @@
 
 package logic;
 
+import java.applet.AudioClip;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 import ui.GameAnimation;
+import util.AudioUtility;
 import util.Config;
 import util.DrawingUtility;
 import util.Utility;
@@ -59,6 +61,7 @@ public class AngryTile extends Tile{
 			}
 			GameAnimation.fightAnim.playAt(cx, cy);
 			board.animatedShuffle(ANGRY_SHUFFLE);
+			AudioUtility.playSound(AudioUtility.fightSound);
 			angriness = 0;
 			//TODO set cannot undo??
 		}

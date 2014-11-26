@@ -30,6 +30,7 @@ public class WinPanel implements IRenderable {
 	public static List<IRenderable> winElements = new ArrayList<IRenderable>();
 	public static final int frameCount = 8;
 	public static int currentFrame = frameCount;
+	private static boolean soundPlayed = false;
 	
 	public WinPanel(){
 		isVisible = false;
@@ -42,7 +43,12 @@ public class WinPanel implements IRenderable {
 	public static void setVisible(boolean isVisible) {
 		if(!isVisible){
 			currentFrame = frameCount;
-			AudioUtility.playSound(AudioUtility.solvedSound);
+			soundPlayed = false;
+		} else { 
+			if(!soundPlayed){
+				AudioUtility.playSound(AudioUtility.solvedSound);
+				soundPlayed = true;
+			}
 		}
 		WinPanel.isVisible = isVisible;
 	}

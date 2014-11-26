@@ -17,7 +17,8 @@ public class AudioUtility {
 	public static final AudioClip bgm = loadAudio("res/sound/bgm.wav");
 	public static final AudioClip clickSound = loadAudio("res/sound/click.wav");
 	public static final AudioClip flipSound = loadAudio("res/sound/flip.wav");
-	public static final AudioClip solvedSound = loadAudio("res/sound/flip.wav");
+	public static final AudioClip fightSound = loadAudio("res/sound/fight.wav");
+	public static final AudioClip solvedSound = loadAudio("res/sound/solved.wav");
 	private static boolean isMuted;
 	
 	private static AudioClip loadAudio(String directory){

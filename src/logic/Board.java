@@ -587,8 +587,9 @@ public class Board implements IUpdatable {
 
 		} else {
 			setBoard();
-			if (isWin() || isCheated)
+			if (isWin() || isCheated){
 				WinPanel.setVisible(true);
+			}
 
 			if (isWin()) {
 				if (bestScore > move.size())

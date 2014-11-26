@@ -29,11 +29,11 @@ public class GameSettings extends JFrame{
 				
 		cp.setLayout(new BorderLayout());
 		
-		JPanel optionPane = new JPanel(new GridLayout(3, 1));
+		JPanel optionPane = new JPanel(new GridLayout(2, 1));
 		
 		screenWidthSpinner = addSpinnerWithLabelTo(optionPane, "Screen Width     ", Config.screenWidth, 600, 2000, 10);
 		screenHeightSpinner = addSpinnerWithLabelTo(optionPane, "Screen Height     ", Config.screenHeight, 600, 5000, 10);
-		animFrameSpinner = addSpinnerWithLabelTo(optionPane, "Animation Frame Count      ", Config.animationFrameCount, 5, 20, 1);		
+//		animFrameSpinner = addSpinnerWithLabelTo(optionPane, "Animation Frame Count      ", Config.animationFrameCount, 5, 20, 1);		
 		
 		JPanel actionPane = new JPanel(new FlowLayout());
 		
@@ -52,7 +52,7 @@ public class GameSettings extends JFrame{
 				if(isValidOption()){
 					Config.screenWidth = (Integer)(screenWidthSpinner.getValue());
 					Config.screenHeight = (Integer)(screenHeightSpinner.getValue());
-					Config.animationFrameCount = (Integer)(animFrameSpinner.getValue());
+//					Config.animationFrameCount = (Integer)(animFrameSpinner.getValue());
 					settingsFrame.setVisible(false);
 					ScreenState.presentScreen = ScreenState.REFRESH_TITLE;
 				}
@@ -71,7 +71,7 @@ public class GameSettings extends JFrame{
 		cp.add(optionPane, BorderLayout.CENTER);
 		cp.add(actionPane, BorderLayout.SOUTH);
 				
-		setPreferredSize(new Dimension(300, 300));
+		setPreferredSize(new Dimension(300, 180));
 		setLocationByPlatform(true);
 		pack();
 	}
@@ -86,7 +86,7 @@ public class GameSettings extends JFrame{
 		panel.add(new JLabel(label));
 		JSpinner spinner = new JSpinner(new SpinnerNumberModel(spinnerVal, spinnerMin, spinnerMax, spinnerStep));
 		panel.add(spinner);
-		panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+		panel.setBorder(BorderFactory.createEmptyBorder(10, 15, 15, 15));
 		pane.add(panel);
 		return spinner;
 	}

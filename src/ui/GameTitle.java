@@ -51,6 +51,7 @@ public class GameTitle extends JPanel {
 		addBoth(new PlayButton());
 		addBoth(new SettingsButton());
 		addBoth(new AboutButton());
+		addBoth(new ToggleSoundButton());
 		
 		while(ScreenState.presentScreen == ScreenState.TITLE){
 			
