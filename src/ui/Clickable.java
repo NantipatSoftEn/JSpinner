@@ -68,12 +68,13 @@ public abstract class Clickable implements IRenderable, IUpdatable{
 	
 	public void update(){
 //		System.out.println(isMouseOn());
-		if(isMouseOn()){
+		if(isMouseOn() && isVisible){
 			mouseOnAction();
 			//TODO should i use mousepicking or mousereleased?
 			if(InputUtility.isMouseReleased()){
-				if(!isMuted)
+				if(!isMuted){
 					AudioUtility.playSound(AudioUtility.clickSound);
+				}
 				onClickAction();
 			}
 		}

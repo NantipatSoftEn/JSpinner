@@ -265,6 +265,10 @@ public class Board implements IUpdatable {
 		this.repeatMoveEnebled = repeatMoveEnebled;
 	}
 	
+	public void setCheated(boolean isCheated) {
+		this.isCheated = isCheated;
+	}
+	
 	public void clearSelected() {
 		selected = 0;
 		for (int j = 0; j < board[0].length; j++) {
@@ -310,21 +314,13 @@ public class Board implements IUpdatable {
 			if(isPlaying){
 				AudioUtility.playSound(AudioUtility.flipSound);
 				move.add(new Move(x, y, size, direction));
-	//			System.out.println("("+x+","+y+")"+" "+size+"--"+direction);
 				player.move();
 				currentFrame = 0;
 				for(int j = 0; j <= size; j++){
 					for(int i = 0; i <= size; i++){
 						board[x + i][y + j].setMoving(true);
 					}
-				}
-				
-//				for (int j = 0; j < board[0].length; j++) {
-//					for (int i = 0; i < board.length; i++) {
-//						board[i][j].performEffect();
-//					}
-//				}
-				
+				}				
 			} else {
 				setBoard();
 			}

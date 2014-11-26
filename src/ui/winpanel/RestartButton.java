@@ -52,13 +52,16 @@ public class RestartButton extends Clickable{
 			x = WinPanel.x + WinPanel.width / 2 + 10;
 			y = WinPanel.y + WinPanel.height / 2 + 30;
 		}
+		isVisible = WinPanel.isVisible();
 	}
 	
 	@Override
 	public void onClickAction() {
 		if(WinPanel.isVisible()){
 			Clickable.board.shuffle(Board.DEFAULT_SHUFFLE);
+			board.setCheated(false);
 			Clickable.board.newGame();
+			WinPanel.setVisible(false);
 		}
 	}
 }

@@ -47,11 +47,13 @@ public class GoBackButton extends Clickable{
 		height = 40;
 		x = WinPanel.x + WinPanel.width / 2 - width - 10;
 		y = WinPanel.y + WinPanel.height / 2 + 30;
+		isVisible = WinPanel.isVisible();
 	}
 	
 	@Override
 	public void onClickAction() {
 		if(WinPanel.isVisible() && !ScreenState.isAdventure){ 
+			board.setCheated(false);
 			ScreenState.presentScreen = ScreenState.LEVEL_SELECT;
 		}
 	}
