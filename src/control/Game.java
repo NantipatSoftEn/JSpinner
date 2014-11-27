@@ -63,10 +63,6 @@ public class Game{
 		}	
 	}
 	
-	public String getLevelDirectory() {
-		return levelDirectory;
-	}
-	
 	public GameScreen getGameScreen() {
 		return gameScreen;
 	}

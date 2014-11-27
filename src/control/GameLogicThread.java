@@ -11,8 +11,8 @@ import logic.GameLogic;
 
 public class GameLogicThread implements Runnable {
 	
-	GameLogic logic;
-	GameThreadMonitor monitor;
+	private GameLogic logic;
+	private GameThreadMonitor monitor;
 	
 	public GameLogicThread(GameLogic logic, GameThreadMonitor monitor) {
 		this.logic = logic;
