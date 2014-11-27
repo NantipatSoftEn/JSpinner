@@ -17,6 +17,7 @@ import ui.IRenderable;
 import util.AudioUtility;
 import util.Config;
 import util.DrawingUtility;
+import util.HighScoreUtility;
 import logic.Board;
 import logic.PlayerStatus;
 

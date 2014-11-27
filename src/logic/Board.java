@@ -66,13 +66,9 @@ public class Board implements IUpdatable {
 		int boardY = in.board[0].length;
 		this.player = new PlayerStatus(this);
 		solveMove = new ArrayList<Move>();
-		// this.bestScore = in.bestScore;
-		// use this vvv
 	
 		WinPanel.setPlayer(player);
-//		this.bestScore = in.bestScore;
-//		use this vvv
-//		this.bestScore = HighScoreUtility.getBestScore(in.directory);
+
 		board = new Tile[boardX][boardY];
 		int k = 1;
 		for (int i = 0; i < boardY; i++) {
@@ -81,10 +77,6 @@ public class Board implements IUpdatable {
 			}
 		}
 		adjustCenter();
-		// for (int i = 0; i < board.length; i++)
-		// for (int j = 0; j < board[0].length; j++) {
-		// board[i][j].setCurrentLocation(i, j);
-		// }
 		move = new ArrayList<Move>();
 
 	}
@@ -93,8 +85,6 @@ public class Board implements IUpdatable {
 		try {
 			Scanner in;
 
-//			in = new Scanner(new File(Board.class.getClassLoader().getResource(directory).toURI()));
-//			in = new Scanner(new File(directory));
 			try{
 				if(directory.startsWith("/res"))
 					in = new Scanner(getClass().getResourceAsStream(directory));
@@ -106,13 +96,10 @@ public class Board implements IUpdatable {
 			String tileInfo;
 			int boardX = in.nextInt();
 			int boardY = in.nextInt();
+			this.directory = directory;
 			this.player = new PlayerStatus(this);
-
-			WinPanel.setPlayer(player);
-//			this.bestScore = in.nextInt();
-//			use this vvv
-//			this.bestScore = HighScoreUtility.getBestScore(directory);
 			
+			WinPanel.setPlayer(player);
 			board = new Tile[boardX][boardY];
 
 			int k = 1;
@@ -182,7 +169,8 @@ public class Board implements IUpdatable {
 	}
 
 	public void newGame() {
-		player = new PlayerStatus(this);
+//		player = new PlayerStatus(this);
+		player.resetMove();
 		move = new ArrayList<Move>();
 		this.shuffle(Board.DEFAULT_SHUFFLE);
 		isPlaying = true;
@@ -629,7 +617,8 @@ public class Board implements IUpdatable {
 			setBoard();
 			if (isWin() || isCheated){
 				WinPanel.setVisible(true);
-
+				if(isWin())
+					 player.win();
 			}
 
 //			if (isWin()) {

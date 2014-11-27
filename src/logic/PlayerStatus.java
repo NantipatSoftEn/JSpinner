@@ -20,13 +20,16 @@ public class PlayerStatus implements IRenderable{
 	private boolean lockMove = false;
 	
 	public PlayerStatus(Board playing){
+		lockMove = false;
 		this.board = playing;
 		this.bestScore = HighScoreUtility.getBestScore(board.getDirectory());
 	}
 	
 	public void move() {
-		if(!lockMove)
+		if(!lockMove){
+			System.out.println("!");
 			moved++;
+		}
 	}
 	
 	public void decreaseMove() {
@@ -36,6 +39,7 @@ public class PlayerStatus implements IRenderable{
 	
 	public void resetMove(){
 		moved = 0;
+		lockMove = false;
 	}
 	
 	public int getMoved(){
@@ -48,6 +52,15 @@ public class PlayerStatus implements IRenderable{
 	
 	public void setLockMove(boolean lockMove) {
 		this.lockMove = lockMove;
+	}
+	
+	public void win(){
+		if(bestScore!=moved){
+			if(bestScore == -1 || moved < bestScore){
+				bestScore = moved;
+				HighScoreUtility.updateBestScore(board.getDirectory(), moved);
+			}
+		}
 	}
 	
 	@Override

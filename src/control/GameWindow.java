@@ -14,6 +14,9 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 
 import javax.swing.JFrame;
@@ -24,6 +27,7 @@ import ui.GameBackground;
 import ui.GameTitle;
 import ui.LevelSelectScreen;
 import util.Config;
+import util.HighScoreUtility;
 import util.InputUtility;
 import util.Utility;
 import logic.LevelFormatException;
@@ -52,6 +56,14 @@ public class GameWindow extends JFrame {
 		(new Thread(gameBackground)).start();
 		
 		ScreenState.presentScreen = ScreenState.TITLE;
+		
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				HighScoreUtility.writeBestScoreRecord();
+				super.windowClosing(e);
+			}
+		});
 		
 		while(true){
 			if(ScreenState.presentScreen == ScreenState.REFRESH_TITLE){
