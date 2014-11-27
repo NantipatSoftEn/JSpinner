@@ -29,7 +29,7 @@ public class GameScreen extends JPanel{
 	private List<IRenderable> renderList = new ArrayList<IRenderable>();
 	private Board board;
 	private PlayerStatus playerStatus;
-	private WinPanel winPanel;
+//	private WinPanel winPanel;
 	
 	public GameScreen(Board board){
 		super();
@@ -40,7 +40,7 @@ public class GameScreen extends JPanel{
 		setBackground(Color.WHITE);
 		this.board = board;
 		this.playerStatus = board.getPlayer();
-		this.winPanel = new WinPanel();
+//		this.winPanel = new WinPanel();
 		for(int j = 0; j < board.getBoardHeight(); j++)
 			for(int i = 0; i < board.getBoardWidth(); i++){
 				renderList.add(board.getTileAt(i, j));
@@ -50,7 +50,7 @@ public class GameScreen extends JPanel{
 		renderList.addAll(Clickable.buttons);
 		renderList.add(HelpPanel.helpPanel);
 		renderList.add(GameAnimation.fightAnim);
-		
+				
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
 		this.setVisible(true);
@@ -69,9 +69,9 @@ public class GameScreen extends JPanel{
 		return board;
 	}
 	
-	public WinPanel getWinPanel() {
-		return winPanel;
-	}
+//	public WinPanel getWinPanel() {
+//		return winPanel;
+//	}
 	
 	@Override
 	protected synchronized void paintComponent(Graphics g) {

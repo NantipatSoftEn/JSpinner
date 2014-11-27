@@ -17,6 +17,7 @@ import control.ScreenState;
 import ui.Clickable;
 import ui.HelpPanel;
 import ui.IRenderable;
+import ui.winpanel.WinPanel;
 import util.Config;
 import util.DrawingUtility;
 import util.InputUtility;
@@ -54,6 +55,7 @@ public class BackButton extends Clickable implements IRenderable {
 		if(ScreenState.presentScreen == ScreenState.GAME)
 			if(JOptionPane.showConfirmDialog(null, "Are you sure you want to go back?\nGame progress will not be saved.", "Confirm", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
 				ScreenState.presentScreen = ScreenState.LEVEL_SELECT;
+		WinPanel.setVisible(false);
 		HelpPanel.setVisible(false);
 	}
 }

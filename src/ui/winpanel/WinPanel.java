@@ -30,14 +30,19 @@ public class WinPanel implements IRenderable {
 	public static List<IRenderable> winElements = new ArrayList<IRenderable>();
 	public static final int frameCount = 8;
 	public static int currentFrame = frameCount;
+	private static PlayerStatus player;
 	private static boolean soundPlayed = false;
+	private static WinPanel panel;
+	static{
+		panel = new WinPanel();
+	}
 	
-	public WinPanel(){
+	private WinPanel(){
 		isVisible = false;
 		
 		winElements.add(this);
-		winElements.add(new RestartButton());
-		winElements.add(new GoBackButton());
+//		winElements.add(new RestartButton());
+//		winElements.add(new GoBackButton());
 	}
 	
 	public static void setVisible(boolean isVisible) {
@@ -53,6 +58,10 @@ public class WinPanel implements IRenderable {
 		WinPanel.isVisible = isVisible;
 	}
 	
+	public static void setPlayer(PlayerStatus player) {
+		WinPanel.player = player;
+	}
+	
 	public static boolean isVisible() {
 		return isVisible;
 	}
@@ -65,11 +74,30 @@ public class WinPanel implements IRenderable {
 	@Override
 	public void draw(Graphics g) {
 		if(isVisible){
+			
+			//reset sizes
+			x = 0;
+			y = Config.screenHeight / 2 - 100;
+			width = Config.screenWidth;
+			height = 200;			
+			
 			g.setColor(new Color(10,10,10,180 - 180 * currentFrame / frameCount));
 			g.fillRect(x, y, width, height);
-			Font font = new Font("Tahoma", Font.BOLD, 70); 
+			Font font;
 			g.setColor(Color.WHITE);
-			String winning = "SOLVED!: " + PlayerStatus.getMoved() + " MOVES";
+			String winning;
+			int fontSize = 70;
+			if(Config.screenWidth < 900){
+				fontSize -= (900 - Config.screenWidth) / 15;
+				System.out.println(fontSize);
+			}
+			if(player.getBestScore() != -1 || player.getBestScore() < player.getMoved()){
+				font = new Font("Tahoma", Font.BOLD, fontSize - 15); 
+				winning = "NEW BEST SCORE! " + player.getMoved() + " MOVES";
+			} else {
+				font = new Font("Tahoma", Font.BOLD, fontSize);
+				winning = "SOLVED! " + player.getMoved() + " MOVES";
+			}
 			DrawingUtility.drawStringInBox(winning, font, x - width * currentFrame / frameCount, y, width, height / 2, DrawingUtility.TEXT_CENTER, g);
 			if(currentFrame > 0){
 				currentFrame--;

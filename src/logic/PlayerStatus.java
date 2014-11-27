@@ -14,34 +14,40 @@ import ui.IRenderable;
 import util.*;
 
 public class PlayerStatus implements IRenderable{
-	private static int moved = 0;
+	private int moved = 0;
+	private int bestScore;
 	private Board board;
-	private static boolean lockMove = false;
+	private boolean lockMove = false;
 	
 	public PlayerStatus(Board playing){
 		this.board = playing;
+		this.bestScore = HighScoreUtility.getBestScore(board.getDirectory());
 	}
 	
-	public static void move() {
+	public void move() {
 		if(!lockMove)
 			moved++;
 	}
 	
-	public static void decreaseMove() {
+	public void decreaseMove() {
 		if(!lockMove)
 			moved--;
 	}
 	
-	public static void resetMove(){
+	public void resetMove(){
 		moved = 0;
 	}
 	
-	public static int getMoved(){
+	public int getMoved(){
 		return moved;
 	}
 	
-	public static void setLockMove(boolean lockMove) {
-		PlayerStatus.lockMove = lockMove;
+	public int getBestScore() {
+		return bestScore;
+	}
+	
+	public void setLockMove(boolean lockMove) {
+		this.lockMove = lockMove;
 	}
 	
 	@Override
@@ -54,7 +60,8 @@ public class PlayerStatus implements IRenderable{
 		Font subFont = new Font("Tahoma", Font.BOLD, 25);
 		Font mainFont = new Font("Tahoma", Font.BOLD, 40);
 		g.setColor(Color.BLACK);
-		DrawingUtility.drawStringInBox("BEST " + board.getBestScore(), subFont, 10, 0, Config.screenWidth, Config.topBarHeight, DrawingUtility.TEXT_LEFT, g);
+		String best = bestScore >= 0 ? "" + bestScore : "-";
+		DrawingUtility.drawStringInBox("BEST: " + best, subFont, 10, 0, Config.screenWidth, Config.topBarHeight, DrawingUtility.TEXT_LEFT, g);
 		DrawingUtility.drawStringInBox("" + moved, mainFont, 0, 0, Config.screenWidth, Config.topBarHeight, DrawingUtility.TEXT_CENTER, g);
 	}
 }

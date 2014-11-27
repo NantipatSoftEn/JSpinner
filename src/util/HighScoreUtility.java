@@ -49,7 +49,7 @@ public class HighScoreUtility {
 	
 	public static int getBestScore(String levelFileDirectory){
 		//return best score of the level
-		return 0;
+		return -1;
 	}
 	
 	public static void updateBestScore(String levelFileDirectory){

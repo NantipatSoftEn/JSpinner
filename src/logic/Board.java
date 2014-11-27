@@ -32,7 +32,7 @@ public class Board implements IUpdatable {
 	private Tile[][] board;
 	private int x, y, width, height, selected = 0;
 	private int tileSize;
-	private int bestScore;
+//	private int bestScore;
 	private PlayerStatus player;
 	private Point forFlip[] = new Point[2];
 	private List<Move> move;
@@ -48,6 +48,7 @@ public class Board implements IUpdatable {
 	public Board(int width, int height) {
 		board = new Tile[width][height];
 		player = new PlayerStatus(this);
+		WinPanel.setPlayer(player);
 		move = new ArrayList<Move>();
 		initiateBoard();
 		adjustCenter();
@@ -59,9 +60,10 @@ public class Board implements IUpdatable {
 		int boardX = in.board.length;
 		int boardY = in.board[0].length;
 		this.player = new PlayerStatus(this);
+		WinPanel.setPlayer(player);
 //		this.bestScore = in.bestScore;
 //		use this vvv
-		this.bestScore = HighScoreUtility.getBestScore(in.directory);
+//		this.bestScore = HighScoreUtility.getBestScore(in.directory);
 		board = new Tile[boardX][boardY];
 		int k = 1;
 		for (int i = 0; i < boardY; i++) {
@@ -95,9 +97,10 @@ public class Board implements IUpdatable {
 			int boardX = in.nextInt();
 			int boardY = in.nextInt();
 			this.player = new PlayerStatus(this);
+			WinPanel.setPlayer(player);
 //			this.bestScore = in.nextInt();
 //			use this vvv
-			this.bestScore = HighScoreUtility.getBestScore(directory);
+//			this.bestScore = HighScoreUtility.getBestScore(directory);
 			
 			board = new Tile[boardX][boardY];
 			
@@ -232,11 +235,7 @@ public class Board implements IUpdatable {
 	public PlayerStatus getPlayer() {
 		return player;
 	}
-
-	public int getBestScore() {
-		return bestScore;
-	}
-
+	
 	public int getFlipX() {
 		return (int) forFlip[0].getX();
 	}
@@ -259,6 +258,10 @@ public class Board implements IUpdatable {
 		} catch(IndexOutOfBoundsException e){
 			return null;
 		}
+	}
+	
+	public String getDirectory() {
+		return directory;
 	}
 	
 	public void setRepeatMoveEnebled(boolean repeatMoveEnebled) {
@@ -587,11 +590,10 @@ public class Board implements IUpdatable {
 				WinPanel.setVisible(true);
 			}
 
-			if (isWin()) {
-				if (bestScore > move.size())
-					HighScoreUtility.updateBestScore(directory);
-
-			}
+//			if (isWin()) {
+//				if (bestScore > move.size())
+//					HighScoreUtility.updateBestScore(directory);
+//			}
 
 		}
 	}
