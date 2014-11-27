@@ -8,6 +8,7 @@ package logic;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.List;
 import java.io.*;
 import java.net.URISyntaxException;
@@ -16,6 +17,7 @@ import java.util.*;
 import javax.rmi.CORBA.Util;
 import javax.swing.JOptionPane;
 
+import control.ScreenState;
 import ui.Clickable;
 import ui.GameAnimation;
 import ui.GameScreen;
@@ -496,7 +498,8 @@ public class Board implements IUpdatable {
 		if (InputUtility.getKeyPressed(KeyEvent.VK_A))
 			if (InputUtility.getKeyPressed(KeyEvent.VK_S))
 				if (InputUtility.getKeyPressed(KeyEvent.VK_D))
-					if (!isSolving) {
+					if (!isSolving)
+					 if(!ScreenState.isAdventure){
 						try {
 							Thread.sleep(100);
 						} catch (InterruptedException e) {
@@ -896,11 +899,11 @@ public class Board implements IUpdatable {
 			}
 
 			// /////////////////////////////////////////
-
+				
 		}
 
 		// ans.add(new Move(0, 0, 2, Board.CCW));
-
+			ans.addAll(bfs(xcla));
 		return ans;
 	}
 	void checkB (Tile[][] in){
@@ -913,6 +916,37 @@ public class Board implements IUpdatable {
 			}
 		System.out.println(">>>>>>>>>>>>>>>>>>>");
 				
+	}
+	public ArrayList<Move> bfs(Board xcla){
+		ArrayList<ArrayList<Move>> ans =  new ArrayList<ArrayList<Move>>();
+		ArrayList<Move> b1,b2 ;
+		ans.add(new ArrayList<Move>());
+		Board x1,x2;
+		ArrayList<Board> sq = new ArrayList<Board>();
+		sq.add(xcla);
+		while(!sq.get(0).isWin()){
+			
+			x1=sq.remove(0);
+			x2=new Board(x1);
+			b1=ans.remove(0);
+			b2=(ArrayList<Move>) b1.clone();
+			
+			x1.flip(x1.getBoardWidth()-2, x1.getBoardHeight()-2, 1, Board.CCW, false);
+			b1.add(new Move(x1.getBoardWidth()-2, x1.getBoardHeight()-2, 1, Board.CCW));
+			
+			x2.flip(x2.getBoardWidth()-3, x2.getBoardHeight()-3, 1, Board.CCW, false);
+			b2.add(new Move(x2.getBoardWidth()-3, x2.getBoardHeight()-3, 1, Board.CCW));
+			
+			
+			sq.add(x1);
+			sq.add(x2);
+			ans.add(b1);
+			ans.add(b2);
+			
+			
+		}
+		
+		return ans.remove(0);
 	}
 
 }
