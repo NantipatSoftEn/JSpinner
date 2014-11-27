@@ -23,7 +23,7 @@ import javax.xml.ws.handler.MessageContext.Scope;
 public class HighScoreUtility {
 	public static boolean highscoreok = true;
 	private static ArrayList<BestScoreRecord> scoreList = new ArrayList<BestScoreRecord>();
-	private static String direc = "Highscore.txt";
+	private static String direc = ".highscore.";
 
 	/*
 	 * high score format (highscore.txt):
@@ -98,6 +98,22 @@ public class HighScoreUtility {
 				writer.write(scoreList.remove(0).toString() + "\n");
 			}
 
+		} catch (IOException ex) {
+		} finally {
+			try {
+				writer.close();
+			} catch (Exception ex) {
+			}
+		}
+	}
+	
+	public static void resetBestScores(){
+		scoreList.clear();
+		Writer writer = null;
+		try {
+			writer = new BufferedWriter(new OutputStreamWriter(
+					new FileOutputStream(direc), "utf-8"));
+			writer.write("");
 		} catch (IOException ex) {
 		} finally {
 			try {

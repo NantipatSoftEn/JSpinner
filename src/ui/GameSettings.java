@@ -14,6 +14,7 @@ import javax.swing.*;
 
 import control.ScreenState;
 import util.Config;
+import util.HighScoreUtility;
 
 public class GameSettings extends JFrame{
 
@@ -40,7 +41,8 @@ public class GameSettings extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				JOptionPane.showMessageDialog(null, "Reset High Score");
+				if(JOptionPane.showConfirmDialog(null, "Are you sure you want to reset high scores?\nAll high score records will be deleted.", "Confirm", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
+					HighScoreUtility.resetBestScores();
 			}
 		});
 		
