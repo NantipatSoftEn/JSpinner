@@ -1,0 +1,16 @@
+w h
+x x x x x x
+x x x x x x
+x x x x x x
+x x x x x x
+x x x x x x
+
+w = width
+h = height
+m = move limit (0 if no limit)
+s = high score
+	if 	m = 0 => s = fewest move
+	else 	s = most remaining moves)
+x = board data:
+	Sn (n is a positive integer) for number simple tile
+	-	if that position contains no tiles (empty space)

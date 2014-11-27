@@ -46,8 +46,8 @@ public abstract class Tile implements IRenderable {
 	public Tile(Tile in,Board br){
 		this.number = in.number;
 		this.board = br;
-		setCorrectLocation(in.correctX, in.correctY);
-		setCurrentLocation(in.correctX, in.correctY);	
+		setCorrectLocation(in.getCorrectLocation().x, in.getCorrectLocation().y);
+		setCurrentLocation(in.getCurrentLocation().x, in.getCurrentLocation().y);	
 		
 		
 	}

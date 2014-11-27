@@ -76,7 +76,6 @@ public class GameWindow extends JFrame {
 			//	BUG: packing doesn't get the right size
 			else if(ScreenState.presentScreen == ScreenState.GAME){
 				try {
-//					game = new Game(this, "/res/levels/testFreeze.txt");
 					game = new Game(this, ScreenState.nextLevel);
 					this.remove((JPanel) (game.getGameScreen()));
 				} catch (LevelFormatException e) {
