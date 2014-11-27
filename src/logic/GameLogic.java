@@ -1,16 +1,23 @@
+/**
+ * JSpinner: 2110215 PROG METH PROJECT
+ * @author Thanawit Prasongpongchai 5631045321
+ * @author Phatrasek Jirabovonvisut 5630469621
+ */
+
 package logic;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import lib.InputUtility;
 import control.Game;
 import control.ScreenState;
 import ui.Clickable;
+import ui.GameAnimation;
 import ui.HelpPanel;
 import ui.gamebutton.*;
 import ui.winpanel.WinPanel;
+import util.InputUtility;
 
 public class GameLogic{
 	
@@ -20,10 +27,12 @@ public class GameLogic{
 		updateList.add(b);
 		updateList.addAll(Clickable.buttons);
 		updateList.add(HelpPanel.helpPanel);
+		updateList.add(GameAnimation.fightAnim);
+		
 //		updateList.addAll(WinPanel.winElements);
 	}
 	
-	public void update(){
+	public synchronized void update(){
 		for(IUpdatable logic : updateList){
 			logic.update();
 		}

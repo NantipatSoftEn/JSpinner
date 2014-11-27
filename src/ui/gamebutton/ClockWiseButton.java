@@ -1,3 +1,9 @@
+/**
+ * JSpinner: 2110215 PROG METH PROJECT
+ * @author Thanawit Prasongpongchai 5631045321
+ * @author Phatrasek Jirabovonvisut 5630469621
+ */
+
 package ui.gamebutton;
 
 import java.awt.Color;
@@ -5,14 +11,14 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import lib.Config;
-import lib.InputUtility;
 import logic.Board;
 import logic.IUpdatable;
 import logic.Tile;
 import ui.Clickable;
-import ui.DrawingUtility;
 import ui.IRenderable;
+import util.Config;
+import util.DrawingUtility;
+import util.InputUtility;
 
 public class ClockWiseButton extends Clickable implements IRenderable,
 		IUpdatable {
@@ -21,10 +27,10 @@ public class ClockWiseButton extends Clickable implements IRenderable,
 	
 	public ClockWiseButton(){
 		type = Clickable.CIRCLE;
-		x = Config.screenWidth / 2;
-		y = 100;
 		width = 60;
 		height = 60;
+		updatePosition();
+		mute();
 	}
 
 	@Override
@@ -40,10 +46,15 @@ public class ClockWiseButton extends Clickable implements IRenderable,
 	}
 	
 	@Override
+	public void updatePosition() {
+	}
+	
+	@Override
 	public void onClickAction() {
 		if(isVisible){
 			board.flip(board.getFlipX(), board.getFlipY(), board.getFlipSize(), Board.CW, true);
 			board.clearSelected();
+			board.setRepeatMoveEnebled(true);
 		}
 	}
 	

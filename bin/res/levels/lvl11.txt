@@ -1,0 +1,7 @@
+6 6
+- - s s - -
+- z s s a -
+s s s s s s
+s s s s s s
+- a s s z -
+- - s s - -

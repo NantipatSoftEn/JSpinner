@@ -1,3 +1,9 @@
+/**
+ * JSpinner: 2110215 PROG METH PROJECT
+ * @author Thanawit Prasongpongchai 5631045321
+ * @author Phatrasek Jirabovonvisut 5630469621
+ */
+
 package control;
 
 import java.io.IOException;
@@ -7,12 +13,12 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import lib.InputUtility;
 import logic.Board;
 import logic.GameLogic;
 import logic.LevelFormatException;
 import ui.Clickable;
 import ui.GameScreen;
+import util.InputUtility;
 
 public class Game{
 	private Board board;
@@ -39,14 +45,21 @@ public class Game{
 		window.setFrame();
 		window.pack();
 		
+		GameThreadMonitor monitor = new GameThreadMonitor(gameLogic, gameScreen);
+		GameScreenThread gameScreenThread = new GameScreenThread(gameScreen, monitor);
+		GameLogicThread gameLogicThread = new GameLogicThread(gameLogic, monitor);
+		
+		(new Thread(gameLogicThread)).start();
+		(new Thread(gameScreenThread)).start();
+		
 		while(ScreenState.presentScreen == ScreenState.GAME){
 			try {
 				Thread.sleep(20);
 			} catch(InterruptedException e) {
 			}
-			gameScreen.repaint();
-			gameLogic.update();
-			InputUtility.postUpdate();
+//			gameScreen.repaint();
+//			gameLogic.update();
+//			InputUtility.postUpdate();
 		}	
 	}
 	

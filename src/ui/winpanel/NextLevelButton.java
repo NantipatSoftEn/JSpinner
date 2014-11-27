@@ -1,3 +1,9 @@
+/**
+ * JSpinner: 2110215 PROG METH PROJECT
+ * @author Thanawit Prasongpongchai 5631045321
+ * @author Phatrasek Jirabovonvisut 5630469621
+ */
+
 package ui.winpanel;
 
 import java.awt.Color;
@@ -6,18 +12,16 @@ import java.awt.Graphics;
 
 import javax.swing.JOptionPane;
 
+import control.ScreenState;
 import logic.Board;
 import ui.Clickable;
-import ui.DrawingUtility;
+import util.DrawingUtility;
 
 public class NextLevelButton extends Clickable{
 	
 	public NextLevelButton(){
 		type = Clickable.RECTANGLE;
-		width = 200;
-		height = 40;
-		x = WinPanel.x + WinPanel.width / 2 + 10;
-		y = WinPanel.y + WinPanel.height / 2 + 30;
+		updatePosition();
 	}
 
 	@Override
@@ -27,7 +31,7 @@ public class NextLevelButton extends Clickable{
 
 	@Override
 	public void draw(Graphics g) {
-		if(WinPanel.isVisible()){
+		if(WinPanel.isVisible() && ScreenState.isAdventure){
 			g.setColor(DrawingUtility.CORRECT);
 			if(isMouseOn()){
 				g.setColor(DrawingUtility.CORRECT.brighter());
@@ -40,11 +44,20 @@ public class NextLevelButton extends Clickable{
 	}
 	
 	@Override
+	public void updatePosition() {
+		width = 200;
+		height = 40;
+		x = WinPanel.x + WinPanel.width / 2 + 10;
+		y = WinPanel.y + WinPanel.height / 2 + 30;
+		isVisible = WinPanel.isVisible();
+	}
+	
+	@Override
 	public void onClickAction() {
-		if(WinPanel.isVisible()){
-			JOptionPane.showMessageDialog(null, "Next Level");
-			Clickable.board.shuffle(Board.DEFAULT_SHUFFLE);
-			Clickable.board.newGame();
+		if(WinPanel.isVisible() && ScreenState.isAdventure){
+			ScreenState.presentScreen = ScreenState.NEXT_LEVEL;
+			board.setCheated(false);
+			WinPanel.setVisible(false);
 		}
 	}
 }

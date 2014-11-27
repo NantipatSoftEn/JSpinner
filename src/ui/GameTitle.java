@@ -1,5 +1,13 @@
+/**
+ * JSpinner: 2110215 PROG METH PROJECT
+ * @author Thanawit Prasongpongchai 5631045321
+ * @author Phatrasek Jirabovonvisut 5630469621
+ */
+
 package ui;
 
+import java.applet.AudioClip;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -8,6 +16,7 @@ import java.awt.RenderingHints;
 import java.awt.RenderingHints.Key;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,12 +24,13 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import ui.gamebutton.BackButton;
 import ui.gamebutton.*;
+import util.AudioUtility;
+import util.Config;
+import util.DrawingUtility;
+import util.InputUtility;
 import control.GameWindow;
 import control.ScreenState;
-import lib.Config;
-import lib.InputUtility;
 import logic.IUpdatable;
 
 public class GameTitle extends JPanel {
@@ -38,11 +48,10 @@ public class GameTitle extends JPanel {
 		setPreferredSize(new Dimension(Config.screenWidth, Config.screenHeight));
 		window.pack();
 
-		renderList.add(new PlayButton());
-		updateList.add(new PlayButton());
-
-		renderList.add(new SettingsButton());
-		updateList.add(new SettingsButton());
+		addBoth(new PlayButton());
+		addBoth(new SettingsButton());
+		addBoth(new AboutButton());
+		addBoth(new ToggleSoundButton());
 		
 		while(ScreenState.presentScreen == ScreenState.TITLE){
 			
@@ -56,6 +65,7 @@ public class GameTitle extends JPanel {
 			
 			//update
 			if(InputUtility.getKeyTriggered(KeyEvent.VK_SPACE)){
+				AudioUtility.playSound(AudioUtility.clickSound);
 				ScreenState.presentScreen = ScreenState.LEVEL_SELECT;
 			}
 			InputUtility.postUpdate();
@@ -72,12 +82,13 @@ public class GameTitle extends JPanel {
 		GameWindow.gameBackground.draw(g);
 		
 		//DrawLogo
-		Font font = new Font("Tahoma", Font.BOLD, 70);
-		DrawingUtility.drawStringInBox("JSpinner", font, 0, 0, Config.screenWidth, Config.screenHeight * 2 / 3, DrawingUtility.TEXT_CENTER, g2);
+		BufferedImage logo = DrawingUtility.logoImg;
+		g2.drawImage(logo, null, (Config.screenWidth - logo.getWidth()) / 2, Config.screenHeight / 2 - logo.getHeight());
 
 		//should be a clickable button
-		font = new Font("Tahoma", Font.BOLD, 30);
-		DrawingUtility.drawStringInBox("Press spacebar to start", font, 0, Config.screenHeight * 2 / 3, Config.screenWidth, Config.screenHeight * 5 / 6, DrawingUtility.TEXT_TOP, g2);
+		Font font = new Font("Tahoma", Font.BOLD, 20);
+		g2.setColor(Color.DARK_GRAY);
+		DrawingUtility.drawStringInBox("or press spacebar to start", font, 0, Config.screenHeight * 2 / 3 + 5, Config.screenWidth, Config.screenHeight * 5 / 6, DrawingUtility.TEXT_TOP, g2);
 	
 		for(int i = 0; i < renderList.size(); i++){
 			renderList.get(i).draw(g);
@@ -87,6 +98,13 @@ public class GameTitle extends JPanel {
 	public void update(){
 		for(int i = 0; i < updateList.size(); i++){
 			updateList.get(i).update();
+		}
+	}
+	
+	private void addBoth(IRenderable a){
+		if(a instanceof IUpdatable){
+			renderList.add(a);
+			updateList.add((IUpdatable)a);
 		}
 	}
 }

@@ -1,3 +1,9 @@
+/**
+ * JSpinner: 2110215 PROG METH PROJECT
+ * @author Thanawit Prasongpongchai 5631045321
+ * @author Phatrasek Jirabovonvisut 5630469621
+ */
+
 package ui;
 
 import java.util.*;
@@ -15,7 +21,7 @@ import control.GameWindow;
 import control.ScreenState;
 import ui.gamebutton.*;
 import ui.winpanel.WinPanel;
-import lib.*;
+import util.*;
 import logic.*;
 
 public class GameScreen extends JPanel{
@@ -23,7 +29,7 @@ public class GameScreen extends JPanel{
 	private List<IRenderable> renderList = new ArrayList<IRenderable>();
 	private Board board;
 	private PlayerStatus playerStatus;
-	private WinPanel winPanel;
+//	private WinPanel winPanel;
 	
 	public GameScreen(Board board){
 		super();
@@ -34,7 +40,7 @@ public class GameScreen extends JPanel{
 		setBackground(Color.WHITE);
 		this.board = board;
 		this.playerStatus = board.getPlayer();
-		this.winPanel = new WinPanel();
+//		this.winPanel = new WinPanel();
 		for(int j = 0; j < board.getBoardHeight(); j++)
 			for(int i = 0; i < board.getBoardWidth(); i++){
 				renderList.add(board.getTileAt(i, j));
@@ -43,7 +49,8 @@ public class GameScreen extends JPanel{
 		renderList.addAll(WinPanel.winElements);
 		renderList.addAll(Clickable.buttons);
 		renderList.add(HelpPanel.helpPanel);
-		
+		renderList.add(GameAnimation.fightAnim);
+				
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
 		this.setVisible(true);
@@ -62,12 +69,12 @@ public class GameScreen extends JPanel{
 		return board;
 	}
 	
-	public WinPanel getWinPanel() {
-		return winPanel;
-	}
+//	public WinPanel getWinPanel() {
+//		return winPanel;
+//	}
 	
 	@Override
-	protected void paintComponent(Graphics g) {
+	protected synchronized void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
 		Graphics2D g2 = (Graphics2D) g;
@@ -86,12 +93,4 @@ public class GameScreen extends JPanel{
 			renderList.get(i).draw(g);
 		}
 	}
-	
-//	//for thread
-//	private void run() {
-//		GameScreen gameScreen = new GameScreen(board);
-//		while(true){
-//			gameScreen.repaint();
-//		}
-//	}
 }

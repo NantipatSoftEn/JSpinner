@@ -1,6 +1,7 @@
 /**
- * @author Thanawit Prasongpongchai (5631045321)
- * @author Phatrasek Jirabovonvisut (5630469621)
+ * JSpinner: 2110215 PROG METH PROJECT
+ * @author Thanawit Prasongpongchai 5631045321
+ * @author Phatrasek Jirabovonvisut 5630469621
  */
 
 package logic;
@@ -16,11 +17,12 @@ import javax.rmi.CORBA.Util;
 import javax.swing.JOptionPane;
 
 import ui.Clickable;
+import ui.GameAnimation;
 import ui.GameScreen;
 import ui.HelpPanel;
 import ui.IRenderable;
 import ui.winpanel.WinPanel;
-import lib.*;
+import util.*;
 
 public class Board implements IUpdatable {
 	public static final int DEFAULT_SHUFFLE = 2000;
@@ -30,7 +32,7 @@ public class Board implements IUpdatable {
 	private Tile[][] board;
 	private int x, y, width, height, selected = 0;
 	private int tileSize;
-	private int bestScore;
+//	private int bestScore;
 	private PlayerStatus player;
 	private Point forFlip[] = new Point[2];
 	private List<Move> move;
@@ -41,17 +43,23 @@ public class Board implements IUpdatable {
 	private String directory;
 	private int currentFrame = 0;
 	private List<Move> solveMove;
+	private boolean effectPerFormed = true;
+	private int animatedShuffle = 0;
+	private boolean repeatMoveEnabled = true;
 
 	public Board(int width, int height) {
 		board = new Tile[width][height];
 		player = new PlayerStatus(this);
+		WinPanel.setPlayer(player);
 		move = new ArrayList<Move>();
 		initiateBoard();
 		adjustCenter();
 		solveMove = new ArrayList<Move>();
 	}
 
+
 	public Board(Board in) {
+
 		this.directory = in.directory;
 		String tileInfo;
 		int boardX = in.board.length;
@@ -60,7 +68,11 @@ public class Board implements IUpdatable {
 		solveMove = new ArrayList<Move>();
 		// this.bestScore = in.bestScore;
 		// use this vvv
-		this.bestScore = HighScoreUtility.getBestScore(in.directory);
+	
+		WinPanel.setPlayer(player);
+//		this.bestScore = in.bestScore;
+//		use this vvv
+//		this.bestScore = HighScoreUtility.getBestScore(in.directory);
 		board = new Tile[boardX][boardY];
 		int k = 1;
 		for (int i = 0; i < boardY; i++) {
@@ -80,22 +92,27 @@ public class Board implements IUpdatable {
 	public Board(String directory) throws LevelFormatException, IOException {
 		try {
 			Scanner in;
-			// in = new Scanner(new
-			// File(Board.class.getClassLoader().getResource(directory).toURI()));
-			// in = new Scanner(new File(directory));
-			try {
-				in = new Scanner(getClass().getResourceAsStream(directory));
-			} catch (NullPointerException e) {
+
+//			in = new Scanner(new File(Board.class.getClassLoader().getResource(directory).toURI()));
+//			in = new Scanner(new File(directory));
+			try{
+				if(directory.startsWith("/res"))
+					in = new Scanner(getClass().getResourceAsStream(directory));
+				else
+					in = new Scanner(new File(directory));
+			} catch (NullPointerException e){
 				throw new IOException();
 			}
 			String tileInfo;
 			int boardX = in.nextInt();
 			int boardY = in.nextInt();
 			this.player = new PlayerStatus(this);
-			// this.bestScore = in.nextInt();
-			// use this vvv
-			this.bestScore = HighScoreUtility.getBestScore(directory);
 
+			WinPanel.setPlayer(player);
+//			this.bestScore = in.nextInt();
+//			use this vvv
+//			this.bestScore = HighScoreUtility.getBestScore(directory);
+			
 			board = new Tile[boardX][boardY];
 
 			int k = 1;
@@ -109,8 +126,10 @@ public class Board implements IUpdatable {
 
 					if (tileInfo.substring(0, 1).equalsIgnoreCase("S"))
 						board[j][i] = new SimpleTile(k++, this, j, i);
-					else if (tileInfo.substring(0, 1).equalsIgnoreCase("F"))
-						board[j][i] = new FreezeTile(k++, this, j, i);
+					else if (tileInfo.substring(0, 1).equalsIgnoreCase("Z"))
+						board[j][i] = new SleepyTile(k++, this, j, i);
+					else if (tileInfo.substring(0, 1).equalsIgnoreCase("A"))
+						board[j][i] = new AngryTile(k++, this, j, i);
 					else if (tileInfo.substring(0, 1).equalsIgnoreCase("-"))
 						board[j][i] = new SimpleTile(Tile.NOT_A_TILE, this, j,
 								i);
@@ -226,11 +245,7 @@ public class Board implements IUpdatable {
 	public PlayerStatus getPlayer() {
 		return player;
 	}
-
-	public int getBestScore() {
-		return bestScore;
-	}
-
+	
 	public int getFlipX() {
 		return (int) forFlip[0].getX();
 	}
@@ -248,12 +263,25 @@ public class Board implements IUpdatable {
 	}
 
 	public Move getLatestMove() {
-		if (move.size() > 0)
+		try{
 			return move.get(move.size() - 1);
-		else
+		} catch(IndexOutOfBoundsException e){
 			return null;
+		}
 	}
-
+	
+	public String getDirectory() {
+		return directory;
+	}
+	
+	public void setRepeatMoveEnebled(boolean repeatMoveEnebled) {
+		this.repeatMoveEnabled = repeatMoveEnebled;
+	}
+	
+	public void setCheated(boolean isCheated) {
+		this.isCheated = isCheated;
+	}
+	
 	public void clearSelected() {
 		selected = 0;
 		for (int j = 0; j < board[0].length; j++) {
@@ -299,25 +327,17 @@ public class Board implements IUpdatable {
 					s--;
 				}
 			}
-
-			if (isPlaying) {
+			
+			if(isPlaying){
+				AudioUtility.playSound(AudioUtility.flipSound);
 				move.add(new Move(x, y, size, direction));
-				// System.out.println("("+x+","+y+")"+" "+size+"--"+direction);
 				player.move();
 				currentFrame = 0;
 				for (int j = 0; j <= size; j++) {
 					for (int i = 0; i <= size; i++) {
 						board[x + i][y + j].setMoving(true);
 					}
-				}
-
-				for (int j = 0; j < board[0].length; j++) {
-					for (int i = 0; i < board.length; i++) {
-						board[i][j].performEffect();
-					}
-
-				}
-
+				}				
 			} else {
 				setBoard();
 			}
@@ -331,8 +351,13 @@ public class Board implements IUpdatable {
 			move.remove(i);
 			flip(latest.x, latest.y, latest.size, latest.dir * -1, false);
 			player.decreaseMove();
+			for (int j = 0; j < board[0].length; j++) {
+				for (int k = 0; k < board.length; k++) {
+					board[k][j].undoEffect();
+				}
+			}
 		} catch (ArrayIndexOutOfBoundsException e) {
-			JOptionPane.showMessageDialog(null, "not Undoable!");
+			JOptionPane.showMessageDialog(null, "No moves left to undo!");
 		}
 	}
 
@@ -359,9 +384,7 @@ public class Board implements IUpdatable {
 					if (!board[i][j].isATile()) {
 						return false;
 					}
-					if (playing
-							&& ((board[i][j] instanceof FreezeTile) && ((FreezeTile) board[i][j])
-									.isLocked())) {
+					if(playing && ((board[i][j] instanceof SleepyTile) && ((SleepyTile) board[i][j]).isLocked())){
 						return false;
 					}
 				}
@@ -373,6 +396,7 @@ public class Board implements IUpdatable {
 	}
 
 	public void shuffle(int times) {
+//		boolean isReset = true;
 		player.resetMove();
 		move = new ArrayList<Move>();
 		for (int i = 0; i < times; i++) {
@@ -406,6 +430,43 @@ public class Board implements IUpdatable {
 
 		}
 	}
+	
+	public void animatedShuffle(int times){
+		animatedShuffle = times;
+		repeatMoveEnabled = false;
+		player.setLockMove(true);
+	}
+	
+	public void randomMove(){
+		move = new ArrayList<Move>();
+		int x, y, dir, size;
+		do{
+			x = Utility.random(0, board.length);
+			y = Utility.random(0, board[0].length);
+			dir = Utility.random(0, 4);
+			// 0 for NE
+			// 1 for SE
+			// 2 for SW
+			// 3 for NW
+			if (dir == 0) {
+				size = Utility.random(0, Math.min(board[0].length - x, y));
+				y -= size;
+			} else if (dir == 1) {
+				size = Utility.random(0,
+						Math.min(board[0].length - x, board.length - y));
+			} else if (dir == 2) {
+				size = Utility.random(0, Math.min(x, board.length - y));
+				x -= size;
+			} else if (dir == 3) {
+				size = Utility.random(0, Math.min(x, y));
+				x -= size;
+				y -= size;
+			} else
+				size = 0;
+		} while(!isValidMove(x, y, x + size, y + size, false));
+		int rotation = Utility.random(0, 2) == 0 ? CW : CCW;
+		flip(x, y, size, rotation, true);
+	}
 
 	public String toString() {
 		String out = "";
@@ -432,7 +493,8 @@ public class Board implements IUpdatable {
 
 	public void update() {
 		// for each game loop...
-
+//		setEnables();
+//		System.out.println(selected);
 		// FOR THE SAKE OF DEBUGGING
 		if (InputUtility.getKeyPressed(KeyEvent.VK_Z))
 			if (InputUtility.getKeyPressed(KeyEvent.VK_X))
@@ -453,28 +515,41 @@ public class Board implements IUpdatable {
 						solveMove = solveSQ();
 						isSolving = true;
 					}
-		// update location (if not playing animation)
-		if (isPlaying && !HelpPanel.isVisible()) {
-			if (currentFrame >= Config.animationFrameCount) {
-
+		if(isPlaying && !HelpPanel.isVisible()){
+			if(currentFrame >= Config.animationFrameCount){
 				setBoard();
+				if(!effectPerFormed && animatedShuffle == 0){
+					for (int j = 0; j < board[0].length; j++) {
+						for (int i = 0; i < board.length; i++) {
+							board[i][j].performEffect();
+						}
+					}
+					effectPerFormed = true;
+				}
+				if(animatedShuffle > 0){
+					randomMove();
+					animatedShuffle--;
+					move.clear();
+				}else{
+					player.setLockMove(false);
+				}
 			} else {
+				effectPerFormed = false;
 				currentFrame++;
 			}
 			if (!isSolving) {
-
 				boolean same = selected == 2
 						&& forFlip[0].getX() == forFlip[1].getX()
 						&& forFlip[0].getY() == forFlip[1].getY();
-				if (move.size() > 0 && selected == 0) {
+				if (move.size() > 0 && selected == 0 && animatedShuffle == 0) {
 					Move latest = move.get(move.size() - 1);
-
-					if (InputUtility.getKeyTriggered(KeyEvent.VK_LEFT)) {
+	
+					if (InputUtility.getKeyTriggered(KeyEvent.VK_LEFT) && repeatMoveEnabled) {
 						setBoard();
 						flip(latest.x, latest.y, latest.size, Board.CCW, true);
 					}
-
-					if (InputUtility.getKeyTriggered(KeyEvent.VK_RIGHT)) {
+	
+					if (InputUtility.getKeyTriggered(KeyEvent.VK_RIGHT) && repeatMoveEnabled) {
 						setBoard();
 						flip(latest.x, latest.y, latest.size, Board.CW, true);
 					}
@@ -486,6 +561,7 @@ public class Board implements IUpdatable {
 						for (int j = 0; j < board[0].length; j++) {
 							if (Utility.isPointOnTile(
 									InputUtility.getPickedPoint(), this, i, j)) {
+								
 								board[i][j].setMouseOn(true);
 								if (InputUtility.isPicking()
 										|| (InputUtility.isMouseReleased() && selected > 0)) {
@@ -541,6 +617,7 @@ public class Board implements IUpdatable {
 				setEnables();
 				isPlaying = !isWin();
 			} else {
+				if(isSolving)
 				if (!solveMove.isEmpty()) {
 					Move forFlip = solveMove.remove(0);
 					flip(forFlip.x, forFlip.y, forFlip.size, forFlip.dir, false);
@@ -550,14 +627,15 @@ public class Board implements IUpdatable {
 			}
 		} else {
 			setBoard();
-			if (isWin() || isCheated)
+			if (isWin() || isCheated){
 				WinPanel.setVisible(true);
 
-			if (isWin()) {
-				if (bestScore > move.size())
-					HighScoreUtility.updateBestScore(directory,bestScore);
-
 			}
+
+//			if (isWin()) {
+//				if (bestScore > move.size())
+//					HighScoreUtility.updateBestScore(directory);
+//			}
 
 		}
 	}
@@ -740,7 +818,7 @@ public class Board implements IUpdatable {
 		Board xcla = new Board(this);
 		Tile[][] xbor = xcla.board;
 
-		while (target <=6) {
+		while (target <=xbor.length*xbor[0].length) {
 			curx = 0;
 			cury = 0;
 			corx = 0;
@@ -809,6 +887,7 @@ public class Board implements IUpdatable {
 		System.out.println(">>>>>>>>>>>>>>>>>>>");
 				
 	}
+
 }
 
 class Move {

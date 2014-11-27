@@ -1,3 +1,9 @@
+/**
+ * JSpinner: 2110215 PROG METH PROJECT
+ * @author Thanawit Prasongpongchai 5631045321
+ * @author Phatrasek Jirabovonvisut 5630469621
+ */
+
 package control;
 
 import java.awt.Color;
@@ -17,8 +23,9 @@ import javax.swing.JPanel;
 import ui.GameBackground;
 import ui.GameTitle;
 import ui.LevelSelectScreen;
-import lib.Config;
-import lib.InputUtility;
+import util.Config;
+import util.InputUtility;
+import util.Utility;
 import logic.LevelFormatException;
 
 public class GameWindow extends JFrame {
@@ -30,6 +37,10 @@ public class GameWindow extends JFrame {
 	
 	public GameWindow(){
 		super("JSpinner");
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e1) {
+		}
 		this.setLocationByPlatform(true);
 		Container pane = this.getContentPane();
 		addListener(pane);
@@ -43,31 +54,40 @@ public class GameWindow extends JFrame {
 		ScreenState.presentScreen = ScreenState.TITLE;
 		
 		while(true){
-			if(ScreenState.presentScreen == ScreenState.TITLE){
+			if(ScreenState.presentScreen == ScreenState.REFRESH_TITLE){
+				ScreenState.presentScreen = ScreenState.TITLE;
+			}
+			
+			else if(ScreenState.presentScreen == ScreenState.TITLE){
 				gameTitle = new GameTitle(this);
 				this.remove(gameTitle);
 			}
 			
-			if(ScreenState.presentScreen == ScreenState.LEVEL_SELECT){
+			else if(ScreenState.presentScreen == ScreenState.LEVEL_SELECT){
 				levelSelect = new LevelSelectScreen(this);
 				this.remove(levelSelect);
+			}
+			
+			else if(ScreenState.presentScreen == ScreenState.NEXT_LEVEL){
+				ScreenState.presentScreen = ScreenState.GAME;
+				ScreenState.nextLevel = getNextLevelDirectory();
 			}
 			
 			//	BUG: packing doesn't get the right size
 			else if(ScreenState.presentScreen == ScreenState.GAME){
 				try {
-					game = new Game(this, "/res/levels/3x3.txt");
+					game = new Game(this, ScreenState.nextLevel);
 					this.remove((JPanel) (game.getGameScreen()));
 				} catch (LevelFormatException e) {
 					JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+					ScreenState.presentScreen = ScreenState.LEVEL_SELECT;
 				} catch (IOException e){
 					JOptionPane.showMessageDialog(null, "Level file not found.", "Error", JOptionPane.ERROR_MESSAGE);
+					ScreenState.presentScreen = ScreenState.LEVEL_SELECT;
 				}
 			}
 			
-			else{
-				JOptionPane.showMessageDialog(null, "Error! some error in screen loop");
-			}
+			
 		}
 	}
 	
@@ -96,6 +116,7 @@ public class GameWindow extends JFrame {
 			public void mousePressed(MouseEvent e) {
 				// TODO Auto-generated method stub
 				InputUtility.setPicking(true);
+				InputUtility.setMouseDown(true);
 		//		InputUtility.setPickedPoint(e.getX(), e.getY());
 			}
 		
@@ -103,6 +124,7 @@ public class GameWindow extends JFrame {
 			public void mouseReleased(MouseEvent e) {
 				// TODO Auto-generated method stub
 				InputUtility.setPicking(false);
+				InputUtility.setMouseDown(false);
 				InputUtility.setMouseReleased(true);
 		//		InputUtility.setPickedPoint(InputUtility.NULL_POINT, InputUtility.NULL_POINT);
 			}
@@ -149,5 +171,22 @@ public class GameWindow extends JFrame {
 				InputUtility.setKeyPressed(e.getKeyCode(), true);
 			}
 		});
+	}
+	
+	private String getNextLevelDirectory(){
+		String lvdir = ScreenState.nextLevel;
+		int currentLevel;
+		try{
+			currentLevel =+ Integer.parseInt(lvdir.substring(lvdir.lastIndexOf("lvl") + 3, lvdir.lastIndexOf(".txt")));
+		} catch (NumberFormatException e){
+			currentLevel = 0;
+		}
+		if(currentLevel < 12)
+			currentLevel++;
+		else{
+			JOptionPane.showMessageDialog(null, "Congratulations! You have finished the final level.");
+			ScreenState.presentScreen = ScreenState.TITLE;
+		}
+		return lvdir.substring(0, lvdir.lastIndexOf("lvl") + 3) + currentLevel + ".txt";
 	}
 }

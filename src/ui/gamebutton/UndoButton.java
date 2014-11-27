@@ -1,3 +1,9 @@
+/**
+ * JSpinner: 2110215 PROG METH PROJECT
+ * @author Thanawit Prasongpongchai 5631045321
+ * @author Phatrasek Jirabovonvisut 5630469621
+ */
+
 package ui.gamebutton;
 
 import java.awt.Color;
@@ -5,20 +11,17 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import ui.Clickable;
-import ui.DrawingUtility;
 import ui.IRenderable;
-import lib.Config;
-import lib.InputUtility;
+import util.Config;
+import util.DrawingUtility;
+import util.InputUtility;
 import logic.Board;
 
 public class UndoButton extends Clickable implements IRenderable {
 	
 	public UndoButton(){
 		type = Clickable.CIRCLE;
-		width = 50;
-		height = 50;
-		x = Config.screenWidth - 105;
-		y = 5;
+		updatePosition();
 	}
 
 	@Override
@@ -29,6 +32,14 @@ public class UndoButton extends Clickable implements IRenderable {
 	@Override
 	public void draw(Graphics g) {
 		drawButton(g, DrawingUtility.undoButtonImg);
+	}
+	
+	@Override
+	public void updatePosition() {
+		width = 50;
+		height = 50;
+		x = Config.screenWidth - 105;
+		y = 5;
 	}
 	
 	@Override

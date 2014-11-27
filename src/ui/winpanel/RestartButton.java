@@ -1,21 +1,25 @@
+/**
+ * JSpinner: 2110215 PROG METH PROJECT
+ * @author Thanawit Prasongpongchai 5631045321
+ * @author Phatrasek Jirabovonvisut 5630469621
+ */
+
 package ui.winpanel;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 
+import control.ScreenState;
 import logic.Board;
 import ui.Clickable;
-import ui.DrawingUtility;
+import util.DrawingUtility;
 
 public class RestartButton extends Clickable{
 	
 	public RestartButton(){
 		type = Clickable.RECTANGLE;
-		width = 200;
-		height = 40;
-		x = WinPanel.x + WinPanel.width / 2 - width - 10;
-		y = WinPanel.y + WinPanel.height / 2 + 30;
+		updatePosition();
 	}
 
 	@Override
@@ -38,10 +42,26 @@ public class RestartButton extends Clickable{
 	}
 	
 	@Override
+	public void updatePosition() {
+		width = 200;
+		height = 40;
+		if(ScreenState.isAdventure){
+			x = WinPanel.x + WinPanel.width / 2 - width - 10;
+			y = WinPanel.y + WinPanel.height / 2 + 30;
+		}else{
+			x = WinPanel.x + WinPanel.width / 2 + 10;
+			y = WinPanel.y + WinPanel.height / 2 + 30;
+		}
+		isVisible = WinPanel.isVisible();
+	}
+	
+	@Override
 	public void onClickAction() {
 		if(WinPanel.isVisible()){
 			Clickable.board.shuffle(Board.DEFAULT_SHUFFLE);
+			board.setCheated(false);
 			Clickable.board.newGame();
+			WinPanel.setVisible(false);
 		}
 	}
 }

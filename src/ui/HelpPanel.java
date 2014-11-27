@@ -1,3 +1,9 @@
+/**
+ * JSpinner: 2110215 PROG METH PROJECT
+ * @author Thanawit Prasongpongchai 5631045321
+ * @author Phatrasek Jirabovonvisut 5630469621
+ */
+
 package ui;
 
 import java.awt.Color;
@@ -10,8 +16,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import lib.Config;
-import lib.InputUtility;
+import util.Config;
+import util.DrawingUtility;
+import util.InputUtility;
 import logic.Board;
 import logic.IUpdatable;
 import logic.PlayerStatus;
@@ -72,25 +79,28 @@ public class HelpPanel implements IRenderable, IUpdatable {
 	
 	@Override
 	public void update() {
+		x = (Config.screenWidth - width) / 2;
+		y = (Config.screenHeight - height) / 2;
+		prevButton = new Rectangle2D.Double(x + 290, y + 430, 40, 20);
+		nextButton = new Rectangle2D.Double(x + 420, y + 430, 40, 20);
+		closeButton = new Rectangle2D.Double(x + 685, y + 25, 40, 40);
+		
 		if(isVisible && InputUtility.isPicking()){
 			if(nextButton.contains((Point2D)InputUtility.getPickedPoint())){
-				if(currentFrame < PAGES - 1)
-					currentFrame++;
+				currentFrame++;
+				if(currentFrame >= PAGES)
+					currentFrame = 0;
 			}
 			if(prevButton.contains((Point2D)InputUtility.getPickedPoint())){
-				if(currentFrame > 0)
-					currentFrame--;
+				currentFrame--;
+				if(currentFrame < 0)
+					currentFrame = PAGES - 1;
 			}
 			if(closeButton.contains((Point2D)InputUtility.getPickedPoint())){
 				setVisible(false);
-				k = 0;
 			}
-			if(!this.contains((Point2D)InputUtility.getPickedPoint())){
-				k++;
-				if(k > 1){
-					setVisible(false);
-					k = 0;
-				}
+			else if(!this.contains((Point2D)InputUtility.getPickedPoint()) && !Clickable.helpButton.isMouseOn()){
+				setVisible(false);
 			}
 		}
 	}

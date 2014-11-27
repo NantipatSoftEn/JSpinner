@@ -1,0 +1,8 @@
+7 7
+z s s - s s z
+s s s s s s s
+s s s a s s s
+- s a s a s -
+s s s a s s s
+s s s s s s s
+z s s - s s z
