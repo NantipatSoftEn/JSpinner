@@ -79,6 +79,12 @@ public class HelpPanel implements IRenderable, IUpdatable {
 	
 	@Override
 	public void update() {
+		x = (Config.screenWidth - width) / 2;
+		y = (Config.screenHeight - height) / 2;
+		prevButton = new Rectangle2D.Double(x + 290, y + 430, 40, 20);
+		nextButton = new Rectangle2D.Double(x + 420, y + 430, 40, 20);
+		closeButton = new Rectangle2D.Double(x + 685, y + 25, 40, 40);
+		
 		if(isVisible && InputUtility.isPicking()){
 			if(nextButton.contains((Point2D)InputUtility.getPickedPoint())){
 				currentFrame++;

@@ -17,9 +17,8 @@ import util.Config;
 
 public class GameSettings extends JFrame{
 
-	private JSpinner screenHeightSpinner = new JSpinner(new SpinnerNumberModel(Config.screenHeight, 600, 1500, 10));
-	private JSpinner screenWidthSpinner = new JSpinner(new SpinnerNumberModel(Config.screenWidth, 600, 2000, 10));
-	private JSpinner animFrameSpinner = new JSpinner(new SpinnerNumberModel(Config.animationFrameCount, 5, 20, 1));
+	private JSpinner screenHeightSpinner;
+	private JSpinner screenWidthSpinner;
 	
 	public static GameSettings settingsFrame = new GameSettings();
 	
@@ -31,7 +30,7 @@ public class GameSettings extends JFrame{
 		
 		JPanel optionPane = new JPanel(new GridLayout(2, 1));
 		
-		screenWidthSpinner = addSpinnerWithLabelTo(optionPane, "Screen Width     ", Config.screenWidth, 600, 2000, 10);
+		screenWidthSpinner = addSpinnerWithLabelTo(optionPane, "Screen Width     ", Config.screenWidth, 750, 2000, 10);
 		screenHeightSpinner = addSpinnerWithLabelTo(optionPane, "Screen Height     ", Config.screenHeight, 600, 5000, 10);
 //		animFrameSpinner = addSpinnerWithLabelTo(optionPane, "Animation Frame Count      ", Config.animationFrameCount, 5, 20, 1);		
 		
