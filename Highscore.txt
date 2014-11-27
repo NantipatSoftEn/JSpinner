@@ -1,1 +1,3 @@
-/res/levels/3x3.txt 9
+/res/levels/lvl1.txt 4
+/res/levels/lvl2.txt 27
+/res/levels/lvl3.txt 62
