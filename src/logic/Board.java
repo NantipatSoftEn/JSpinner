@@ -16,6 +16,7 @@ import java.util.*;
 import javax.rmi.CORBA.Util;
 import javax.swing.JOptionPane;
 
+import control.ScreenState;
 import ui.Clickable;
 import ui.GameAnimation;
 import ui.GameScreen;
@@ -32,7 +33,7 @@ public class Board implements IUpdatable {
 	private Tile[][] board;
 	private int x, y, width, height, selected = 0;
 	private int tileSize;
-//	private int bestScore;
+	// private int bestScore;
 	private PlayerStatus player;
 	private Point forFlip[] = new Point[2];
 	private List<Move> move;
@@ -57,7 +58,6 @@ public class Board implements IUpdatable {
 		solveMove = new ArrayList<Move>();
 	}
 
-
 	public Board(Board in) {
 
 		this.directory = in.directory;
@@ -68,11 +68,11 @@ public class Board implements IUpdatable {
 		solveMove = new ArrayList<Move>();
 		// this.bestScore = in.bestScore;
 		// use this vvv
-	
+
 		WinPanel.setPlayer(player);
-//		this.bestScore = in.bestScore;
-//		use this vvv
-//		this.bestScore = HighScoreUtility.getBestScore(in.directory);
+		// this.bestScore = in.bestScore;
+		// use this vvv
+		// this.bestScore = HighScoreUtility.getBestScore(in.directory);
 		board = new Tile[boardX][boardY];
 		int k = 1;
 		for (int i = 0; i < boardY; i++) {
@@ -93,14 +93,15 @@ public class Board implements IUpdatable {
 		try {
 			Scanner in;
 
-//			in = new Scanner(new File(Board.class.getClassLoader().getResource(directory).toURI()));
-//			in = new Scanner(new File(directory));
-			try{
-				if(directory.startsWith("/res"))
+			// in = new Scanner(new
+			// File(Board.class.getClassLoader().getResource(directory).toURI()));
+			// in = new Scanner(new File(directory));
+			try {
+				if (directory.startsWith("/res"))
 					in = new Scanner(getClass().getResourceAsStream(directory));
 				else
 					in = new Scanner(new File(directory));
-			} catch (NullPointerException e){
+			} catch (NullPointerException e) {
 				throw new IOException();
 			}
 			String tileInfo;
@@ -109,10 +110,10 @@ public class Board implements IUpdatable {
 			this.player = new PlayerStatus(this);
 
 			WinPanel.setPlayer(player);
-//			this.bestScore = in.nextInt();
-//			use this vvv
-//			this.bestScore = HighScoreUtility.getBestScore(directory);
-			
+			// this.bestScore = in.nextInt();
+			// use this vvv
+			// this.bestScore = HighScoreUtility.getBestScore(directory);
+
 			board = new Tile[boardX][boardY];
 
 			int k = 1;
@@ -245,7 +246,7 @@ public class Board implements IUpdatable {
 	public PlayerStatus getPlayer() {
 		return player;
 	}
-	
+
 	public int getFlipX() {
 		return (int) forFlip[0].getX();
 	}
@@ -263,25 +264,25 @@ public class Board implements IUpdatable {
 	}
 
 	public Move getLatestMove() {
-		try{
+		try {
 			return move.get(move.size() - 1);
-		} catch(IndexOutOfBoundsException e){
+		} catch (IndexOutOfBoundsException e) {
 			return null;
 		}
 	}
-	
+
 	public String getDirectory() {
 		return directory;
 	}
-	
+
 	public void setRepeatMoveEnebled(boolean repeatMoveEnebled) {
 		this.repeatMoveEnabled = repeatMoveEnebled;
 	}
-	
+
 	public void setCheated(boolean isCheated) {
 		this.isCheated = isCheated;
 	}
-	
+
 	public void clearSelected() {
 		selected = 0;
 		for (int j = 0; j < board[0].length; j++) {
@@ -327,8 +328,8 @@ public class Board implements IUpdatable {
 					s--;
 				}
 			}
-			
-			if(isPlaying){
+
+			if (isPlaying) {
 				AudioUtility.playSound(AudioUtility.flipSound);
 				move.add(new Move(x, y, size, direction));
 				player.move();
@@ -337,7 +338,7 @@ public class Board implements IUpdatable {
 					for (int i = 0; i <= size; i++) {
 						board[x + i][y + j].setMoving(true);
 					}
-				}				
+				}
 			} else {
 				setBoard();
 			}
@@ -384,7 +385,9 @@ public class Board implements IUpdatable {
 					if (!board[i][j].isATile()) {
 						return false;
 					}
-					if(playing && ((board[i][j] instanceof SleepyTile) && ((SleepyTile) board[i][j]).isLocked())){
+					if (playing
+							&& ((board[i][j] instanceof SleepyTile) && ((SleepyTile) board[i][j])
+									.isLocked())) {
 						return false;
 					}
 				}
@@ -396,7 +399,7 @@ public class Board implements IUpdatable {
 	}
 
 	public void shuffle(int times) {
-//		boolean isReset = true;
+		// boolean isReset = true;
 		player.resetMove();
 		move = new ArrayList<Move>();
 		for (int i = 0; i < times; i++) {
@@ -430,17 +433,17 @@ public class Board implements IUpdatable {
 
 		}
 	}
-	
-	public void animatedShuffle(int times){
+
+	public void animatedShuffle(int times) {
 		animatedShuffle = times;
 		repeatMoveEnabled = false;
 		player.setLockMove(true);
 	}
-	
-	public void randomMove(){
+
+	public void randomMove() {
 		move = new ArrayList<Move>();
 		int x, y, dir, size;
-		do{
+		do {
 			x = Utility.random(0, board.length);
 			y = Utility.random(0, board[0].length);
 			dir = Utility.random(0, 4);
@@ -463,7 +466,7 @@ public class Board implements IUpdatable {
 				y -= size;
 			} else
 				size = 0;
-		} while(!isValidMove(x, y, x + size, y + size, false));
+		} while (!isValidMove(x, y, x + size, y + size, false));
 		int rotation = Utility.random(0, 2) == 0 ? CW : CCW;
 		flip(x, y, size, rotation, true);
 	}
@@ -493,8 +496,8 @@ public class Board implements IUpdatable {
 
 	public void update() {
 		// for each game loop...
-//		setEnables();
-//		System.out.println(selected);
+		// setEnables();
+		// System.out.println(selected);
 		// FOR THE SAKE OF DEBUGGING
 		if (InputUtility.getKeyPressed(KeyEvent.VK_Z))
 			if (InputUtility.getKeyPressed(KeyEvent.VK_X))
@@ -504,21 +507,22 @@ public class Board implements IUpdatable {
 		if (InputUtility.getKeyPressed(KeyEvent.VK_A))
 			if (InputUtility.getKeyPressed(KeyEvent.VK_S))
 				if (InputUtility.getKeyPressed(KeyEvent.VK_D))
-					if (!isSolving) {
-						try {
-							Thread.sleep(100);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+					if (!isSolving)
+						if (!ScreenState.isAdventure) {
+							try {
+								Thread.sleep(100);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+
+							solveMove = solveSQ();
+							isSolving = true;
 						}
-						System.out.println("kuy");
-						solveMove = solveSQ();
-						isSolving = true;
-					}
-		if(isPlaying && !HelpPanel.isVisible()){
-			if(currentFrame >= Config.animationFrameCount){
+		if (isPlaying && !HelpPanel.isVisible()) {
+			if (currentFrame >= Config.animationFrameCount) {
 				setBoard();
-				if(!effectPerFormed && animatedShuffle == 0){
+				if (!effectPerFormed && animatedShuffle == 0) {
 					for (int j = 0; j < board[0].length; j++) {
 						for (int i = 0; i < board.length; i++) {
 							board[i][j].performEffect();
@@ -526,11 +530,11 @@ public class Board implements IUpdatable {
 					}
 					effectPerFormed = true;
 				}
-				if(animatedShuffle > 0){
+				if (animatedShuffle > 0) {
 					randomMove();
 					animatedShuffle--;
 					move.clear();
-				}else{
+				} else {
 					player.setLockMove(false);
 				}
 			} else {
@@ -543,13 +547,15 @@ public class Board implements IUpdatable {
 						&& forFlip[0].getY() == forFlip[1].getY();
 				if (move.size() > 0 && selected == 0 && animatedShuffle == 0) {
 					Move latest = move.get(move.size() - 1);
-	
-					if (InputUtility.getKeyTriggered(KeyEvent.VK_LEFT) && repeatMoveEnabled) {
+
+					if (InputUtility.getKeyTriggered(KeyEvent.VK_LEFT)
+							&& repeatMoveEnabled) {
 						setBoard();
 						flip(latest.x, latest.y, latest.size, Board.CCW, true);
 					}
-	
-					if (InputUtility.getKeyTriggered(KeyEvent.VK_RIGHT) && repeatMoveEnabled) {
+
+					if (InputUtility.getKeyTriggered(KeyEvent.VK_RIGHT)
+							&& repeatMoveEnabled) {
 						setBoard();
 						flip(latest.x, latest.y, latest.size, Board.CW, true);
 					}
@@ -561,7 +567,7 @@ public class Board implements IUpdatable {
 						for (int j = 0; j < board[0].length; j++) {
 							if (Utility.isPointOnTile(
 									InputUtility.getPickedPoint(), this, i, j)) {
-								
+
 								board[i][j].setMouseOn(true);
 								if (InputUtility.isPicking()
 										|| (InputUtility.isMouseReleased() && selected > 0)) {
@@ -617,25 +623,26 @@ public class Board implements IUpdatable {
 				setEnables();
 				isPlaying = !isWin();
 			} else {
-				if(isSolving)
-				if (!solveMove.isEmpty()) {
-					Move forFlip = solveMove.remove(0);
-					flip(forFlip.x, forFlip.y, forFlip.size, forFlip.dir, false);
-				} else {
-					isSolving = false;
-				}
+				if (isSolving)
+					if (!solveMove.isEmpty()) {
+						Move forFlip = solveMove.remove(0);
+						flip(forFlip.x, forFlip.y, forFlip.size, forFlip.dir,
+								false);
+					} else {
+						isSolving = false;
+					}
 			}
 		} else {
 			setBoard();
-			if (isWin() || isCheated){
+			if (isWin() || isCheated) {
 				WinPanel.setVisible(true);
 
 			}
 
-//			if (isWin()) {
-//				if (bestScore > move.size())
-//					HighScoreUtility.updateBestScore(directory);
-//			}
+			// if (isWin()) {
+			// if (bestScore > move.size())
+			// HighScoreUtility.updateBestScore(directory);
+			// }
 
 		}
 	}
@@ -689,10 +696,10 @@ public class Board implements IUpdatable {
 
 	private void toTarget(ArrayList<Move> ans, Tile[][] xbor, Board xcla,
 			int curx, int cury, int corx, int cory) {
-		//System.out.println(""+curx+" "+cury+" "+corx+" "+cory);
-		
+		// System.out.println(""+curx+" "+cury+" "+corx+" "+cory);
+
 		while (curx != corx || cury != cory) {
-			//  System.out.println(curx+" "+cury);
+			// System.out.println(curx+" "+cury);
 			if (curx != corx) {
 
 				if (curx < corx) {
@@ -754,27 +761,27 @@ public class Board implements IUpdatable {
 				if (cury > cory) {
 					if (cury < xbor[0].length - 1) {
 						if (curx < xbor.length - 1) {
-							ans.add(new Move(curx , cury - 1, 1, Board.CW));
-							xcla.flip(curx , cury - 1, 1, Board.CW, false);// 9
-																				
+							ans.add(new Move(curx, cury - 1, 1, Board.CW));
+							xcla.flip(curx, cury - 1, 1, Board.CW, false);// 9
+
 							cury--;
 						} else {
 							ans.add(new Move(curx - 1, cury - 1, 1, Board.CCW));
 							xcla.flip(curx - 1, cury - 1, 1, Board.CCW, false);// 10
-																			
+
 							cury--;
 						}
 
 					} else {
 						if (curx < xbor.length - 1) {
-							ans.add(new Move(curx , cury - 1, 1, Board.CW));
-							xcla.flip(curx , cury - 1, 1, Board.CW, false);// 11
-																				
+							ans.add(new Move(curx, cury - 1, 1, Board.CW));
+							xcla.flip(curx, cury - 1, 1, Board.CW, false);// 11
+
 							cury--;
 						} else {
 							ans.add(new Move(curx - 1, cury - 1, 1, Board.CCW));
 							xcla.flip(curx - 1, cury - 1, 1, Board.CCW, false);// 12
-																				
+
 							cury--;
 						}
 
@@ -782,23 +789,33 @@ public class Board implements IUpdatable {
 				} else {
 					if (cury < xbor[0].length - 1) {
 						if (curx < xbor.length - 1) {
-							ans.add(new Move(curx, cury , 1, Board.CCW));
-							xcla.flip(curx, cury , 1, Board.CCW, false);// 13 not in use
+							ans.add(new Move(curx, cury, 1, Board.CCW));
+							xcla.flip(curx, cury, 1, Board.CCW, false);// 13 not
+																		// in
+																		// use
 							cury++;
 						} else {
-							ans.add(new Move(curx - 1, cury , 1, Board.CW));
-							xcla.flip(curx - 1, cury , 1, Board.CW, false);// 14 not in use
+							ans.add(new Move(curx - 1, cury, 1, Board.CW));
+							xcla.flip(curx - 1, cury, 1, Board.CW, false);// 14
+																			// not
+																			// in
+																			// use
 							cury++;
 						}
 
 					} else {
 						if (curx < xbor.length - 1) {
-							ans.add(new Move(curx, cury , 1, Board.CCW));
-							xcla.flip(curx, cury , 1, Board.CCW, false);// 15 not in use
+							ans.add(new Move(curx, cury, 1, Board.CCW));
+							xcla.flip(curx, cury, 1, Board.CCW, false);// 15 not
+																		// in
+																		// use
 							cury++;
 						} else {
-							ans.add(new Move(curx - 1, cury , 1, Board.CW));
-							xcla.flip(curx - 1, cury , 1, Board.CW, false);// 16 not in use
+							ans.add(new Move(curx - 1, cury, 1, Board.CW));
+							xcla.flip(curx - 1, cury, 1, Board.CW, false);// 16
+																			// not
+																			// in
+																			// use
 							cury++;
 						}
 
@@ -813,61 +830,92 @@ public class Board implements IUpdatable {
 
 	public ArrayList<Move> solveSQ() {
 		int target = 1;
+		boolean bot = false;
 		int curx, cury, corx, cory;
 		ArrayList<Move> ans = new ArrayList<Move>();
 		Board xcla = new Board(this);
 		Tile[][] xbor = xcla.board;
 
-		while (target <=xbor.length*xbor[0].length) {
+		while (target <= xbor.length * xbor[0].length) {
 			curx = 0;
 			cury = 0;
 			corx = 0;
 			cory = 0;
-			
+
 			for (int i = 0; i < xbor.length; i++) {
 				for (int j = 0; j < xbor[0].length; j++) {
 					if (xbor[i][j].getNumber() == target) {
-			
+
 						curx = xbor[i][j].getCurrentLocation().x;
 						cury = xbor[i][j].getCurrentLocation().y;
 						corx = xbor[i][j].getCorrectLocation().x;
 						cory = xbor[i][j].getCorrectLocation().y;
-						//System.out.println(xbor[i][j].getNumber()+" "+curx+" "+corx+" "+cury+" "+cory);
-						
-						
+						// System.out.println(xbor[i][j].getNumber()+" "+curx+" "+corx+" "+cury+" "+cory);
 
 					}
-					//System.out.println(xbor[i][j].getNumber()+" "+xbor[i][j].getCurrentLocation().x+" "+xbor[i][j].getCurrentLocation().y+" "+xbor[i][j].getCorrectLocation().x+" "+xbor[i][j].getCorrectLocation().y);
+					// System.out.println(xbor[i][j].getNumber()+" "+xbor[i][j].getCurrentLocation().x+" "+xbor[i][j].getCurrentLocation().y+" "+xbor[i][j].getCorrectLocation().x+" "+xbor[i][j].getCorrectLocation().y);
 				}
 			}
 			// //////////move function////////////
-			if(corx<xbor.length-1){
-			toTarget(ans, xbor, xcla, curx, cury, corx, cory);
-			//System.out.println("xx");
-			checkB(xcla.board);
-			xcla.setBoard();
-			}else{
-				//System.out.println("yy");
-				if(curx!=corx||cury!=cory){
-				toTarget(ans, xbor, xcla, curx, cury, corx, cory+1);
-				ans.add(new Move(corx-2, cory, 1, Board.CCW));
-				xcla.flip(corx-2, cory, 1, Board.CCW, false);
-				checkB(xcla.board);
-				ans.add(new Move(corx-1, cory, 1, Board.CCW));
-				xcla.flip(corx-1, cory, 1, Board.CCW, false);
-				checkB(xcla.board);
-				ans.add(new Move(corx-2, cory, 1, Board.CW));
-				xcla.flip(corx-2, cory, 1, Board.CW, false);
+			if (cory >= xbor[0].length - 2) {
+				bot = true;
+				if((cory>=xbor[0].length-2&&corx==xbor.length-1)||(cory==xbor[0].length-1&&corx==xbor.length-2)){
+					
+				}else
+				if(cory==xbor[0].length-2){
+					toTarget(ans, xbor, xcla, curx, cury, corx, cory);
+				}else if (curx != corx || cury != cory){
+					toTarget(ans, xbor, xcla, curx, cury, corx+1, cory);
+					ans.add(new Move(corx,cory-1,1,Board.CCW));
+					xcla.flip(corx,cory-1,1,Board.CCW, false);
+					ans.add(new Move(corx+1,cory-1,1,Board.CCW));
+					xcla.flip(corx+1,cory-1,1,Board.CCW, false);
+					ans.add(new Move(corx,cory-1,1,Board.CW));
+					xcla.flip(corx,cory-1,1,Board.CW, false);
+					
+				}
+				checkB(xbor);
+			} else if (corx < xbor.length - 1) {
+				toTarget(ans, xbor, xcla, curx, cury, corx, cory);
+
 				checkB(xcla.board);
 				xcla.setBoard();
+			} else {
+
+				if (curx != corx || cury != cory) {
+					toTarget(ans, xbor, xcla, curx, cury, corx, cory + 1);
+					ans.add(new Move(corx - 2, cory, 1, Board.CCW));
+					xcla.flip(corx - 2, cory, 1, Board.CCW, false);
+					checkB(xcla.board);
+					ans.add(new Move(corx - 1, cory, 1, Board.CCW));
+					xcla.flip(corx - 1, cory, 1, Board.CCW, false);
+					checkB(xcla.board);
+					ans.add(new Move(corx - 2, cory, 1, Board.CW));
+					xcla.flip(corx - 2, cory, 1, Board.CW, false);
+					checkB(xcla.board);
+					xcla.setBoard();
 				}
-				
+
 			}
-			System.out.println("FUCK");
+
 			// ///////////////////////////////////
 
 			// ////////////change target////////////////
-			target++;
+
+			if (!bot) {
+				target++;
+			} else {
+				if (target == xbor.length * xbor[0].length) {
+					target++;
+
+				} else {
+					if (cory == xbor[0].length - 1) {
+						target = target - xbor.length + 1;
+					} else {
+						target += xbor.length;
+					}
+				}
+			}
 			// /////////////////////////////////////////
 
 		}
@@ -876,16 +924,17 @@ public class Board implements IUpdatable {
 
 		return ans;
 	}
-	void checkB (Tile[][] in){
+
+	void checkB(Tile[][] in) {
 		System.out.println("<<<<<<<<<<<<<<<<<<<");
-		for (int i = 0; i < in.length; i++) {
-			for (int j = 0; j < in[0].length; j++){
-				System.out.print(in[i][j].getNumber()+" ");
+		for (int j = 0; j < in[0].length; j++) {
+			for (int i = 0; i < in.length; i++) {
+				System.out.print(in[i][j].getNumber() + " ");
 			}
 			System.out.println();
-			}
+		}
 		System.out.println(">>>>>>>>>>>>>>>>>>>");
-				
+
 	}
 
 }
