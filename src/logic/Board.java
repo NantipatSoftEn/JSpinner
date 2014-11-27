@@ -808,6 +808,7 @@ public class Board implements IUpdatable {
 
 	public ArrayList<Move> solveSQ() {
 		int target = 1;
+		boolean bot =false;
 		int curx, cury, corx, cory;
 		ArrayList<Move> ans = new ArrayList<Move>();
 		Board xcla = new Board(this);
@@ -836,33 +837,64 @@ public class Board implements IUpdatable {
 				}
 			}
 			// //////////move function////////////
-			if(corx<xbor.length-1){
-			toTarget(ans, xbor, xcla, curx, cury, corx, cory);
-			//System.out.println("xx");
-			checkB(xcla.board);
-			xcla.setBoard();
-			}else{
-				//System.out.println("yy");
-				if(curx!=corx||cury!=cory){
-				toTarget(ans, xbor, xcla, curx, cury, corx, cory+1);
-				ans.add(new Move(corx-2, cory, 1, Board.CCW));
-				xcla.flip(corx-2, cory, 1, Board.CCW, false);
-				checkB(xcla.board);
-				ans.add(new Move(corx-1, cory, 1, Board.CCW));
-				xcla.flip(corx-1, cory, 1, Board.CCW, false);
-				checkB(xcla.board);
-				ans.add(new Move(corx-2, cory, 1, Board.CW));
-				xcla.flip(corx-2, cory, 1, Board.CW, false);
+			if (cory >= xbor[0].length - 2) {
+				bot = true;
+				if((cory>=xbor[0].length-2&&corx==xbor.length-1)||(cory==xbor[0].length-1&&corx==xbor.length-2)){
+					
+				}else
+				if(cory==xbor[0].length-2){
+					toTarget(ans, xbor, xcla, curx, cury, corx, cory);
+				}else if (curx != corx || cury != cory){
+					toTarget(ans, xbor, xcla, curx, cury, corx+1, cory);
+					ans.add(new Move(corx,cory-1,1,Board.CCW));
+					xcla.flip(corx,cory-1,1,Board.CCW, false);
+					ans.add(new Move(corx+1,cory-1,1,Board.CCW));
+					xcla.flip(corx+1,cory-1,1,Board.CCW, false);
+					ans.add(new Move(corx,cory-1,1,Board.CW));
+					xcla.flip(corx,cory-1,1,Board.CW, false);
+					
+				}
+				checkB(xbor);
+			} else if (corx < xbor.length - 1) {
+				toTarget(ans, xbor, xcla, curx, cury, corx, cory);
+
 				checkB(xcla.board);
 				xcla.setBoard();
+			} else {
+
+				if (curx != corx || cury != cory) {
+					toTarget(ans, xbor, xcla, curx, cury, corx, cory + 1);
+					ans.add(new Move(corx - 2, cory, 1, Board.CCW));
+					xcla.flip(corx - 2, cory, 1, Board.CCW, false);
+					checkB(xcla.board);
+					ans.add(new Move(corx - 1, cory, 1, Board.CCW));
+					xcla.flip(corx - 1, cory, 1, Board.CCW, false);
+					checkB(xcla.board);
+					ans.add(new Move(corx - 2, cory, 1, Board.CW));
+					xcla.flip(corx - 2, cory, 1, Board.CW, false);
+					checkB(xcla.board);
+					xcla.setBoard();
 				}
-				
 			}
-			System.out.println("FUCK");
+
 			// ///////////////////////////////////
 
 			// ////////////change target////////////////
-			target++;
+			if (!bot) {
+				target++;
+			} else {
+				if (target == xbor.length * xbor[0].length) {
+					target++;
+
+				} else {
+					if (cory == xbor[0].length - 1) {
+						target = target - xbor.length + 1;
+					} else {
+						target += xbor.length;
+					}
+				}
+			}
+
 			// /////////////////////////////////////////
 
 		}
