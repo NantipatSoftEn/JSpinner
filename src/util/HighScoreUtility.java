@@ -22,7 +22,7 @@ import javax.xml.ws.handler.MessageContext.Scope;
 public class HighScoreUtility {
 	public static boolean highscoreok = true;
 	private static ArrayList<BestScoreRecord> scoreList = new ArrayList<BestScoreRecord>();
-	private static String direc = "Highscore.jsp";
+	private static String direc = "Highscore.txt";
 
 	/*
 	 * high score format (highscore.txt):
@@ -42,7 +42,10 @@ public class HighScoreUtility {
 		try {
 			in = new Scanner(new File(direc));
 			while (in.hasNext()) {
-				scoreList.add(new BestScoreRecord(in.nextLine()));
+				String s = in.nextLine();
+				s = s.trim();
+				if(!s.equals(""))
+					scoreList.add(new BestScoreRecord(s));	
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -56,6 +59,7 @@ public class HighScoreUtility {
 	public static int getBestScore(String levelFileDirectory) {
 		// return best score of the level
 		for (BestScoreRecord x : scoreList) {
+//			System.out.println(x.getLevelFileDirectory() + " vs " + levelFileDirectory);
 			if (x.getLevelFileDirectory().equals(levelFileDirectory)) {
 				return x.getBestScore();
 			}
@@ -66,14 +70,21 @@ public class HighScoreUtility {
 
 	public static void updateBestScore(String levelFileDirectory, int sc) {
 		// if there are no record, add new line of high score record at the end
-		for (BestScoreRecord x : scoreList) {
-			if (x.getLevelFileDirectory().equals(levelFileDirectory)) {
-				x.setBest(sc);
+		if(scoreList != null)
+			for (BestScoreRecord x : scoreList) {
+				try{
+					if (x.getLevelFileDirectory().equals(levelFileDirectory)) {
+						x.setBest(sc);
+						return;
+					}
+				} catch(NullPointerException e){
+					continue;
+				}
 			}
-		}
+		scoreList.add(new BestScoreRecord(levelFileDirectory, sc));
 	}
 
-	private static void writeBestScoreRecord() {
+	public static void writeBestScoreRecord() {
 		// write (and encode?) best score file
 		// execute when exit program
 		Writer writer = null;
@@ -128,6 +139,11 @@ class BestScoreRecord {
 		String[] rec = x.split(" ");
 		this.levelFileDirectory = rec[0];
 		this.bestScore = Integer.parseInt(rec[1]);
+	}
+	
+	public BestScoreRecord(String level, int best) {
+		this.levelFileDirectory = level;
+		this.bestScore = best;
 	}
 
 	protected void setBest(int in) {
