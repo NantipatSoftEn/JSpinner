@@ -27,7 +27,6 @@ public class PlayerStatus implements IRenderable{
 	
 	public void move() {
 		if(!lockMove){
-			System.out.println("!");
 			moved++;
 		}
 	}

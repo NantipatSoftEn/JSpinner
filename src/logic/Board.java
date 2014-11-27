@@ -46,6 +46,7 @@ public class Board implements IUpdatable {
 	private boolean effectPerFormed = true;
 	private int animatedShuffle = 0;
 	private boolean repeatMoveEnabled = true;
+	private boolean isReady = false;
 
 	public Board(int width, int height) {
 		board = new Tile[width][height];
@@ -82,6 +83,7 @@ public class Board implements IUpdatable {
 	}
 
 	public Board(String directory) throws LevelFormatException, IOException {
+		isCheated = false;
 		try {
 			Scanner in;
 
@@ -173,11 +175,12 @@ public class Board implements IUpdatable {
 		player.resetMove();
 		move = new ArrayList<Move>();
 		this.shuffle(Board.DEFAULT_SHUFFLE);
+		System.out.println(isWin());
 		isPlaying = true;
 		isCheated = false;
+		setBoard();
 		clearSelected();
 		setEnables();
-		WinPanel.setVisible(false);
 	}
 
 	public int getX() {
@@ -417,6 +420,7 @@ public class Board implements IUpdatable {
 			flip(x, y, size, rotation, false);
 
 		}
+		isReady = true;
 	}
 	
 	public void animatedShuffle(int times){
@@ -615,7 +619,9 @@ public class Board implements IUpdatable {
 			}
 		} else {
 			setBoard();
-			if (isWin() || isCheated){
+			if ((isWin() || isCheated) && !WinPanel.isVisible() && isReady){
+				isReady = false;
+				System.out.println(isWin() + " " + isCheated + " " + WinPanel.isVisible());
 				WinPanel.setVisible(true);
 				if(isWin())
 					 player.win();

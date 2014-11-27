@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
 import javax.xml.ws.handler.MessageContext.Scope;
 
 public class HighScoreUtility {
@@ -43,15 +44,17 @@ public class HighScoreUtility {
 			in = new Scanner(new File(direc));
 			while (in.hasNext()) {
 				String s = in.nextLine();
-				s = s.trim();
-				if(!s.equals(""))
-					scoreList.add(new BestScoreRecord(s));	
+				String[] rec = s.trim().split(" ");
+				String level = rec[0];
+				int best = Integer.parseInt(rec[1]);
+				scoreList.add(new BestScoreRecord(level, best));	
 			}
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			
 			highscoreok = false;
-		
+		} catch (NumberFormatException e){
+			JOptionPane.showMessageDialog(null, "Invalid Highscore file format.", "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (Exception e){
+			JOptionPane.showMessageDialog(null, "Invalid Highscore file format.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
@@ -106,30 +109,6 @@ public class HighScoreUtility {
 
 }
 
-// private void updateHighScore() {
-// Writer writer = null;
-//
-// try {
-// writer = new BufferedWriter(new OutputStreamWriter(
-// new FileOutputStream(directory), "utf-8"));
-// writer.write("" + board.length + " " + board[0].length + "\n"
-// /*+ moveLimit*/ + "\n" + move.size());
-// for(int i =0 ;i<board[0].length;i++)
-// for(int j=0;j<board.length;j++)
-// {
-// if(board[i][j].isATile())
-// writer.write("S ");
-// else
-// writer.write("- ");
-// }
-// } catch (IOException ex) {
-// } finally {
-// try {
-// writer.close();
-// } catch (Exception ex) {
-// }
-// }
-// }
 
 class BestScoreRecord {
 	protected String levelFileDirectory;
