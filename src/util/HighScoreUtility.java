@@ -35,8 +35,6 @@ public class HighScoreUtility {
 	 * 3x3.txt 20 4x4.txt 53 etc.
 	 */
 
-	private static List<BestScoreRecord> bestScoreRecord = new ArrayList<BestScoreRecord>();
-
 	static {
 		// load (and decode?) file into the list
 		Scanner in = null;

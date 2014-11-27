@@ -494,7 +494,7 @@ public class Board implements IUpdatable {
 			if (InputUtility.getKeyPressed(KeyEvent.VK_X))
 				if (InputUtility.getKeyPressed(KeyEvent.VK_C))
 					cheat();
-		// For the sake of noob
+		// Auto-solving
 		if (InputUtility.getKeyPressed(KeyEvent.VK_A))
 			if (InputUtility.getKeyPressed(KeyEvent.VK_S))
 				if (InputUtility.getKeyPressed(KeyEvent.VK_D))
@@ -503,10 +503,8 @@ public class Board implements IUpdatable {
 						try {
 							Thread.sleep(100);
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						System.out.println("kuy");
 						solveMove = solveSQ();
 						isSolving = true;
 					}
@@ -613,20 +611,20 @@ public class Board implements IUpdatable {
 				isPlaying = !isWin();
 			} else {
 				if(isSolving)
-				if (!solveMove.isEmpty()) {
-					Move forFlip = solveMove.remove(0);
-					flip(forFlip.x, forFlip.y, forFlip.size, forFlip.dir, false);
-				} else {
-					isSolving = false;
-				}
+					if (!solveMove.isEmpty()) {
+						Move forFlip = solveMove.remove(0);
+						flip(forFlip.x, forFlip.y, forFlip.size, forFlip.dir, false);
+					} else {
+						isSolving = false;
+						isCheated = true;
+					}
 			}
 		} else {
 			setBoard();
 			if ((isWin() || isCheated) && !WinPanel.isVisible() && isReady){
 				isReady = false;
-				System.out.println(isWin() + " " + isCheated + " " + WinPanel.isVisible());
 				WinPanel.setVisible(true);
-				if(isWin())
+				if(isWin() && !isCheated)
 					 player.win();
 			}
 

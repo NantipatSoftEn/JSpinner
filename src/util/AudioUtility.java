@@ -25,7 +25,7 @@ public class AudioUtility {
 		try {
 			return Applet.newAudioClip(AudioUtility.class.getClassLoader().getResource(directory));
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Resource audio not found!", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Resource audio not found!: " + directory, "Error", JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 	}

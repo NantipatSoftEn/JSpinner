@@ -55,7 +55,7 @@ public class PlayerStatus implements IRenderable{
 	
 	public void win(){
 		if(bestScore!=moved){
-			if(bestScore == -1 || moved < bestScore){
+			if((bestScore == -1 || moved < bestScore) && moved > 0){
 				bestScore = moved;
 				HighScoreUtility.updateBestScore(board.getDirectory(), moved);
 			}

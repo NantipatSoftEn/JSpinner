@@ -25,6 +25,7 @@ public class GameSettings extends JFrame{
 	
 	private GameSettings(){
 		setTitle("Settings");
+		setResizable(false);
 		Container cp = getContentPane();
 				
 		cp.setLayout(new BorderLayout());
@@ -56,6 +57,8 @@ public class GameSettings extends JFrame{
 //					Config.animationFrameCount = (Integer)(animFrameSpinner.getValue());
 					settingsFrame.setVisible(false);
 					ScreenState.presentScreen = ScreenState.REFRESH_TITLE;
+				} else {
+					JOptionPane.showMessageDialog(null, "Screen width must not be shorter than screen height.");
 				}
 			}	
 		});

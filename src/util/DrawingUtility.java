@@ -59,7 +59,7 @@ public class DrawingUtility {
 		try {
 			return ImageIO.read(DrawingUtility.class.getClassLoader().getResource(directory));
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Resource image not found!", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Resource image not found!: " + directory, "Error", JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 	}

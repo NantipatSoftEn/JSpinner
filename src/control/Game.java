@@ -28,41 +28,41 @@ public class Game{
 	public static volatile boolean finishUpdate = false;
 	
 	public Game(GameWindow window, String levelDirectory) throws LevelFormatException, IOException{
-		
-		ScreenState.presentScreen = ScreenState.GAME;
-		
-//		board = new Board(3, 2);
-		board = new Board(levelDirectory);
-		gameScreen = new GameScreen(board);
-		gameLogic = new GameLogic(board);
-		Clickable.board = board;
-		Game.levelDirectory = levelDirectory;
-		
-		//GAME START
-		board.shuffle(Board.DEFAULT_SHUFFLE);
-		
-		window.addPanel(gameScreen);
-		window.setFrame();
-		window.pack();
-		
-		GameThreadMonitor monitor = new GameThreadMonitor(gameLogic, gameScreen);
-		GameScreenThread gameScreenThread = new GameScreenThread(gameScreen, monitor);
-		GameLogicThread gameLogicThread = new GameLogicThread(gameLogic, monitor);
-		
-		(new Thread(gameLogicThread)).start();
-		(new Thread(gameScreenThread)).start();
-		
-		while(ScreenState.presentScreen == ScreenState.GAME){
-			try {
-				Thread.sleep(20);
-			} catch(InterruptedException e) {
-			}
-//			gameScreen.repaint();
-//			gameLogic.update();
-//			InputUtility.postUpdate();
-		}	
-	}
-	
+			
+			ScreenState.presentScreen = ScreenState.GAME;
+			
+	//		board = new Board(3, 2);
+			board = new Board(levelDirectory);
+			gameScreen = new GameScreen(board);
+			gameLogic = new GameLogic(board);
+			Clickable.board = board;
+			Game.levelDirectory = levelDirectory;
+			
+			//GAME START
+			board.shuffle(Board.DEFAULT_SHUFFLE);
+			
+			window.addPanel(gameScreen);
+			window.setFrame();
+			window.pack();
+			
+			GameThreadMonitor monitor = new GameThreadMonitor(gameLogic, gameScreen);
+			GameScreenThread gameScreenThread = new GameScreenThread(gameScreen, monitor);
+			GameLogicThread gameLogicThread = new GameLogicThread(gameLogic, monitor);
+			
+			(new Thread(gameLogicThread)).start();
+			(new Thread(gameScreenThread)).start();
+			
+			while(ScreenState.presentScreen == ScreenState.GAME){
+				try {
+					Thread.sleep(20);
+				} catch(InterruptedException e) {
+				}
+	//			gameScreen.repaint();
+	//			gameLogic.update();
+	//			InputUtility.postUpdate();
+			}	
+		}
+
 	public GameScreen getGameScreen() {
 		return gameScreen;
 	}
