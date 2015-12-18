@@ -1,7 +1,7 @@
 # JSpinner
 An original puzzle game
 
-[>>> Download <<<](Jspinner.jar)
+[>>> Download <<<](JSpinner.jar?raw=true)
 
 Final Project for the Programming Methodologies Class of 2014 (2nd year) 
 as a part of computer engineering curriculum of Chulalongkorn University. 
